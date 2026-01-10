@@ -88,16 +88,8 @@ export const MainGraphic = () => {
             formatter={(value) => parseFloat(value as string).toFixed(2)}
           />
           <Legend />
-          <ReferenceLine
-            y={cpuWarning}
-            stroke="yellow"
-            strokeDasharray="3 3"
-          />
-          <ReferenceLine
-            y={cpuDanger}
-            stroke="red"
-            strokeDasharray="3 3"
-          />
+          <ReferenceLine y={cpuWarning} stroke="yellow" strokeDasharray="3 3" />
+          <ReferenceLine y={cpuDanger} stroke="red" strokeDasharray="3 3" />
           <Area
             type="monotone"
             dataKey="value"

@@ -13,7 +13,10 @@ import {
 } from "../constants/chartConfig";
 
 type HistoryKey = "cpuHistory" | "memoryHistory" | "diskHistory";
-type UpdateFn = "updateCpuHistory" | "updateMemoryHistory" | "updateDiskHistory";
+type UpdateFn =
+  | "updateCpuHistory"
+  | "updateMemoryHistory"
+  | "updateDiskHistory";
 
 interface ChartTypeConfig {
   historyKey: HistoryKey;
@@ -69,9 +72,7 @@ export const useChartData = ({
 
       const dataPoints = CHART_DATA_POINTS[chartType];
       const newData =
-        dataPoints === 1
-          ? [newPoint]
-          : [...prevData.slice(1), newPoint];
+        dataPoints === 1 ? [newPoint] : [...prevData.slice(1), newPoint];
 
       if (currentIdVM) {
         updateHistory(String(currentIdVM), newData);
@@ -100,11 +101,17 @@ export const useChartData = ({
 
     const interval = setInterval(
       addNewDataPoint,
-      CHART_UPDATE_INTERVALS[chartType]
+      CHART_UPDATE_INTERVALS[chartType],
     );
 
     return () => clearInterval(interval);
-  }, [currentIdVM, addNewDataPoint, updateHistory, chartType, config.historyKey]);
+  }, [
+    currentIdVM,
+    addNewDataPoint,
+    updateHistory,
+    chartType,
+    config.historyKey,
+  ]);
 
   const lastValue = chartData[chartData.length - 1]?.value || 0;
 

@@ -9,7 +9,6 @@ import { useZBrandInfo } from "../stores/useZBrandStore";
 import { useUploadFile } from "./useUploadFile";
 import { IBrandMasterBasicInfo } from "../types/BrandMasterTypes";
 
-
 interface IUpdateBrandMaster {
   brandName?: string;
   idBrandTheme?: number;

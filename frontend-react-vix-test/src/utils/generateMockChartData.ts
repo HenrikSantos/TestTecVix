@@ -32,7 +32,7 @@ export const generateMockChartData = ({
     const variation = (Math.random() - 0.5) * config.variation;
     baseValue = Math.max(
       config.bounds.min,
-      Math.min(config.bounds.max, baseValue + variation)
+      Math.min(config.bounds.max, baseValue + variation),
     );
 
     data.push({
@@ -64,7 +64,7 @@ export const generateNewDataPoint = ({
   const variation = (Math.random() - 0.5) * config.variation;
   const newValue = Math.max(
     config.bounds.min,
-    Math.min(config.bounds.max, previousValue + variation)
+    Math.min(config.bounds.max, previousValue + variation),
   );
 
   return {

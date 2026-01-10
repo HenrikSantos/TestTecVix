@@ -1,7 +1,5 @@
 import { create } from "zustand";
-import {
-  IBrandMasterBasicInfo,
-} from "../types/BrandMasterTypes";
+import { IBrandMasterBasicInfo } from "../types/BrandMasterTypes";
 
 export type Colaborator = {
   idUser: number;

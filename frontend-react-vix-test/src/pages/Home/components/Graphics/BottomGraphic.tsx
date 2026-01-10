@@ -86,11 +86,7 @@ export const BottomGraphic = () => {
             formatter={(value) => parseFloat(value as string).toFixed(2)}
           />
           <Legend />
-          <ReferenceLine
-            y={memoryDanger}
-            stroke="red"
-            strokeDasharray="3 3"
-          />
+          <ReferenceLine y={memoryDanger} stroke="red" strokeDasharray="3 3" />
           <Bar dataKey="value" fill="#413ea0" legendType="none" />
           <Line
             type="monotone"

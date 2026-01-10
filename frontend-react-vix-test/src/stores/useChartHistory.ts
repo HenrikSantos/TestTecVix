@@ -17,7 +17,9 @@ export const useChartHistory = create<ChartHistoryState>((set) => ({
   updateCpuHistory: (vmId, data) =>
     set((state) => ({ cpuHistory: { ...state.cpuHistory, [vmId]: data } })),
   updateMemoryHistory: (vmId, data) =>
-    set((state) => ({ memoryHistory: { ...state.memoryHistory, [vmId]: data } })),
+    set((state) => ({
+      memoryHistory: { ...state.memoryHistory, [vmId]: data },
+    })),
   updateDiskHistory: (vmId, data) =>
     set((state) => ({ diskHistory: { ...state.diskHistory, [vmId]: data } })),
 }));
