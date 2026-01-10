@@ -91,9 +91,7 @@ describe("PrivatePage Component", () => {
       );
 
       await waitFor(() => {
-        expect(
-          screen.getByTestId("protected-content"),
-        ).toBeInTheDocument();
+        expect(screen.getByTestId("protected-content")).toBeInTheDocument();
       });
     });
 

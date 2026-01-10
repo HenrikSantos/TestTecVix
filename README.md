@@ -80,8 +80,9 @@ Você pode criar, instalar e utilizar outras bibliotecas, porém o **foco princi
 > **📢 IMPORTANTE**: Seu repositório fork **DEVE SER PÚBLICO** para que a equipe da Vituax possa avaliar seu trabalho.
 
 Certifique-se de que:
-- [X] Seu repositório está configurado como **público** (não privado)
-- [X] A equipe da Vituax consegue acessar o link sem necessidade de permissões especiais
+
+- [x] Seu repositório está configurado como **público** (não privado)
+- [x] A equipe da Vituax consegue acessar o link sem necessidade de permissões especiais
 
 ### 📤 Entrega do Teste
 
@@ -98,9 +99,9 @@ Ao finalizar o teste, você deve:
 
 Antes de enviar, certifique-se de que:
 
-- [X] O código está no **seu repositório pessoal** do GitHub
-- [X] O repositório está configurado como **público** (não privado)
-- [X] A branch `main` contém o projeto original
+- [x] O código está no **seu repositório pessoal** do GitHub
+- [x] O repositório está configurado como **público** (não privado)
+- [x] A branch `main` contém o projeto original
 - [ ] A branch `release` contém todas as suas modificações
 - [ ] Existe um Pull Request da `release` para a `main` **no seu repositório**
 - [ ] O README está atualizado com suas modificações
@@ -153,6 +154,7 @@ Antes de começar, certifique-se de ter instalado:
 ## 🛠️ Stack Tecnológica
 
 ### Backend
+
 - **Node.js** - Runtime JavaScript
 - **Express** - Framework web
 - **Prisma** - ORM (Object-Relational Mapping)
@@ -162,6 +164,7 @@ Antes de começar, certifique-se de ter instalado:
 - **Jest** - Framework de testes
 
 ### Frontend
+
 - **React** - Biblioteca para interfaces
 - **TypeScript** - Tipagem estática
 - **Material-UI (MUI)** - Biblioteca de componentes
@@ -231,6 +234,7 @@ npm run db:up
 ```
 
 Este comando irá:
+
 - Subir um container Docker com MySQL
 - Utilizar o arquivo `docker-compose-db.yml`
 - Expor o banco na porta **3312**
@@ -336,7 +340,7 @@ npm run dc:up
 ## 🔌 Estrutura de Portas
 
 | Serviço  | Porta |
-|----------|-------|
+| -------- | ----- |
 | Frontend | 3000  |
 | Backend  | 3001  |
 | MySQL    | 3312  |
@@ -354,10 +358,12 @@ npm run dc:up
 ### Tipos de Usuários
 
 #### Usuário Vituax
+
 - Usuário **sem** `idBrandMaster` associado
 - Considerado um usuário da própria Vituax
 
 #### Usuário com BrandMaster
+
 - Usuário **com** `idBrandMaster` associado
 - Pertence a uma empresa/MSP específica
 
@@ -368,7 +374,7 @@ npm run dc:up
 O sistema possui três níveis de permissão:
 
 | Tipo      | Leitura | Criação | Edição | Exclusão |
-|-----------|---------|---------|--------|----------|
+| --------- | ------- | ------- | ------ | -------- |
 | `member`  | ✅      | ❌      | ❌     | ❌       |
 | `manager` | ✅      | ✅      | ✅     | ❌       |
 | `admin`   | ✅      | ✅      | ✅     | ✅       |
@@ -448,29 +454,29 @@ git commit -m "docs: atualiza README com credenciais de teste"
 
 ### 📋 Configuração Inicial
 
-- [X] Criar arquivo `.env` baseado no `.env.example` (backend)
-- [X] Criar arquivo `.env` baseado no `.env.exemple` (frontend)
+- [x] Criar arquivo `.env` baseado no `.env.example` (backend)
+- [x] Criar arquivo `.env` baseado no `.env.exemple` (frontend)
 
 ---
 
 ### 🔐 Autenticação e Autorização
 
-- [X] Implementar as rotas de CRUD para usuários
-- [X] Implementar rota de login do usuário
-- [X] Implementar tela de login `/login`
-- [X] Implementar rota de register do usuário
-- [X] Implementar tela de register `/register`
-- [X] Implementar autenticação com token JWT
-- [X] Proteger as rotas da aplicação (exceto login e register) para que somente usuários logados possam acessar
-- [X] Adicionar credenciais de usuários de teste no README e/ou `.env.example`
+- [x] Implementar as rotas de CRUD para usuários
+- [x] Implementar rota de login do usuário
+- [x] Implementar tela de login `/login`
+- [x] Implementar rota de register do usuário
+- [x] Implementar tela de register `/register`
+- [x] Implementar autenticação com token JWT
+- [x] Proteger as rotas da aplicação (exceto login e register) para que somente usuários logados possam acessar
+- [x] Adicionar credenciais de usuários de teste no README e/ou `.env.example`
 
 ---
 
 ### 🗄️ Updates no Banco de Dados
 
-- [X] Adicionar coluna `pass` na tabela `VM` (senha da VM, respeitando regras de segurança)
-- [X] Adicionar coluna `location` do tipo `ETaskLocation` na tabela `VM`
-- [X] Adicionar coluna `hasBackup` na tabela `VM`
+- [x] Adicionar coluna `pass` na tabela `VM` (senha da VM, respeitando regras de segurança)
+- [x] Adicionar coluna `location` do tipo `ETaskLocation` na tabela `VM`
+- [x] Adicionar coluna `hasBackup` na tabela `VM`
 
 ---
 
@@ -478,10 +484,10 @@ git commit -m "docs: atualiza README com credenciais de teste"
 
 **VM Card List:**
 
-- [ ] Implementar a função de **start** da VM
-- [ ] Implementar a função de **pause** da VM
-- [ ] Implementar os gráficos (mocados) de **Uso de CPU**
-- [ ] Implementar os gráficos (mocados) de **Uso de Memória**
+- [x] Implementar a função de **start** da VM
+- [x] Implementar a função de **pause** da VM
+- [x] Implementar os gráficos (mocados) de **Uso de CPU**
+- [x] Implementar os gráficos (mocados) de **Uso de Memória**
 
 ---
 
@@ -682,4 +688,3 @@ Se tiver dúvidas sobre o teste, entre em contato com o time da Vituax.
 **Boa sorte! 🚀**
 
 **Esperamos receber o link do seu repositório em breve!** 📬
-

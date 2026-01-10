@@ -16,9 +16,7 @@ interface IUser {
   brandMaster?: { brandName: string } | null;
   idBrandMaster?: number | null;
 }
-export const formatUsersColaboratorData = (
-  data: IUser[],
-): Colaborator[] => {
+export const formatUsersColaboratorData = (data: IUser[]): Colaborator[] => {
   return data.map((user) => ({
     idUser: user.idUser || 0,
     name: user.fullName || user.username || "",

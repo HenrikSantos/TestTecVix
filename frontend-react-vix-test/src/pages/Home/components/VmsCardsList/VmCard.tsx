@@ -80,6 +80,7 @@ export const VmCard = ({
     getVMById: getVMByIdResource,
     isLoading,
     getOS,
+    updateVMStatus,
   } = useVmResource();
 
   const getVMById = async () => {
@@ -108,9 +109,15 @@ export const VmCard = ({
 
   const handleConfirm = async () => {
     if (statusState !== preStatusState) {
-      setPreStatusState(statusState);
+      const newStatus = statusState as "RUNNING" | "STOPPED" | "PAUSED";
+      const result = await updateVMStatus({ idVM: vmId, status: newStatus });
 
-      await getVMById();
+      if (result) {
+        setPreStatusState(statusState);
+        await getVMById();
+      } else {
+        setStatusState(preStatusState);
+      }
     }
     setShowConfirmation(false);
   };
