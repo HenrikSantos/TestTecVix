@@ -3,14 +3,62 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Label } from "recharts";
 import { Stack, Typography } from "@mui/material";
 import { useZTheme } from "../../../../stores/useZTheme";
 import { useTranslation } from "react-i18next";
-import { IFormatData } from "../../../../types/socketType";
 import { useZGlobalVar } from "../../../../stores/useZGlobalVar";
+import { useChartData } from "../../../../hooks/useChartData";
+import { CHART_THRESHOLDS } from "../../../../constants/chartConfig";
+
+const MAX_PERCENTAGE = 1;
+
+interface GaugeDataItem {
+  value: number;
+}
+
+const generateGaugeData = (value: number): GaugeDataItem[] => {
+  const { warning: diskWarning, danger: diskDanger } = CHART_THRESHOLDS.disk;
+  const warningThreshold = diskWarning / 100;
+  const dangerThreshold = diskDanger / 100;
+
+  if (value < warningThreshold) {
+    return [
+      { value },
+      { value: warningThreshold - value },
+      { value: dangerThreshold - warningThreshold },
+      { value: 0 },
+      { value: MAX_PERCENTAGE - dangerThreshold },
+    ];
+  }
+
+  if (value < dangerThreshold) {
+    return [
+      { value: 0 },
+      { value: 0 },
+      { value },
+      {
+        value: dangerThreshold - warningThreshold - (value - warningThreshold),
+      },
+      { value: MAX_PERCENTAGE - dangerThreshold },
+    ];
+  }
+
+  return [
+    { value: 0 },
+    { value: 0 },
+    { value: 0 },
+    { value: 0 },
+    { value },
+    { value: MAX_PERCENTAGE - value },
+  ];
+};
 
 export const TopGraphic = () => {
   const [isLoading] = useState(false);
-  const [chartData] = useState<IFormatData[]>([]);
   const { theme, mode } = useZTheme();
   const { t } = useTranslation();
+  const { currentVMName: vmName } = useZGlobalVar();
+
+  const { chartData } = useChartData({
+    chartType: "disk",
+  });
 
   const COLORS = [
     theme[mode].ok,
@@ -21,50 +69,16 @@ export const TopGraphic = () => {
     theme[mode].grayLight,
   ];
 
-  const MAX_PERCENTAGE = 1;
+  const { warning: diskWarning, danger: diskDanger } = CHART_THRESHOLDS.disk;
 
-  const generateGaugeData = (value: number) => {
-    if (value < 0.6) {
-      return [
-        { value },
-        { value: MAX_PERCENTAGE * 0.6 - value },
-        { value: MAX_PERCENTAGE - MAX_PERCENTAGE * 0.75 },
-        { value: 0 },
-        { value: MAX_PERCENTAGE - MAX_PERCENTAGE * 0.85 },
-      ];
-    }
+  const diskUsage = (chartData[chartData.length - 1]?.value || 0) / 100;
 
-    if (value < 0.85) {
-      return [
-        { value: 0 },
-        { value: 0 },
-        { value },
-        { value: MAX_PERCENTAGE - MAX_PERCENTAGE * 0.75 - (value - 0.6) },
-        { value: MAX_PERCENTAGE - MAX_PERCENTAGE * 0.85 },
-      ];
-    }
-
-    return [
-      { value: 0 },
-      { value: 0 },
-      { value: 0 },
-      { value: 0 },
-      { value },
-      { value: MAX_PERCENTAGE - value },
-    ];
-  };
-
-  const cpuUsage = (chartData[chartData.length - 1]?.value || 0) / 100;
   const valueColor =
-    cpuUsage < 0.6
+    diskUsage < diskWarning / 100
       ? theme[mode].ok
-      : cpuUsage < 0.85
+      : diskUsage < diskDanger / 100
         ? theme[mode].warning
         : theme[mode].danger;
-
-  const { currentVMName: vmName } = useZGlobalVar();
-
-  // if (!chartData.length) return <EmptyFeedBack />;
 
   return (
     <Stack
@@ -90,7 +104,7 @@ export const TopGraphic = () => {
         {!isLoading ? (
           <PieChart>
             <Pie
-              data={generateGaugeData(cpuUsage)}
+              data={generateGaugeData(diskUsage)}
               startAngle={180}
               endAngle={0}
               innerRadius="85%"
@@ -102,12 +116,11 @@ export const TopGraphic = () => {
               cx="50%"
               cy="75%"
             >
-              {/* Mapeia as cores do gráfico */}
-              {generateGaugeData(cpuUsage).map((_entry, index) => (
+              {generateGaugeData(diskUsage).map((_entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index] || "#ccc"} />
               ))}
               <Label
-                value={`${(cpuUsage * 100).toFixed(2)}%`}
+                value={`${(diskUsage * 100).toFixed(2)}%`}
                 position="center"
                 style={{
                   fill: valueColor,
