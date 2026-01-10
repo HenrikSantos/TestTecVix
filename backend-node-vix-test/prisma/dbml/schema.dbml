@@ -50,6 +50,8 @@ Table vM {
   updatedAt DateTime [default: `now()`]
   deletedAt DateTime
   os String
+  pass String
+  location ETaskLocation
   brandMaster brandMaster
 }
 
@@ -79,6 +81,11 @@ Enum ERole {
   admin
   manager
   member
+}
+
+Enum ETaskLocation {
+  bre_barueri
+  usa_miami
 }
 
 Ref: vM.idBrandMaster > brandMaster.idBrandMaster
