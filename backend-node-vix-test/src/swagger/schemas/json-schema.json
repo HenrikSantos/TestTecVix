@@ -268,6 +268,22 @@
             "null"
           ]
         },
+        "pass": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "location": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "bre_barueri",
+            "usa_miami"
+          ]
+        },
         "brandMaster": {
           "anyOf": [
             {
