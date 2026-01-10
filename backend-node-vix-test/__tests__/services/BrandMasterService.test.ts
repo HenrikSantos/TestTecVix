@@ -1,39 +1,53 @@
 import { BrandMasterService } from "../../src/services/BrandMasterService";
 import { BrandMasterModel } from "../../src/models/BrandMasterModel";
-// Mocks
+
 jest.mock("../../src/models/BrandMasterModel");
-jest.mock("../../src/models/LogBrandMasterModel");
+
+const MockedBrandMasterModel = BrandMasterModel as jest.MockedClass<
+  typeof BrandMasterModel
+>;
 
 describe("BrandMasterService", () => {
   let brandMasterService: BrandMasterService;
-  let brandMasterModel: jest.Mocked<BrandMasterModel>;
+  let mockGetById: jest.Mock;
+  let mockUpdateBrandMaster: jest.Mock;
 
   beforeEach(() => {
-    brandMasterModel = new BrandMasterModel() as jest.Mocked<BrandMasterModel>;
-    brandMasterService = new BrandMasterService(brandMasterModel);
+    jest.clearAllMocks();
+
+    mockGetById = jest.fn();
+    mockUpdateBrandMaster = jest.fn();
+
+    MockedBrandMasterModel.prototype.getById = mockGetById;
+    MockedBrandMasterModel.prototype.updateBrandMaster = mockUpdateBrandMaster;
+
+    brandMasterService = new BrandMasterService();
   });
 
   describe("updateBrandMaster", () => {
     it("updateBrandMaster should be called", async () => {
-      const idbrandMaster = 1;
-      brandMasterModel.updateBrandMaster.mockResolvedValue({} as any);
-      brandMasterModel.getById.mockResolvedValue({ idbrandMaster: 1 } as any);
-      await brandMasterService.updateBrandMaster(idbrandMaster, {}, {
+      const idBrandMaster = 1;
+      mockGetById.mockResolvedValue({ idBrandMaster: 1 });
+      mockUpdateBrandMaster.mockResolvedValue({});
+
+      await brandMasterService.updateBrandMaster(idBrandMaster, {}, {
         idBrandMaster: 1,
       } as any);
 
-      expect(brandMasterModel.updateBrandMaster).toHaveBeenCalled();
+      expect(mockUpdateBrandMaster).toHaveBeenCalled();
     });
 
-    it("updateBrandMaster should not be called", async () => {
-      const idbrandMaster = 1;
-      brandMasterModel.updateBrandMaster.mockResolvedValue({} as any);
-      brandMasterModel.getById.mockResolvedValue({ idbrandMaster: 1 } as any);
+    it("updateBrandMaster should not be called when brand not found", async () => {
+      const idBrandMaster = 1;
+      mockGetById.mockResolvedValue(null);
+
       await expect(
-        brandMasterService.updateBrandMaster(idbrandMaster, {}, {
-          idBrandMaster: 2,
+        brandMasterService.updateBrandMaster(idBrandMaster, {}, {
+          idBrandMaster: 1,
         } as any),
       ).rejects.toBeTruthy();
+
+      expect(mockUpdateBrandMaster).not.toHaveBeenCalled();
     });
   });
 });
