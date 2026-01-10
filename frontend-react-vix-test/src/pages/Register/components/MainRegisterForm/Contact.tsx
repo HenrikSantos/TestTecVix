@@ -43,8 +43,7 @@ export const Contact = () => {
               />
             </svg>
           </>
-          {/* depois voltar linha abaixo para apenas brandName */}
-          {brandName !== "Vituax" ? "Vituax" : brandName}
+          {brandName}
         </TextRob14FontXsB>
       </Link>
       {/* Separator */}

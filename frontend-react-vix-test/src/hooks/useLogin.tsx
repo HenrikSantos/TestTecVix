@@ -78,6 +78,7 @@ export const useLogin = () => {
       userPhoneNumber: response.data.user.userPhoneNumber,
     });
     setLoginTime(new Date());
+    navigate("/");
   };
 
   const goLogout = () => {

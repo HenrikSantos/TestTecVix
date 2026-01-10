@@ -10,8 +10,8 @@ import { WhiteLabelRouter } from "./WhiteLabelRouter";
 export const mainRoutes = [
   DefaultRouter,
   HomeRouter,
-  // LoginRouter, // Descomentar para renderizar o login
-  // RegisterRouter, // Descomentar para renderizar o register
+  LoginRouter,
+  RegisterRouter,
   VirtualMachineRouter,
   MyVMsRouter,
   MSPRegisterRouter,
