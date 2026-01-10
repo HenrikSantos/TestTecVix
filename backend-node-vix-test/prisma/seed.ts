@@ -1,8 +1,64 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import fs from "fs/promises";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 const SEEDS_FOLDER_NAME = ""; // "seeds" folder inside temp folder: ex: "temp/SEEDS_FOLDER_NAME"
+
+async function seedTestUsers() {
+  console.log("------ Seeding test users ----------------");
+
+  const testUsers = [
+    {
+      username: "admin",
+      email: "admin@vituax.com",
+      password: "Admin@123",
+      role: "admin" as const,
+      isActive: true,
+    },
+    {
+      username: "manager",
+      email: "manager@vituax.com",
+      password: "Manager@123",
+      role: "manager" as const,
+      isActive: true,
+    },
+    {
+      username: "member",
+      email: "member@vituax.com",
+      password: "Member@123",
+      role: "member" as const,
+      isActive: true,
+    },
+  ];
+
+  for (const user of testUsers) {
+    const existingUser = await prisma.user.findFirst({
+      where: { email: user.email },
+    });
+
+    if (existingUser) {
+      console.log(`Usuario ${user.email} ja existe, pulando...`);
+      continue;
+    }
+
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+
+    await prisma.user.create({
+      data: {
+        username: user.username,
+        email: user.email,
+        password: hashedPassword,
+        role: user.role,
+        isActive: user.isActive,
+      },
+    });
+
+    console.log(`Usuario ${user.email} criado com sucesso!`);
+  }
+
+  console.log("------ Test users seeded ----------------");
+}
 
 async function main() {
   const isDroped = true;
@@ -106,6 +162,7 @@ async function main() {
   }
 
   console.log("------ Wait for seed all ----------------");
+  await seedTestUsers();
   await seedAll();
 
   if (tablesTryAgain.length > 0) {

@@ -7,14 +7,29 @@ export interface IResponse<T> {
   data: T;
 }
 
+const getToken = (): string | null => {
+  try {
+    const userProfile = localStorage.getItem("userProfile");
+    if (userProfile) {
+      const parsed = JSON.parse(userProfile);
+      return parsed.state?.token || null;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+};
+
 export const baseAuth = (auth: Record<string, unknown> = {}) => {
   const signature = import.meta.env.VITE_SIGN_HASH || "";
+  const token = getToken();
 
   return {
     headers: {
       "x-sign": signature,
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }),
       ...auth,
     },
   };

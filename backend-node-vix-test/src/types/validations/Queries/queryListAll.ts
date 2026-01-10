@@ -58,12 +58,15 @@ export const querySchema = z.object({
       val === undefined || val === null ? undefined : val === "true",
     ),
   idBrandMaster: z
-    .union([z.string(), z.number()]) // string or number
+    .union([z.string(), z.number()])
     .nullable()
     .optional()
-    .transform((val) =>
-      val ? (val.toString() === "null" ? null : parseInt(val.toString())) : val,
-    ),
+    .transform((val): number | null | undefined => {
+      if (val === undefined) return undefined;
+      if (val === null || val.toString() === "null") return null;
+      const parsed = parseInt(val.toString(), 10);
+      return isNaN(parsed) ? undefined : parsed;
+    }),
   isPoc: z
     .union([z.boolean(), z.string()])
     .optional()
