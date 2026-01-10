@@ -7,7 +7,7 @@ export const userCreatedSchema = z.object({
   profileImgUrl: z.string().nullable().optional(),
   userPhoneNumber: z.string().nullable().optional(),
   role: z.enum(["admin", "member", "manager"]).optional(),
-  idBrandMaster: z.number().optional(),
+  idBrandMaster: z.number().nullable().optional(),
   isActive: z.boolean().optional().default(false),
   field: z.string().nullable().optional(),
   department: z.string().nullable().optional(),

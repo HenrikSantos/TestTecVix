@@ -9,7 +9,15 @@ export class BrandMasterController {
   private brandMasterService = new BrandMasterService();
 
   async getSelf(req: CustomRequest<unknown>, res: Response) {
-    return res.status(STATUS_CODE.OK).json(null);
+    const host = req.headers.host || req.headers.origin || "";
+    const domain = host.replace(/^https?:\/\//, "").split(":")[0];
+
+    if (!domain) {
+      return res.status(STATUS_CODE.OK).json(null);
+    }
+
+    const result = await this.brandMasterService.getSelf(domain);
+    return res.status(STATUS_CODE.OK).json(result);
   }
 
   async getById(req: CustomRequest<unknown>, res: Response) {
