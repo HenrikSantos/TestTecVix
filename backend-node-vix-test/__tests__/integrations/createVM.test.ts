@@ -20,62 +20,60 @@ jest.mock("../../src/auth/isManagerOrIsAdmin", () => ({
 const BASE_PATH = API_VERSION.V1 + ROOT_PATH.VM;
 
 describe("VM Creation Integration", () => {
-    it("should create a VM successfully", async () => {
-        const payload = {
-            vmName: "Test VM",
-            vCPU: 2,
-            ram: 4,
-            disk: 50,
-            hasBackup: true,
-            os: "ubuntu2404",
-            pass: "StrongPassword123!",
-            location: "usa_miami"
-        };
+  it("should create a VM successfully", async () => {
+    const payload = {
+      vmName: "Test VM",
+      vCPU: 2,
+      ram: 4,
+      disk: 50,
+      hasBackup: true,
+      os: "ubuntu2404",
+      pass: "StrongPassword123!",
+      location: "usa_miami",
+    };
 
-        const mockCreatedVM = {
-            idVM: 1,
-            ...payload,
-            status: "RUNNING",
-            idBrandMaster: 1,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            deletedAt: null,
-            brandMaster: null 
-        };
+    const mockCreatedVM = {
+      idVM: 1,
+      ...payload,
+      status: "RUNNING",
+      idBrandMaster: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      deletedAt: null,
+      brandMaster: null,
+    };
 
-        // @ts-ignore
-        prismaMock.vM.create.mockResolvedValue(mockCreatedVM);
+    // @ts-ignore
+    prismaMock.vM.create.mockResolvedValue(mockCreatedVM);
 
-        const response = await request(app)
-            .post(BASE_PATH)
-            .send(payload);
+    const response = await request(app).post(BASE_PATH).send(payload);
 
-        expect(response.status).toBe(201);
-        expect(response.body).toHaveProperty("idVM", 1);
-        expect(response.body).toHaveProperty("vmName", "Test VM");
-        expect(response.body).toHaveProperty("os", "ubuntu2404");
-        
-        expect(prismaMock.vM.create).toHaveBeenCalledWith(expect.objectContaining({
-            data: expect.objectContaining({
-                vmName: "Test VM",
-                os: "ubuntu2404",
-                pass: "StrongPassword123!",
-                location: "usa_miami"
-            })
-        }));
-    });
+    expect(response.status).toBe(201);
+    expect(response.body).toHaveProperty("idVM", 1);
+    expect(response.body).toHaveProperty("vmName", "Test VM");
+    expect(response.body).toHaveProperty("os", "ubuntu2404");
 
-     it("should return validation error for missing required fields", async () => {
-        const payload = {
-             vmName: "Invalid VM"
-             // Missing vCPU, ram, etc.
-        };
+    expect(prismaMock.vM.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          vmName: "Test VM",
+          os: "ubuntu2404",
+          pass: "StrongPassword123!",
+          location: "usa_miami",
+        }),
+      }),
+    );
+  });
 
-        // Zod validation should fail before hitting prisma
-        const response = await request(app)
-            .post(BASE_PATH)
-            .send(payload);
+  it("should return validation error for missing required fields", async () => {
+    const payload = {
+      vmName: "Invalid VM",
+      // Missing vCPU, ram, etc.
+    };
 
-        expect(response.status).toBe(400);
-    });
+    // Zod validation should fail before hitting prisma
+    const response = await request(app).post(BASE_PATH).send(payload);
+
+    expect(response.status).toBe(400);
+  });
 });

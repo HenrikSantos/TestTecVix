@@ -503,29 +503,29 @@ git commit -m "docs: atualiza README com credenciais de teste"
 
 **Filtros:**
 
-- [ ] Implementar filtro de **pesquisa** (busca por nome)
-- [ ] Implementar filtro por **status da VM**
-- [ ] Implementar filtro por **MSP/BrandMaster**
-- [ ] Implementar filtro **"Apenas minhas VMs"** (VMs exclusivas da mesma BrandMaster do usuário logado)
+- [x] Implementar filtro de **pesquisa** (busca por nome)
+- [x] Implementar filtro por **status da VM**
+- [x] Implementar filtro por **MSP/BrandMaster**
+- [x] Implementar filtro **"Apenas minhas VMs"** (VMs exclusivas da mesma BrandMaster do usuário logado)
 
 **Ações:**
 
-- [ ] Possibilitar **stop/start** da VM pela tabela
-- [ ] Possibilitar **stop/start** da VM pelo modal de edição
+- [x] Possibilitar **stop/start** da VM pela tabela
+- [x] Possibilitar **stop/start** da VM pelo modal de edição
 
 **Modal de Edição:**
 
-- [ ] Trazer corretamente as **informações da VM** no modal
-- [ ] Possibilitar editar: **senha da VM**
-- [ ] Possibilitar editar: **nome da VM**
-- [ ] Possibilitar editar: **vCPU**
-- [ ] Possibilitar editar: **Memória**
-- [ ] Possibilitar editar: **Disco**
-- [ ] Possibilitar editar: **habilitar/desabilitar backup**
+- [x] Trazer corretamente as **informações da VM** no modal
+- [x] Possibilitar editar: **senha da VM**
+- [x] Possibilitar editar: **nome da VM**
+- [x] Possibilitar editar: **vCPU**
+- [x] Possibilitar editar: **Memória**
+- [x] Possibilitar editar: **Disco**
+- [x] Possibilitar editar: **habilitar/desabilitar backup**
 
 **Exclusão:**
 
-- [ ] Possibilitar **deletar VM** (somente usuários tipo `admin` podem deletar)
+- [x] Possibilitar **deletar VM** (somente usuários tipo `admin` podem deletar)
 
 ---
 
