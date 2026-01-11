@@ -89,17 +89,29 @@ vi.mock("react-i18next", () => ({
   }),
 }));
 
+// Interfaces para props dos mocks
+interface DropDownOption {
+  label: string;
+  value: string;
+}
+
+interface DropDowTextProps {
+  label: string;
+  data: DropDownOption[];
+  onChange: (selected: DropDownOption | undefined) => void;
+}
+
 // Mock DropDowText to avoid MUI complexity in unit test and focus on props
 vi.mock("../../../src/pages/VirtualMachine/components/DropDowText", () => ({
-  DropDowText: ({ label, data, onChange }: any) => (
+  DropDowText: ({ label, data, onChange }: DropDowTextProps) => (
     <div data-testid={`dropdown-${label}`}>
       <label>{label}</label>
       <select onChange={(e) => {
-        const selected = data.find((d: any) => d.value === e.target.value);
+        const selected = data.find((d: DropDownOption) => d.value === e.target.value);
         onChange(selected);
       }}>
         <option value="">Select</option>
-        {data.map((d: any) => (
+        {data.map((d: DropDownOption) => (
           <option key={d.value} value={d.value}>{d.label}</option>
         ))}
       </select>

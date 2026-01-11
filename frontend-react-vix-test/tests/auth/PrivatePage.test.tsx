@@ -227,7 +227,7 @@ describe("PrivatePage Component", () => {
       mockToken = "valid-jwt-token";
       mockRole = "admin";
 
-      const { container } = render(
+      render(
         <PrivatePage onlyAdmin>
           <div data-testid="content">Conteudo</div>
         </PrivatePage>,
