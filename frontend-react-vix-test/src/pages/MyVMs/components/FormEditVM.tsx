@@ -35,6 +35,7 @@ export const FormEditVM = ({ onClose }: IProps) => {
     storageOptions,
     localizationOptions,
     updateVM,
+    updateVMStatus,
     validPassword,
     deleteVM,
     isLoadingDeleteVM,
@@ -128,13 +129,25 @@ export const FormEditVM = ({ onClose }: IProps) => {
   };
 
   const handleStopVM = async () => {
-    setStatus("STOPPED");
-    onClose(true);
+    const result = await updateVMStatus({
+      idVM: currentVM.idVM,
+      status: "STOPPED",
+    });
+    if (result) {
+      setStatus("STOPPED");
+      onClose(true);
+    }
   };
 
   const handleStartVM = async () => {
-    setStatus("RUNNING");
-    onClose(true);
+    const result = await updateVMStatus({
+      idVM: currentVM.idVM,
+      status: "RUNNING",
+    });
+    if (result) {
+      setStatus("RUNNING");
+      onClose(true);
+    }
   };
 
   const disabledBtn =
@@ -203,12 +216,11 @@ export const FormEditVM = ({ onClose }: IProps) => {
             }}
           >
             <LabelInputVM
-              onChange={() => {}}
+              onChange={setVmPassword}
               value={vmPassword}
               label={t("createVm.password")}
               placeholder={t("createVm.userPassword")}
               type="password"
-              disabled
             />
             <PasswordValidations vmPassword={vmPassword} />
           </Stack>
