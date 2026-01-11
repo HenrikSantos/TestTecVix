@@ -15,10 +15,9 @@ import { ModalConfirmCreate } from "./ModalConfirmCreate";
 import { genStrongPass } from "../../../utils/genStrongPass";
 import { MIN_PASS_SIZE } from "../../../configs/contants";
 import { PasswordValidations } from "./PasswordValidations";
-import { useZVMSugestion } from "../../../stores/useZVMSugestion";
+import { EOS, useZVMSugestion } from "../../../stores/useZVMSugestion";
 import { ENetworkType } from "../../../types/VMTypes";
 import { AbsoluteBackDrop } from "../../../components/AbsoluteBackDrop";
-import { BTNISOsSection } from "./BTNISOsSection";
 import { useZVM } from "../../../stores/useZVM";
 
 export const FormVM = () => {
@@ -119,6 +118,13 @@ export const FormVM = () => {
     !vmLocalization ||
     !vmPassword ||
     !vmNetwork;
+
+  const osOptions = Object.values(EOS)
+    .filter((os) => os !== EOS.notFound)
+    .map((os) => ({
+      label: os,
+      value: os,
+    }));
 
   useEffect(() => {
     if (sugestionOS)
@@ -225,7 +231,12 @@ export const FormVM = () => {
             value={vmLocalization}
             onChange={setVmLocalization}
           />
-          <BTNISOsSection vmNameLabel={vmSO?.label} />
+          <DropDowText
+            label={t("createVm.operationalSystem")}
+            data={osOptions}
+            value={vmSO}
+            onChange={setVmSO}
+          />
         </Stack>
         {/* Sliders */}
         <Stack
