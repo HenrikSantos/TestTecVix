@@ -1,6 +1,8 @@
 import { z } from "zod";
 
 const EVMStatus = z.enum(["RUNNING", "STOPPED", "PAUSED"]);
+const ETaskLocation = z.enum(["bre_barueri", "usa_miami"]);
+
 // Password validation regex
 export const passwordRegex = {
   numbers: /(?=.*\d.*\d)/,
@@ -19,6 +21,8 @@ export const vMCreatedSchema = z.object({
   idBrandMaster: z.number().nullable().optional(),
   status: EVMStatus.optional(),
   os: z.string().optional(),
+  pass: z.string().optional(),
+  location: ETaskLocation.optional(),
 });
 
 export type TVMCreate = z.infer<typeof vMCreatedSchema>;
