@@ -53,17 +53,17 @@ vi.mock("../../../src/hooks/useVmResource", () => ({
 }));
 
 vi.mock("../../../src/stores/useZVMSugestion", async () => {
-    const actual = await vi.importActual("../../../src/stores/useZVMSugestion");
-    return {
-        ...actual,
-        useZVMSugestion: () => ({
-            os: null,
-            vCPU: null,
-            ram: null,
-            disk: null,
-            resetAll: vi.fn(),
-        }),
-    };
+  const actual = await vi.importActual("../../../src/stores/useZVMSugestion");
+  return {
+    ...actual,
+    useZVMSugestion: () => ({
+      os: null,
+      vCPU: null,
+      ram: null,
+      disk: null,
+      resetAll: vi.fn(),
+    }),
+  };
 });
 
 vi.mock("../../../src/stores/useZTheme", () => ({
@@ -106,13 +106,19 @@ vi.mock("../../../src/pages/VirtualMachine/components/DropDowText", () => ({
   DropDowText: ({ label, data, onChange }: DropDowTextProps) => (
     <div data-testid={`dropdown-${label}`}>
       <label>{label}</label>
-      <select onChange={(e) => {
-        const selected = data.find((d: DropDownOption) => d.value === e.target.value);
-        onChange(selected);
-      }}>
+      <select
+        onChange={(e) => {
+          const selected = data.find(
+            (d: DropDownOption) => d.value === e.target.value,
+          );
+          onChange(selected);
+        }}
+      >
         <option value="">Select</option>
         {data.map((d: DropDownOption) => (
-          <option key={d.value} value={d.value}>{d.label}</option>
+          <option key={d.value} value={d.value}>
+            {d.label}
+          </option>
         ))}
       </select>
     </div>
@@ -123,27 +129,37 @@ describe("FormVM", () => {
   it("should render correctly", () => {
     render(<FormVM />);
     expect(screen.getByText("createVm.vmRegister")).toBeInTheDocument();
-    expect(screen.getByTestId("dropdown-createVm.operationalSystem")).toBeInTheDocument();
+    expect(
+      screen.getByTestId("dropdown-createVm.operationalSystem"),
+    ).toBeInTheDocument();
   });
 
   it("should have OS options in the dropdown", () => {
     render(<FormVM />);
-    const osDropdown = screen.getByTestId("dropdown-createVm.operationalSystem");
+    const osDropdown = screen.getByTestId(
+      "dropdown-createVm.operationalSystem",
+    );
     const options = osDropdown.querySelectorAll("option");
     // Check if we have options populated (more than just "Select")
     expect(options.length).toBeGreaterThan(1);
-    expect(Array.from(options).some(opt => opt.value === "ubuntu2404")).toBe(true);
+    expect(Array.from(options).some((opt) => opt.value === "ubuntu2404")).toBe(
+      true,
+    );
   });
 
   it("should call setVmSO when OS is selected", () => {
     render(<FormVM />);
-    const osDropdown = screen.getByTestId("dropdown-createVm.operationalSystem");
+    const osDropdown = screen.getByTestId(
+      "dropdown-createVm.operationalSystem",
+    );
     const select = osDropdown.querySelector("select");
     fireEvent.change(select!, { target: { value: "ubuntu2404" } });
-    
-    expect(setVmSO).toHaveBeenCalledWith(expect.objectContaining({
+
+    expect(setVmSO).toHaveBeenCalledWith(
+      expect.objectContaining({
         label: "ubuntu2404",
-        value: "ubuntu2404"
-    }));
+        value: "ubuntu2404",
+      }),
+    );
   });
 });
