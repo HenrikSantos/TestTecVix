@@ -214,7 +214,7 @@ export const MspFormModal = ({
     >
       <Box
         sx={{
-          backgroundColor: "#474b54",
+          backgroundColor: theme[mode].light,
           borderRadius: "16px",
           maxWidth: "80%",
           width: "80%",
@@ -269,7 +269,7 @@ export const MspFormModal = ({
         <Box
           sx={{
             padding: "24px",
-            backgroundColor: "#252930",
+            backgroundColor: theme[mode].mainBackground,
             margin: "16px",
             borderRadius: "12px",
           }}

@@ -98,7 +98,7 @@ export const InputUploadLabelTooltip = ({
           gap: "12px",
           padding: "16px",
           borderRadius: "12px",
-          background: isDragActive ? theme[mode].grayLight : "#181b20",
+          background: theme[mode].grayLight,
           cursor: disabled ? "not-allowed" : "pointer",
           opacity: disabled ? 0.5 : 1,
         }}

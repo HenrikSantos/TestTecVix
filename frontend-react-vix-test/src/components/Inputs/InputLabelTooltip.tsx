@@ -97,7 +97,7 @@ export const InputLabelTooltip = ({
         type={type}
         sx={{
           width: "100%",
-          backgroundColor: "#474b54",
+          backgroundColor: theme[mode].grayLight,
           borderRadius: "12px",
           "& .MuiOutlinedInput-root": {
             "& fieldset": {

@@ -285,7 +285,7 @@ export const MspFormStepTwo = ({
                 sx={{
                   width: "100%",
                   height: "1px",
-                  backgroundColor: "#393d45",
+                  backgroundColor: theme[mode].tertiary,
                   margin: "16px 0",
                 }}
               />
@@ -432,7 +432,7 @@ export const MspFormStepTwo = ({
                 sx={{
                   width: "100%",
                   height: "1px",
-                  backgroundColor: "#393d45",
+                  backgroundColor: theme[mode].tertiary,
                   margin: "16px 0",
                 }}
               />
@@ -503,7 +503,7 @@ export const MspFormStepTwo = ({
             onClick={handleClearStepTwo}
              sx={{
                 backgroundColor: "transparent",
-                color: "#fff",
+                color: theme[mode].primary,
                 padding: "14px 32px",
                 borderRadius: "12px",
                 fontWeight: 500,
@@ -519,7 +519,7 @@ export const MspFormStepTwo = ({
             >
             <TextRob16FontL
                 sx={{
-                color: "#fff",
+                color: theme[mode].primary,
                 fontSize: "14px",
                 textDecoration: "underline",
                 }}
