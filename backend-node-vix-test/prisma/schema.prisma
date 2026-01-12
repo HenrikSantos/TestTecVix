@@ -44,11 +44,13 @@ model brandMaster {
   contract      String?
   contractAt    DateTime? @db.DateTime(0)
   pocOpenedAt   DateTime? @db.DateTime(0)
-  manual        String?
-  termsOfUse    String?
-  privacyPolicy String?
-  vM            vM[]
-  users         user[]
+  manual                   String?
+  termsOfUse               String?
+  privacyPolicy            String?
+  discountRate             Float?
+  minConsumption           Float?
+  vM                       vM[]
+  users                    user[]
 }
 
 model vM {
@@ -72,18 +74,20 @@ model vM {
 }
 
 model user {
-  idUser        String    @id @default(uuid())
-  username      String
-  password      String
-  email         String
-  profileImgUrl String?
-  role          ERole     @default(member)
-  idBrandMaster Int?
-  isActive      Boolean?  @default(true)
-  lastLoginDate DateTime? @db.DateTime(0)
-  createdAt     DateTime? @default(now()) @db.DateTime(0)
-  updatedAt     DateTime? @default(now()) @db.DateTime(0)
-  deletedAt     DateTime? @db.DateTime(0)
+  idUser          String    @id @default(uuid())
+  username        String    @unique
+  password        String
+  email           String    @unique
+  profileImgUrl   String?
+  fullName        String?
+  userPhoneNumber String?
+  role            ERole     @default(member)
+  idBrandMaster   Int?
+  isActive        Boolean?  @default(true)
+  lastLoginDate   DateTime? @db.DateTime(0)
+  createdAt       DateTime? @default(now()) @db.DateTime(0)
+  updatedAt       DateTime? @default(now()) @db.DateTime(0)
+  deletedAt       DateTime? @db.DateTime(0)
 
   brandMaster brandMaster? @relation(fields: [idBrandMaster], references: [idBrandMaster])
 

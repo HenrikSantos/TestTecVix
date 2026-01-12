@@ -97,24 +97,25 @@ export const InputLabelTooltip = ({
         type={type}
         sx={{
           width: "100%",
-          backgroundColor: theme[mode].mainBackground,
+          backgroundColor: theme[mode].grayLight,
+          borderRadius: "12px",
           "& .MuiOutlinedInput-root": {
             "& fieldset": {
-              border: "1px solid " + theme[mode].tertiary,
+              border: "none",
               borderRadius: "12px",
             },
             "&:hover fieldset": {
-              border: "1px solid " + theme[mode].tertiary,
+              border: "none",
             },
             "&.Mui-focused fieldset": {
-              border: "1px solid " + theme[mode].tertiary,
+              border: `1px solid ${theme[mode].blue}`,
               borderRadius: "12px",
             },
           },
           ".MuiInputBase-input": {
             padding: "4px 8px",
             paddingLeft: "16px",
-            height: "32px",
+            height: "40px",
             color: theme[mode].primary,
             "&::placeholder": {
               color: theme[mode].tertiary,

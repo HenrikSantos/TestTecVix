@@ -12,6 +12,8 @@ export class UserModel {
         username: true,
         email: true,
         profileImgUrl: true,
+        fullName: true,
+        userPhoneNumber: true,
         role: true,
         idBrandMaster: true,
         isActive: true,
@@ -31,6 +33,16 @@ export class UserModel {
   async getByUsername(username: string) {
     return prisma.user.findFirst({
       where: { username, deletedAt: null },
+    });
+  }
+
+  async getAdminByBrandMasterId(idBrandMaster: number) {
+    return prisma.user.findFirst({
+      where: {
+        idBrandMaster,
+        role: "admin",
+        deletedAt: null,
+      },
     });
   }
 
@@ -75,6 +87,8 @@ export class UserModel {
         username: true,
         email: true,
         profileImgUrl: true,
+        fullName: true,
+        userPhoneNumber: true,
         role: true,
         idBrandMaster: true,
         isActive: true,
@@ -98,6 +112,8 @@ export class UserModel {
         password: data.password,
         email: data.email,
         profileImgUrl: data.profileImgUrl,
+        fullName: data.fullName,
+        userPhoneNumber: data.userPhoneNumber,
         role: data.role || "member",
         idBrandMaster: data.idBrandMaster,
         isActive: data.isActive ?? true,
@@ -107,6 +123,8 @@ export class UserModel {
         username: true,
         email: true,
         profileImgUrl: true,
+        fullName: true,
+        userPhoneNumber: true,
         role: true,
         idBrandMaster: true,
         isActive: true,
@@ -127,6 +145,8 @@ export class UserModel {
         username: true,
         email: true,
         profileImgUrl: true,
+        fullName: true,
+        userPhoneNumber: true,
         role: true,
         idBrandMaster: true,
         isActive: true,

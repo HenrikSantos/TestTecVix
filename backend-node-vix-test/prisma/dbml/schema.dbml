@@ -33,6 +33,8 @@ Table brandMaster {
   manual String
   termsOfUse String
   privacyPolicy String
+  discountRate Float
+  minConsumption Float
   vM vM [not null]
   users user [not null]
 }
@@ -57,10 +59,12 @@ Table vM {
 
 Table user {
   idUser String [pk]
-  username String [not null]
+  username String [unique, not null]
   password String [not null]
-  email String [not null]
+  email String [unique, not null]
   profileImgUrl String
+  fullName String
+  userPhoneNumber String
   role ERole [not null, default: 'member']
   idBrandMaster Int
   isActive Boolean [default: true]

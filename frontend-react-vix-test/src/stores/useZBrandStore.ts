@@ -23,9 +23,6 @@ export interface IBrandInfo {
   manual?: null | string;
   termsOfUse?: null | string;
   privacyPolicy?: null | string;
-  hasSelfRegister?: boolean;
-  hasPrepaid?: boolean;
-  retailPercentageDefault?: string | number;
 }
 const INIT_STATE: IBrandInfo = {
   idBrand: null,
@@ -50,9 +47,6 @@ const INIT_STATE: IBrandInfo = {
   manual: null,
   termsOfUse: null,
   privacyPolicy: null,
-  hasSelfRegister: false,
-  hasPrepaid: false,
-  retailPercentageDefault: 1,
 };
 
 interface IBrandInfoState extends IBrandInfo {
