@@ -385,6 +385,25 @@
           ],
           "format": "date-time"
         },
+        "field": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "department": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "contractDate": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
         "brandMaster": {
           "anyOf": [
             {

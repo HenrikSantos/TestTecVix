@@ -25,6 +25,13 @@ describe("UserService", () => {
     createdAt: new Date(),
     updatedAt: new Date(),
     deletedAt: null,
+    field: null,
+    department: null,
+    contractDate: null,
+    brandMaster: {
+      idBrandMaster: 1,
+      brandName: "Test Company",
+    },
   };
 
   beforeEach(() => {

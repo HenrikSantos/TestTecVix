@@ -72,6 +72,9 @@ Table user {
   createdAt DateTime [default: `now()`]
   updatedAt DateTime [default: `now()`]
   deletedAt DateTime
+  field String
+  department String
+  contractDate DateTime
   brandMaster brandMaster
 }
 
