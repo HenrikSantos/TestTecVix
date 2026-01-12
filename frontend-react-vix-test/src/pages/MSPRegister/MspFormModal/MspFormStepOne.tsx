@@ -79,7 +79,7 @@ export const MspFormStepOne = ({
         label: t(`mspRegister.sector${key}`),
         value: key,
       })),
-    [t]
+    [t],
   );
 
   const fetchAddressByCnpj = useCallback(
@@ -90,7 +90,7 @@ export const MspFormStepOne = ({
       setIsLoadingCnpj(true);
       try {
         const response = await fetch(
-          `https://brasilapi.com.br/api/cnpj/v1/${cleanedCnpj}`
+          `https://brasilapi.com.br/api/cnpj/v1/${cleanedCnpj}`,
         );
         const data = await response.json();
 
@@ -109,7 +109,15 @@ export const MspFormStepOne = ({
         setIsLoadingCnpj(false);
       }
     },
-    [setCep, setCity, setCountryState, setStreet, setStreetNumber, setDistrict, setLocation]
+    [
+      setCep,
+      setCity,
+      setCountryState,
+      setStreet,
+      setStreetNumber,
+      setDistrict,
+      setLocation,
+    ],
   );
 
   const handleCnpjChange = (value: string) => {
@@ -193,7 +201,9 @@ export const MspFormStepOne = ({
             placeholder="Vituax"
             icon={<PencilIcon fill={theme[mode].gray} />}
             errorMessage={
-              showError && !companyName.trim() ? t("mspRegister.fillField") : null
+              showError && !companyName.trim()
+                ? t("mspRegister.fillField")
+                : null
             }
           />
         </Box>

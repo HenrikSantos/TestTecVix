@@ -62,7 +62,12 @@ export const InputUploadLabelTooltip = ({
       }}
     >
       {(label || toolTipMessage) && (
-        <Stack flexDirection={"row"} gap={"8px"} alignItems={"center"} sx={{ marginBottom: "8px" }}>
+        <Stack
+          flexDirection={"row"}
+          gap={"8px"}
+          alignItems={"center"}
+          sx={{ marginBottom: "8px" }}
+        >
           <TextRob16FontL
             sx={{
               color: theme[mode].black,
@@ -118,7 +123,8 @@ export const InputUploadLabelTooltip = ({
         >
           {isUploading
             ? t("whiteLabel.loading")
-            : t("mspRegister.clickToUpload") || "Clique aqui para fazer\nupload do seu logo"}
+            : t("mspRegister.clickToUpload") ||
+              "Clique aqui para fazer\nupload do seu logo"}
         </TextRob16FontL>
       </Box>
     </Stack>

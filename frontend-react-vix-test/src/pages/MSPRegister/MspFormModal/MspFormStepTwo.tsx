@@ -129,31 +129,31 @@ export const MspFormStepTwo = ({
           <span style={{ fontSize: "12px" }}>{t("mspRegister.required")}</span>
         </TextRob16FontL>
 
-        <Box sx={{
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: "24px",
-          "@media (max-width: 900px)": {
-            gridTemplateColumns: "1fr",
-          },
-        }}>
-            <Box sx={{ gridColumn: "span 1" }}>
-                <InputLabelAndFeedback
-                value={mspDomain}
-                onChange={setMSPDomain}
-                placeholder="xx.xxx.xxx"
-                icon={<PencilIcon fill={theme[mode].gray} />}
-                errorMessage={
-                    showErrorPageTwo && !mspDomain.trim()
-                    ? t("mspRegister.fillField")
-                    : null
-                }
-                />
-            </Box>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "24px",
+            "@media (max-width: 900px)": {
+              gridTemplateColumns: "1fr",
+            },
+          }}
+        >
+          <Box sx={{ gridColumn: "span 1" }}>
+            <InputLabelAndFeedback
+              value={mspDomain}
+              onChange={setMSPDomain}
+              placeholder="xx.xxx.xxx"
+              icon={<PencilIcon fill={theme[mode].gray} />}
+              errorMessage={
+                showErrorPageTwo && !mspDomain.trim()
+                  ? t("mspRegister.fillField")
+                  : null
+              }
+            />
+          </Box>
         </Box>
       </Stack>
-
-
 
       {/* Seção Administrador */}
       <Stack gap="16px">
@@ -178,65 +178,65 @@ export const MspFormStepTwo = ({
             },
           }}
         >
-        <Box sx={{ gridColumn: "span 1" }}>
-             <InputLabelAndFeedback
-            label={
-              <>
-                {t("mspRegister.completeName")}{" "}
-                <span style={{ color: theme[mode].gray, fontSize: "12px" }}>
-                  {t("mspRegister.required")}
-                </span>
-              </>
-            }
-            value={admName}
-            onChange={setAdmName}
-            placeholder={t("mspRegister.completeNamePlaceholder")}
-            icon={<PencilIcon fill={theme[mode].gray} />}
-            errorMessage={
-              showErrorPageTwo && !admName.trim()
-                ? t("mspRegister.fillField")
-                : null
-            }
-          />
-        </Box>
-         
-        <Box sx={{ gridColumn: "span 1" }}>
+          <Box sx={{ gridColumn: "span 1" }}>
             <InputLabelAndFeedback
-            label={
-              <>
-                {t("mspRegister.email")}{" "}
-                <span style={{ color: theme[mode].gray, fontSize: "12px" }}>
-                  {t("mspRegister.required")}
-                </span>
-              </>
-            }
-            value={admEmail}
-            onChange={setAdmEmail}
-            placeholder={t("mspRegister.emailPlaceholder")}
-            icon={<PencilIcon fill={theme[mode].gray} />}
-            errorMessage={
-              showErrorPageTwo && (!admEmail || !isValidEmail(admEmail))
-                ? t("mspRegister.emailAlertMessage")
-                : null
-            }
-          />
-        </Box>
+              label={
+                <>
+                  {t("mspRegister.completeName")}{" "}
+                  <span style={{ color: theme[mode].gray, fontSize: "12px" }}>
+                    {t("mspRegister.required")}
+                  </span>
+                </>
+              }
+              value={admName}
+              onChange={setAdmName}
+              placeholder={t("mspRegister.completeNamePlaceholder")}
+              icon={<PencilIcon fill={theme[mode].gray} />}
+              errorMessage={
+                showErrorPageTwo && !admName.trim()
+                  ? t("mspRegister.fillField")
+                  : null
+              }
+            />
+          </Box>
+
+          <Box sx={{ gridColumn: "span 1" }}>
+            <InputLabelAndFeedback
+              label={
+                <>
+                  {t("mspRegister.email")}{" "}
+                  <span style={{ color: theme[mode].gray, fontSize: "12px" }}>
+                    {t("mspRegister.required")}
+                  </span>
+                </>
+              }
+              value={admEmail}
+              onChange={setAdmEmail}
+              placeholder={t("mspRegister.emailPlaceholder")}
+              icon={<PencilIcon fill={theme[mode].gray} />}
+              errorMessage={
+                showErrorPageTwo && (!admEmail || !isValidEmail(admEmail))
+                  ? t("mspRegister.emailAlertMessage")
+                  : null
+              }
+            />
+          </Box>
         </Box>
 
         {/* Linha 2: Telefone, Cargo, Senha, Nome de Usuário */}
         <Box
           sx={{
             display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: "24px",
-          "@media (max-width: 1200px)": {
-            gridTemplateColumns: "repeat(2, 1fr)",
-          },
-          "@media (max-width: 768px)": {
-            gridTemplateColumns: "1fr",
-          },
-        }}
-      >
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "24px",
+            "@media (max-width: 1200px)": {
+              gridTemplateColumns: "repeat(2, 1fr)",
+            },
+            "@media (max-width: 768px)": {
+              gridTemplateColumns: "1fr",
+            },
+          }}
+        >
           <InputLabelAndFeedback
             label={t("mspRegister.phone")}
             value={admPhone}
@@ -254,19 +254,19 @@ export const MspFormStepTwo = ({
           />
 
           <Stack gap="8px">
-              <InputLabelAndFeedback
-                label={
+            <InputLabelAndFeedback
+              label={
                 <>
-                    {t("mspRegister.initialPassword")}{" "}
-                    <span style={{ color: theme[mode].gray, fontSize: "12px" }}>
+                  {t("mspRegister.initialPassword")}{" "}
+                  <span style={{ color: theme[mode].gray, fontSize: "12px" }}>
                     {t("mspRegister.required")}
-                    </span>
+                  </span>
                 </>
-                }
-                value={admPassword}
-                onChange={setAdmPassword}
-                placeholder={t("mspRegister.initialPasswordPlaceholder")}
-                type="password"
+              }
+              value={admPassword}
+              onChange={setAdmPassword}
+              placeholder={t("mspRegister.initialPasswordPlaceholder")}
+              type="password"
             />
           </Stack>
 
@@ -281,14 +281,14 @@ export const MspFormStepTwo = ({
       </Stack>
 
       {/* Seção Logo */}
-        <Box
-                sx={{
-                  width: "100%",
-                  height: "1px",
-                  backgroundColor: theme[mode].tertiary,
-                  margin: "16px 0",
-                }}
-              />
+      <Box
+        sx={{
+          width: "100%",
+          height: "1px",
+          backgroundColor: theme[mode].tertiary,
+          margin: "16px 0",
+        }}
+      />
       <Stack gap="16px">
         <TextRob16Font1S
           sx={{
@@ -318,7 +318,14 @@ export const MspFormStepTwo = ({
           </Box>
 
           {/* Preview e Links */}
-          <Box sx={{ gridColumn: "span 1", display: "flex", flexDirection: "column", gap: "8px" }}>
+          <Box
+            sx={{
+              gridColumn: "span 1",
+              display: "flex",
+              flexDirection: "column",
+              gap: "8px",
+            }}
+          >
             <Box sx={{ display: "flex", gap: "24px", alignItems: "center" }}>
               {/* Preview do logo */}
               {brandLogoUrl && (
@@ -358,7 +365,7 @@ export const MspFormStepTwo = ({
                       }}
                       onClick={() => {
                         const input = document.querySelector(
-                          'input[type="file"]'
+                          'input[type="file"]',
                         ) as HTMLInputElement;
                         input?.click();
                       }}
@@ -427,15 +434,15 @@ export const MspFormStepTwo = ({
             )}
           </Box>
         </Box>
-        
+
         <Box
-                sx={{
-                  width: "100%",
-                  height: "1px",
-                  backgroundColor: theme[mode].tertiary,
-                  margin: "16px 0",
-                }}
-              />
+          sx={{
+            width: "100%",
+            height: "1px",
+            backgroundColor: theme[mode].tertiary,
+            margin: "16px 0",
+          }}
+        />
       </Stack>
 
       {/* Botões */}
@@ -451,82 +458,88 @@ export const MspFormStepTwo = ({
           },
         }}
       >
-        <Box sx={{gridColumn: "span 1"}}>
-            <Btn
+        <Box sx={{ gridColumn: "span 1" }}>
+          <Btn
             onClick={handleConfirm}
             disabled={isLoading}
             sx={{
-                backgroundColor: "#4b5cb7",
-                color: "#fff",
-                padding: "14px 32px",
-                borderRadius: "12px",
-                fontWeight: 500,
-                width: "100%",
-                maxWidth: "none",
-                minHeight: "52px",
-                "&:hover": {
+              backgroundColor: "#4b5cb7",
+              color: "#fff",
+              padding: "14px 32px",
+              borderRadius: "12px",
+              fontWeight: 500,
+              width: "100%",
+              maxWidth: "none",
+              minHeight: "52px",
+              "&:hover": {
                 backgroundColor: "#3d4a96",
-                },
+              },
             }}
-            >
+          >
             {isEditMode
               ? t("mspRegister.confirmEdit")
               : t("mspRegister.confirm")}
-            </Btn>
+          </Btn>
         </Box>
 
-        <Box sx={{gridColumn: "span 1"}}>
-             <Btn
+        <Box sx={{ gridColumn: "span 1" }}>
+          <Btn
             onClick={onBack}
             disabled={isLoading}
             sx={{
-                backgroundColor: "transparent",
-                color: theme[mode].primary,
-                padding: "14px 32px",
-                borderRadius: "12px",
-                border: `1px solid ${theme[mode].gray}`,
-                fontWeight: 500,
-                width: "100%",
-                maxWidth: "none",
-                minHeight: "52px",
-                "&:hover": {
+              backgroundColor: "transparent",
+              color: theme[mode].primary,
+              padding: "14px 32px",
+              borderRadius: "12px",
+              border: `1px solid ${theme[mode].gray}`,
+              fontWeight: 500,
+              width: "100%",
+              maxWidth: "none",
+              minHeight: "52px",
+              "&:hover": {
                 backgroundColor: theme[mode].grayLight,
-                },
+              },
             }}
-            >
+          >
             {t("mspRegister.back")}
-            </Btn>
+          </Btn>
         </Box>
 
-        <Box sx={{gridColumn: "span 2", display: "flex", justifyContent: "flex-end"}}>
-             <Btn
+        <Box
+          sx={{
+            gridColumn: "span 2",
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Btn
             onClick={handleClearStepTwo}
-             sx={{
-                backgroundColor: "transparent",
-                color: theme[mode].primary,
-                padding: "14px 32px",
-                borderRadius: "12px",
-                fontWeight: 500,
-                width: "auto",
-                maxWidth: "none",
-                minHeight: "52px",
-                border: "none",
-                "&:hover": {
+            sx={{
+              backgroundColor: "transparent",
+              color: theme[mode].primary,
+              padding: "14px 32px",
+              borderRadius: "12px",
+              fontWeight: 500,
+              width: "auto",
+              maxWidth: "none",
+              minHeight: "52px",
+              border: "none",
+              "&:hover": {
                 opacity: 0.8,
                 backgroundColor: "transparent",
-                },
+              },
             }}
-            >
+          >
             <TextRob16FontL
-                sx={{
+              sx={{
                 color: theme[mode].primary,
                 fontSize: "14px",
                 textDecoration: "underline",
-                }}
+              }}
             >
-                {t("mspRegister.clear")}
+              {t("mspRegister.clear")}
             </TextRob16FontL>
-            </Btn>
+          </Btn>
         </Box>
       </Box>
     </Stack>

@@ -275,9 +275,11 @@ export const ColaboratorTable = ({
                 "@media (max-width: 600px)": { display: "none" },
               }}
             >
-              <IconButton onClick={() => handleEdit(employee.idUser)}>
-                <PencilCicleIcon fill={theme[mode].blueMedium} />
-              </IconButton>
+              {(role === "admin" || role === "manager") && (
+                <IconButton onClick={() => handleEdit(employee.idUser)}>
+                  <PencilCicleIcon fill={theme[mode].blueMedium} />
+                </IconButton>
+              )}
               {role === "admin" && (
                 <IconButton onClick={() => handleDelete(employee.idUser)}>
                   <DeleteForeverIcon sx={{ color: theme[mode].danger }} />
