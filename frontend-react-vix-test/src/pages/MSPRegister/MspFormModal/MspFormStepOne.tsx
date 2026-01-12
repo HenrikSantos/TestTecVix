@@ -13,22 +13,22 @@ import { maskPhone } from "../../../utils/maskPhone";
 import { isValidCNPJ } from "../../../utils/isValidCNPJ";
 import { isValidEmail } from "../../../utils/isValidEmail";
 import { PencilIcon } from "../../../icons/PencilIcon";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 
 interface IMspFormStepOneProps {
   onContinue: () => void;
   onCancel: () => void;
 }
 
-const SECTOR_OPTIONS = [
-  { label: "Telecom", value: "Telecom" },
-  { label: "Tecnologia", value: "Tecnologia" },
-  { label: "Financeiro", value: "Financeiro" },
-  { label: "Saúde", value: "Saúde" },
-  { label: "Educação", value: "Educação" },
-  { label: "Varejo", value: "Varejo" },
-  { label: "Outro", value: "Outro" },
-];
+const SECTOR_KEYS = [
+  "Telecom",
+  "Technology",
+  "Financial",
+  "Healthcare",
+  "Education",
+  "Retail",
+  "Other",
+] as const;
 
 export const MspFormStepOne = ({
   onContinue,
@@ -72,6 +72,15 @@ export const MspFormStepOne = ({
   } = useZMspRegisterPage();
 
   const [isLoadingCnpj, setIsLoadingCnpj] = useState(false);
+
+  const sectorOptions = useMemo(
+    () =>
+      SECTOR_KEYS.map((key) => ({
+        label: t(`mspRegister.sector${key}`),
+        value: key,
+      })),
+    [t]
+  );
 
   const fetchAddressByCnpj = useCallback(
     async (cnpjValue: string) => {
@@ -132,7 +141,7 @@ export const MspFormStepOne = ({
 
   const getSectorValue = () => {
     if (!sector) return null;
-    const found = SECTOR_OPTIONS.find((opt) => opt.value === sector);
+    const found = sectorOptions.find((opt) => opt.value === sector);
     return found || { label: sector, value: sector };
   };
 
@@ -242,7 +251,7 @@ export const MspFormStepOne = ({
                 </span>
               </>
             }
-            data={SECTOR_OPTIONS}
+            data={sectorOptions}
             value={getSectorValue()}
             onChange={(value) => setSector((value?.value as string) || "")}
             errorMessage={
