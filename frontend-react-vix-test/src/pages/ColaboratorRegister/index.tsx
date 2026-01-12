@@ -30,9 +30,13 @@ export const ColaboratorRegisterPage = () => {
     userFilter,
   } = useZColaboratorRegisterPage();
   const { t } = useTranslation();
-  const { isLoading: isLoadingBrands, listAllBrands } = useBrandMasterResources();
-  const { isLoading: isLoadingEmployees, listAllEmployees, deleteEmployee } =
-    useEmployeeResources();
+  const { isLoading: isLoadingBrands, listAllBrands } =
+    useBrandMasterResources();
+  const {
+    isLoading: isLoadingEmployees,
+    listAllEmployees,
+    deleteEmployee,
+  } = useEmployeeResources();
   const [openEditModal, setOpenEditModal] = useState(false);
 
   const resetAllStates = () => {
@@ -131,7 +135,9 @@ export const ColaboratorRegisterPage = () => {
         </TextRob16Font1S>
       }
     >
-      {Boolean(isLoadingBrands || isLoadingEmployees) && <AbsoluteBackDrop open />}
+      {Boolean(isLoadingBrands || isLoadingEmployees) && (
+        <AbsoluteBackDrop open />
+      )}
       <Stack
         sx={{
           width: "100%",

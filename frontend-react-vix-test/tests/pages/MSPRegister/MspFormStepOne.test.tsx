@@ -128,7 +128,7 @@ vi.mock("../../../src/components/Inputs/DropDrownLabel", () => ({
     <div data-testid={`dropdown-${String(label).substring(0, 20)}`}>
       <label>{label}</label>
       <select
-        value={value?.value as string || ""}
+        value={(value?.value as string) || ""}
         onChange={(e) => {
           const selected = data.find((d) => d.value === e.target.value);
           onChange(selected || null);
@@ -227,14 +227,14 @@ describe("MspFormStepOne", () => {
 
   it("should render the form title", () => {
     render(
-      <MspFormStepOne onContinue={mockOnContinue} onCancel={mockOnCancel} />
+      <MspFormStepOne onContinue={mockOnContinue} onCancel={mockOnCancel} />,
     );
     expect(screen.getByText("mspRegister.companyInfos")).toBeInTheDocument();
   });
 
   it("should render all required fields", () => {
     render(
-      <MspFormStepOne onContinue={mockOnContinue} onCancel={mockOnCancel} />
+      <MspFormStepOne onContinue={mockOnContinue} onCancel={mockOnCancel} />,
     );
 
     expect(screen.getByTestId("input-Vituax")).toBeInTheDocument();
@@ -244,7 +244,7 @@ describe("MspFormStepOne", () => {
 
   it("should render continue and cancel buttons", () => {
     render(
-      <MspFormStepOne onContinue={mockOnContinue} onCancel={mockOnCancel} />
+      <MspFormStepOne onContinue={mockOnContinue} onCancel={mockOnCancel} />,
     );
 
     expect(screen.getByTestId("btn-mspRegister.continue")).toBeInTheDocument();
@@ -253,7 +253,7 @@ describe("MspFormStepOne", () => {
 
   it("should call onCancel when cancel button is clicked", () => {
     render(
-      <MspFormStepOne onContinue={mockOnContinue} onCancel={mockOnCancel} />
+      <MspFormStepOne onContinue={mockOnContinue} onCancel={mockOnCancel} />,
     );
 
     const cancelButton = screen.getByTestId("btn-mspRegister.cancel");
@@ -264,7 +264,7 @@ describe("MspFormStepOne", () => {
 
   it("should show error and not continue when required fields are empty", () => {
     render(
-      <MspFormStepOne onContinue={mockOnContinue} onCancel={mockOnCancel} />
+      <MspFormStepOne onContinue={mockOnContinue} onCancel={mockOnCancel} />,
     );
 
     const continueButton = screen.getByTestId("btn-mspRegister.continue");
@@ -276,7 +276,7 @@ describe("MspFormStepOne", () => {
 
   it("should call setCompanyName when company name input changes", () => {
     render(
-      <MspFormStepOne onContinue={mockOnContinue} onCancel={mockOnCancel} />
+      <MspFormStepOne onContinue={mockOnContinue} onCancel={mockOnCancel} />,
     );
 
     const companyInput = screen.getByTestId("input-field-Vituax");
@@ -287,7 +287,7 @@ describe("MspFormStepOne", () => {
 
   it("should call setCnpj when CNPJ input changes", () => {
     render(
-      <MspFormStepOne onContinue={mockOnContinue} onCancel={mockOnCancel} />
+      <MspFormStepOne onContinue={mockOnContinue} onCancel={mockOnCancel} />,
     );
 
     const cnpjInput = screen.getByTestId("input-field-00.000.000/0001-00");
@@ -298,7 +298,7 @@ describe("MspFormStepOne", () => {
 
   it("should call setContactEmail when email input changes", () => {
     render(
-      <MspFormStepOne onContinue={mockOnContinue} onCancel={mockOnCancel} />
+      <MspFormStepOne onContinue={mockOnContinue} onCancel={mockOnCancel} />,
     );
 
     const emailInput = screen.getByTestId("input-field-vituax@gmail.com");
@@ -309,7 +309,7 @@ describe("MspFormStepOne", () => {
 
   it("should render POC checkbox", () => {
     render(
-      <MspFormStepOne onContinue={mockOnContinue} onCancel={mockOnCancel} />
+      <MspFormStepOne onContinue={mockOnContinue} onCancel={mockOnCancel} />,
     );
 
     expect(screen.getByTestId("checkbox-poc")).toBeInTheDocument();
@@ -317,7 +317,7 @@ describe("MspFormStepOne", () => {
 
   it("should toggle POC checkbox when clicked", () => {
     render(
-      <MspFormStepOne onContinue={mockOnContinue} onCancel={mockOnCancel} />
+      <MspFormStepOne onContinue={mockOnContinue} onCancel={mockOnCancel} />,
     );
 
     const checkbox = screen.getByTestId("checkbox-field-poc");
@@ -337,7 +337,7 @@ describe("MspFormStepOne", () => {
     };
 
     render(
-      <MspFormStepOne onContinue={mockOnContinue} onCancel={mockOnCancel} />
+      <MspFormStepOne onContinue={mockOnContinue} onCancel={mockOnCancel} />,
     );
 
     const continueButton = screen.getByTestId("btn-mspRegister.continue");

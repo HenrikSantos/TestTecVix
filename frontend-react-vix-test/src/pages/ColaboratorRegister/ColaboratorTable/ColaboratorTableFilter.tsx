@@ -8,12 +8,8 @@ import { useZColaboratorRegisterPage } from "../../../stores/useZColaboratorRegi
 export const ColaboratorTableFilters = () => {
   const { t } = useTranslation();
   const { theme, mode } = useZTheme();
-  const {
-    userFilter,
-    setUserFilter,
-    companyFilterText,
-    setCompanyFilterText,
-  } = useZColaboratorRegisterPage();
+  const { userFilter, setUserFilter, companyFilterText, setCompanyFilterText } =
+    useZColaboratorRegisterPage();
 
   return (
     <Box

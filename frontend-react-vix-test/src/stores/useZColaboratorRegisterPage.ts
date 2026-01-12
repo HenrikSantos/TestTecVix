@@ -94,8 +94,8 @@ interface IColaboratorRegisterPageState extends IColaboratorRegisterPage {
   resetAll: () => void;
 }
 
-export const useZColaboratorRegisterPage = create<IColaboratorRegisterPageState>(
-  (set) => ({
+export const useZColaboratorRegisterPage =
+  create<IColaboratorRegisterPageState>((set) => ({
     ...INIT_STATE,
     setFullName: (fullName: string) => set((state) => ({ ...state, fullName })),
     setEmail: (email: string) => set((state) => ({ ...state, email })),
@@ -139,5 +139,4 @@ export const useZColaboratorRegisterPage = create<IColaboratorRegisterPageState>
     setProfileImgUrl: (profileImgUrl: string) =>
       set((state) => ({ ...state, profileImgUrl })),
     resetAll: () => set((state) => ({ ...state, ...resetState })),
-  }),
-);
+  }));

@@ -17,25 +17,47 @@ import { AppError } from "../errors/AppError";
 import { ERROR_MESSAGE } from "../constants/erroMessages";
 import { STATUS_CODE } from "../constants/statusCode";
 import { genToken } from "../utils/jwt";
+import { user } from "@prisma/client";
 
 export class UserService {
   private userModel = new UserModel();
 
-  async getById(idUser: string) {
-    const user = await this.userModel.getById(idUser);
-    if (!user) {
+  async getById(idUser: string, user?: user) {
+    const fetchedUser = await this.userModel.getById(idUser);
+    if (!fetchedUser) {
       throw new AppError(ERROR_MESSAGE.USER_NOT_FOUND, STATUS_CODE.NOT_FOUND);
     }
-    return user;
+
+    if (
+      user?.idBrandMaster &&
+      fetchedUser.idBrandMaster !== user.idBrandMaster
+    ) {
+      throw new AppError(ERROR_MESSAGE.FORBIDDEN, STATUS_CODE.FORBIDDEN);
+    }
+
+    return fetchedUser;
   }
 
-  async listAll(query: unknown) {
+  async listAll(query: unknown, user?: user) {
     const validQuery = querySchema.parse(query);
+
+    if (user?.idBrandMaster) {
+      validQuery.idBrandMaster = user.idBrandMaster;
+    }
+
     return this.userModel.listAll(validQuery);
   }
 
-  async createUser(data: TUserCreated) {
+  async createUser(data: TUserCreated, user?: user) {
+    if (user?.role === "member") {
+      throw new AppError(ERROR_MESSAGE.FORBIDDEN, STATUS_CODE.FORBIDDEN);
+    }
+
     const validData = userCreatedSchema.parse(data);
+
+    if (user?.idBrandMaster) {
+      validData.idBrandMaster = user.idBrandMaster;
+    }
 
     const existingEmail = await this.userModel.getByEmail(validData.email);
     if (existingEmail) {
@@ -65,12 +87,23 @@ export class UserService {
     return newUser;
   }
 
-  async updateUser(idUser: string, data: TUserUpdated) {
+  async updateUser(idUser: string, data: TUserUpdated, user?: user) {
+    if (user?.role === "member") {
+      throw new AppError(ERROR_MESSAGE.FORBIDDEN, STATUS_CODE.FORBIDDEN);
+    }
+
     const validData = userUpdatedSchema.parse(data);
 
     const existingUser = await this.userModel.getById(idUser);
     if (!existingUser) {
       throw new AppError(ERROR_MESSAGE.USER_NOT_FOUND, STATUS_CODE.NOT_FOUND);
+    }
+
+    if (
+      user?.idBrandMaster &&
+      existingUser.idBrandMaster !== user.idBrandMaster
+    ) {
+      throw new AppError(ERROR_MESSAGE.FORBIDDEN, STATUS_CODE.FORBIDDEN);
     }
 
     if (validData.email && validData.email !== existingUser.email) {
@@ -104,10 +137,21 @@ export class UserService {
     return this.userModel.updateUser(idUser, updateData);
   }
 
-  async deleteUser(idUser: string) {
+  async deleteUser(idUser: string, user?: user) {
+    if (user?.role === "member" || user?.role === "manager") {
+      throw new AppError(ERROR_MESSAGE.FORBIDDEN, STATUS_CODE.FORBIDDEN);
+    }
+
     const existingUser = await this.userModel.getById(idUser);
     if (!existingUser) {
       throw new AppError(ERROR_MESSAGE.USER_NOT_FOUND, STATUS_CODE.NOT_FOUND);
+    }
+
+    if (
+      user?.idBrandMaster &&
+      existingUser.idBrandMaster !== user.idBrandMaster
+    ) {
+      throw new AppError(ERROR_MESSAGE.FORBIDDEN, STATUS_CODE.FORBIDDEN);
     }
 
     return this.userModel.deleteUser(idUser);

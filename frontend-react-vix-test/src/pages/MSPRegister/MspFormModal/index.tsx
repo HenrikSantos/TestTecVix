@@ -244,9 +244,7 @@ export const MspFormModal = ({
                 fontWeight: 500,
               }}
             >
-              {isEditMode
-                ? t("mspRegister.editTitle")
-                : t("mspRegister.title")}
+              {isEditMode ? t("mspRegister.editTitle") : t("mspRegister.title")}
             </TextRob20Font1MB>
 
             <IconButton onClick={handleCancel} size="small">

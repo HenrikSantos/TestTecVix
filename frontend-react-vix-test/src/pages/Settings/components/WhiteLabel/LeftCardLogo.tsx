@@ -174,7 +174,7 @@ export const LeftCardLogo = ({ theme }: IWhiteLabelChildProps) => {
               width: "100%",
             },
           }}
-          onClick={hadleRemoveLogo} // Remove o logo
+          onClick={hadleRemoveLogo}
         >
           {t("whiteLabel.removeLogo")}
         </Button>
