@@ -73,6 +73,9 @@ CREATE TABLE `user` (
     `createdAt` DATETIME(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
     `updatedAt` DATETIME(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
     `deletedAt` DATETIME(0) NULL,
+    `field` VARCHAR(191) NULL,
+    `department` VARCHAR(191) NULL,
+    `contractDate` DATETIME(0) NULL,
 
     UNIQUE INDEX `user_username_key`(`username`),
     UNIQUE INDEX `user_email_key`(`email`),
@@ -85,4 +88,3 @@ ALTER TABLE `vM` ADD CONSTRAINT `vM_idBrandMaster_fkey` FOREIGN KEY (`idBrandMas
 
 -- AddForeignKey
 ALTER TABLE `user` ADD CONSTRAINT `user_idBrandMaster_fkey` FOREIGN KEY (`idBrandMaster`) REFERENCES `brandMaster`(`idBrandMaster`) ON DELETE SET NULL ON UPDATE CASCADE;
-
