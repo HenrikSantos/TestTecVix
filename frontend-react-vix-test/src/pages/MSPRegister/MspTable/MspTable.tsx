@@ -331,25 +331,27 @@ export const MspTable = ({ onEditMsp }: IMspTableProps) => {
                   "@media (max-width: 600px)": { display: "none" },
                 }}
               >
-                <IconButton
-                  onClick={() =>
-                    isEditing.includes(msp.idBrandMaster)
-                      ? saveEdit()
-                      : handleEdit(msp.idBrandMaster)
-                  }
-                >
-                  {isEditing.includes(msp.idBrandMaster) ? (
-                    <CheckCircleOutlineRoundedIcon
-                      sx={{
-                        color: theme[mode].blueMedium,
-                        width: "24px",
-                        height: "24px",
-                      }}
-                    />
-                  ) : (
-                    <PencilCicleIcon fill={theme[mode].blueMedium} />
-                  )}
-                </IconButton>
+                {(role === "admin" || role === "manager") && (
+                  <IconButton
+                    onClick={() =>
+                      isEditing.includes(msp.idBrandMaster)
+                        ? saveEdit()
+                        : handleEdit(msp.idBrandMaster)
+                    }
+                  >
+                    {isEditing.includes(msp.idBrandMaster) ? (
+                      <CheckCircleOutlineRoundedIcon
+                        sx={{
+                          color: theme[mode].blueMedium,
+                          width: "24px",
+                          height: "24px",
+                        }}
+                      />
+                    ) : (
+                      <PencilCicleIcon fill={theme[mode].blueMedium} />
+                    )}
+                  </IconButton>
+                )}
                 {role === "admin" && (
                   <IconButton
                     onClick={() => {

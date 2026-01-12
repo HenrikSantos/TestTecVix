@@ -8,6 +8,7 @@ interface IProps {
   children: React.ReactNode;
   onlyManagerOrAdmin?: boolean;
   onlyAdmin?: boolean;
+  onlyInternal?: boolean;
   skeleton?: boolean;
 }
 
@@ -15,10 +16,11 @@ export const PrivatePage = ({
   children,
   onlyAdmin = false,
   onlyManagerOrAdmin = false,
+  onlyInternal = false,
 }: IProps) => {
   const [isChecking, setIsChecking] = useState(true);
   const { resetAllStates } = useZResetAllStates();
-  const { token, role } = useZUserProfile();
+  const { token, role, idBrand } = useZUserProfile();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,8 +40,22 @@ export const PrivatePage = ({
       return;
     }
 
+    if (onlyInternal && idBrand !== null) {
+      navigate(-1);
+      return;
+    }
+
     setIsChecking(false);
-  }, [token, role, onlyAdmin, onlyManagerOrAdmin, navigate, resetAllStates]);
+  }, [
+    token,
+    role,
+    idBrand,
+    onlyAdmin,
+    onlyManagerOrAdmin,
+    onlyInternal,
+    navigate,
+    resetAllStates,
+  ]);
 
   if (!token) {
     return <FullPage />;

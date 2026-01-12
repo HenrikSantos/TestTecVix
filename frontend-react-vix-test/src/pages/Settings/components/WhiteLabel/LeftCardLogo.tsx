@@ -10,6 +10,7 @@ import { TextRob12Font2Xs } from "../../../../components/Text2Xs";
 import { CircleIcon } from "../../../../icons/CircleIcon";
 import { TextRob16FontL } from "../../../../components/TextL";
 import { useZBrandInfo } from "../../../../stores/useZBrandStore";
+import { useZUserProfile } from "../../../../stores/useZUserProfile";
 
 interface IWhiteLabelChildProps {
   theme: {
@@ -23,12 +24,14 @@ export const LeftCardLogo = ({ theme }: IWhiteLabelChildProps) => {
   const { t } = useTranslation();
   const { handleUpload, isUploading } = useUploadFile();
   const { setBrandInfo, brandLogoTemp } = useZBrandInfo();
+  const { role } = useZUserProfile();
+  const isAdmin = role === "admin";
   const [uploadedFile, setUploadedFile] = useState<string | null>(
     brandLogoTemp,
   );
 
   const onDrop = async (acceptedFiles: File[]) => {
-    if (acceptedFiles.length === 0) return;
+    if (!isAdmin || acceptedFiles.length === 0) return;
 
     const file = acceptedFiles[0]; // Seleciona o primeiro arquivo
     const response = await handleUpload(file);
@@ -86,10 +89,11 @@ export const LeftCardLogo = ({ theme }: IWhiteLabelChildProps) => {
             ? theme[mode].grayLight
             : theme[mode].lightV2,
           marginBottom: "24px",
-          cursor: "pointer",
+          cursor: isAdmin ? "pointer" : "not-allowed",
+          opacity: isAdmin ? 1 : 0.6,
         }}
       >
-        <input {...getInputProps()} />
+        <input {...getInputProps()} disabled={!isAdmin} />
         <UploadFileIcon color={theme[mode].tertiary} />
         <TextRob12Font2Xs
           sx={{
@@ -102,7 +106,12 @@ export const LeftCardLogo = ({ theme }: IWhiteLabelChildProps) => {
             userSelect: "none",
           }}
         >
-          {isUploading ? t("whiteLabel.loading") : t("whiteLabel.clickHere")}
+          {isUploading
+            ? t("whiteLabel.loading")
+            : isAdmin
+              ? t("whiteLabel.clickHere")
+              : t("whiteLabel.onlyAdminCanChangeLogo") ||
+                "Apenas administradores podem alterar a logo"}
         </TextRob12Font2Xs>
       </Box>
       {uploadedFile && (
@@ -138,46 +147,50 @@ export const LeftCardLogo = ({ theme }: IWhiteLabelChildProps) => {
           },
         }}
       >
-        <Button
-          sx={{
-            background: theme[mode].blue,
-            border: `1px solid ${theme[mode].blue}`,
-            color: theme[mode].btnText,
-            textTransform: "none",
-            borderRadius: "12px",
-            flexGrow: 2,
-            height: "48px",
-            fontWeight: "500",
-            fontSize: "16px",
-            "@media (max-width: 440px)": {
-              flexGrow: 0,
-              width: "100%",
-            },
-          }}
-          onClick={open}
-        >
-          {t("whiteLabel.changeLogo")}
-        </Button>
-        <Button
-          sx={{
-            background: "transparent",
-            color: theme[mode].blueDark,
-            border: `1px solid ${theme[mode].blueDark}`,
-            textTransform: "none",
-            borderRadius: "12px",
-            flexGrow: 1,
-            height: "48px",
-            fontWeight: "500",
-            fontSize: "16px",
-            "@media (max-width: 440px)": {
-              flexGrow: 0,
-              width: "100%",
-            },
-          }}
-          onClick={hadleRemoveLogo} // Remove o logo
-        >
-          {t("whiteLabel.removeLogo")}
-        </Button>
+        {isAdmin && (
+          <Button
+            sx={{
+              background: theme[mode].blue,
+              border: `1px solid ${theme[mode].blue}`,
+              color: theme[mode].btnText,
+              textTransform: "none",
+              borderRadius: "12px",
+              flexGrow: 2,
+              height: "48px",
+              fontWeight: "500",
+              fontSize: "16px",
+              "@media (max-width: 440px)": {
+                flexGrow: 0,
+                width: "100%",
+              },
+            }}
+            onClick={open}
+          >
+            {t("whiteLabel.changeLogo")}
+          </Button>
+        )}
+        {isAdmin && (
+          <Button
+            sx={{
+              background: "transparent",
+              color: theme[mode].blueDark,
+              border: `1px solid ${theme[mode].blueDark}`,
+              textTransform: "none",
+              borderRadius: "12px",
+              flexGrow: 1,
+              height: "48px",
+              fontWeight: "500",
+              fontSize: "16px",
+              "@media (max-width: 440px)": {
+                flexGrow: 0,
+                width: "100%",
+              },
+            }}
+            onClick={hadleRemoveLogo} // Remove o logo
+          >
+            {t("whiteLabel.removeLogo")}
+          </Button>
+        )}
       </Box>
       <Box
         sx={{

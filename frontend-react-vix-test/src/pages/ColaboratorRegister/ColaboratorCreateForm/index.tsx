@@ -6,8 +6,9 @@ import { useEmployeeResources } from "../../../hooks/useEmployeeResources";
 import { InputLabelAndFeedback } from "../../../components/Inputs/InputLabelAndFeedback";
 import { DropDrownLabel } from "../../../components/Inputs/DropDrownLabel";
 import { Btn } from "../../../components/Buttons/Btn";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { toast } from "react-toastify";
+import { useZUserProfile } from "../../../stores/useZUserProfile";
 import { maskPhone } from "../../../utils/maskPhone";
 import { isValidEmail } from "../../../utils/isValidEmail";
 
@@ -52,6 +53,13 @@ export const ColaboratorCreateForm = ({
   } = useZColaboratorRegisterPage();
 
   const { createEmployee, isLoading } = useEmployeeResources();
+  const { idBrand: userBrandId } = useZUserProfile();
+
+  useEffect(() => {
+    if (userBrandId) {
+      setCompanyId(userBrandId);
+    }
+  }, [userBrandId, setCompanyId]);
 
   const permissionOptions = useMemo(
     () => [
@@ -264,20 +272,22 @@ export const ColaboratorCreateForm = ({
           value={selectedStatus}
           onChange={(value) => setStatus(value?.value as boolean)}
         />
-        <DropDrownLabel
-          label={t("colaboratorRegister.companyName")}
-          sideLabel={t("colaboratorRegister.required")}
-          data={companyDropdownOptions}
-          value={selectedCompany}
-          onChange={(value) =>
-            setCompanyId((value?.value as number | null) || null)
-          }
-          errorMessage={
-            showError && !companyId
-              ? t("colaboratorRegister.fillFields")
-              : null
-          }
-        />
+        {!userBrandId && (
+          <DropDrownLabel
+            label={t("colaboratorRegister.companyName")}
+            sideLabel={t("colaboratorRegister.required")}
+            data={companyDropdownOptions}
+            value={selectedCompany}
+            onChange={(value) =>
+              setCompanyId((value?.value as number | null) || null)
+            }
+            errorMessage={
+              showError && !companyId
+                ? t("colaboratorRegister.fillFields")
+                : null
+            }
+          />
+        )}
         <InputLabelAndFeedback
           label={t("colaboratorRegister.hiringDate")}
           value={hiringDate}

@@ -5,6 +5,7 @@ import { SimpleInput } from "../../../../components/Inputs/SimpleInput";
 import { Button } from "@mui/material";
 import { TextRob14Font1Xs } from "../../../../components/Text1Xs";
 import { useZBrandInfo } from "../../../../stores/useZBrandStore";
+import { useZUserProfile } from "../../../../stores/useZUserProfile";
 import { useBrandMasterResources } from "../../../../hooks/useBrandMasterResources";
 import { AbsoluteBackDrop } from "../../../../components/AbsoluteBackDrop";
 
@@ -24,6 +25,8 @@ export const LeftCardDomain = ({ theme }: IWhiteLabelChildProps) => {
     setBrandInfo,
     domain: domainName,
   } = useZBrandInfo();
+  const { role } = useZUserProfile();
+  const isAdmin = role === "admin";
   // const [domain, setDomain] = useState<string>(domainName);
   // const { updateDomain } = useBrandMasterResources();
   const { updateBrandMaster, isLoading } = useBrandMasterResources();
@@ -47,6 +50,10 @@ export const LeftCardDomain = ({ theme }: IWhiteLabelChildProps) => {
   // };
 
   const handleSave = async () => {
+    if (!isAdmin && brandLogoTemp) {
+      setBrandInfo({ brandLogoTemp: "", brandObjectName: "" });
+      return;
+    }
     const response = await updateBrandMaster({
       brandLogo: brandObjectName || undefined,
     });
