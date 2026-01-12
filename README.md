@@ -390,17 +390,38 @@ O sistema possui três níveis de permissão:
 ## 🔑 Credenciais de Teste
 
 ```
-Admin:
+Admin Vituax:
   Email: admin@vituax.com
   Senha: Admin@123
 
-Manager:
+Manager Vituax:
   Email: manager@vituax.com
   Senha: Manager@123
 
-Member:
+Member Vituax:
   Email: member@vituax.com
   Senha: Member@123
+
+---
+
+Admin Upix MSP:
+  Email: admin@upix.com
+  Senha: Admin@123
+
+Manager Upix MSP:
+  Email: manager@upix.com
+  Senha: Manager@123
+
+Member Upix MSP:
+  Email: member@upix.com
+  Senha: Member@123
+
+---
+
+Admin Vituax MSP:
+  Email: admin@vituaxmsp.com
+  Senha: Admin@123
+
 ```
 
 ---

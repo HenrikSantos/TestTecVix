@@ -15,6 +15,11 @@ async function seedTestUsers() {
       password: "Admin@123",
       role: "admin" as const,
       isActive: true,
+      fullName: "Admin Vituax",
+      userPhoneNumber: "11999999999",
+      field: "IT",
+      department: "Board",
+      idBrandMaster: null,
     },
     {
       username: "manager",
@@ -22,6 +27,11 @@ async function seedTestUsers() {
       password: "Manager@123",
       role: "manager" as const,
       isActive: true,
+      fullName: "Manager Vituax",
+      userPhoneNumber: "19999999",
+      field: "IT",
+      department: "Management",
+      idBrandMaster: null,
     },
     {
       username: "member",
@@ -29,6 +39,59 @@ async function seedTestUsers() {
       password: "Member@123",
       role: "member" as const,
       isActive: true,
+      fullName: "Member Vituax",
+      userPhoneNumber: "11977777777",
+      field: "IT",
+      department: "Development",
+      idBrandMaster: null,
+    },
+    {
+      username: "admin_upix",
+      email: "admin@upix.com",
+      password: "Admin@123",
+      role: "admin" as const,
+      isActive: true,
+      fullName: "Admin UPIX",
+      userPhoneNumber: "11966666666",
+      field: "Telecom",
+      department: "Board",
+      idBrandMaster: 1,
+    },
+    {
+      username: "manager_upix",
+      email: "manager@upix.com",
+      password: "Manager@123",
+      role: "manager" as const,
+      isActive: true,
+      fullName: "Manager UPIX",
+      userPhoneNumber: "11955555555",
+      field: "Telecom",
+      department: "Management",
+      idBrandMaster: 1,
+    },
+    {
+      username: "member_upix",
+      email: "member@upix.com",
+      password: "Member@123",
+      role: "member" as const,
+      isActive: true,
+      fullName: "Member UPIX",
+      userPhoneNumber: "11944444444",
+      field: "Telecom",
+      department: "Support",
+      idBrandMaster: 1,
+    },
+    {
+      username: "admin_vituax_msp",
+      email: "admin@vituaxmsp.com",
+      password: "Admin@123",
+      role: "admin" as const,
+      isActive: true,
+      fullName: "Admin Vituax MSP",
+      userPhoneNumber: "1199999999",
+      field: "Cloud",
+      department: "Board",
+      idBrandMaster: 2,
     },
   ];
 
@@ -51,6 +114,11 @@ async function seedTestUsers() {
         password: hashedPassword,
         role: user.role,
         isActive: user.isActive,
+        fullName: user.fullName,
+        userPhoneNumber: user.userPhoneNumber,
+        field: user.field,
+        department: user.department,
+        idBrandMaster: user.idBrandMaster,
       },
     });
 
@@ -162,8 +230,8 @@ async function main() {
   }
 
   console.log("------ Wait for seed all ----------------");
-  await seedTestUsers();
   await seedAll();
+  await seedTestUsers();
 
   if (tablesTryAgain.length > 0) {
     while (tablesTryAgain.length > 0 && limit-- > 0) {
