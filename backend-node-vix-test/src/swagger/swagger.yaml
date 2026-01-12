@@ -47,7 +47,7 @@ paths:
         - name: idBrandMaster
           in: path
           required: true
-          description: ID do brand master (ex: 1 para UPIX, 2 para Vituax MSP test)
+          description: "ID do brand master (ex: 1 para UPIX, 2 para Vituax MSP test)"
           schema:
             type: integer
           example: 1
@@ -576,7 +576,17 @@ paths:
                 os:
                   type: string
                   description: Sistema operacional
-                  enum: [ubuntu2404, ubuntu2204, debian12, debian13, centos10, archlinux, win2019std, win2022std]
+                  enum:
+                    [
+                      ubuntu2404,
+                      ubuntu2204,
+                      debian12,
+                      debian13,
+                      centos10,
+                      archlinux,
+                      win2019std,
+                      win2022std,
+                    ]
             example:
               vmName: "Servidor Web Producao"
               vCPU: 4
@@ -613,7 +623,7 @@ paths:
         - name: idVM
           in: path
           required: true
-          description: ID da VM (ex: 1 para Company Test, 5 para VM 02)
+          description: "ID da VM (ex: 1 para Company Test, 5 para VM 02)"
           schema:
             type: integer
           example: 1

@@ -33,7 +33,7 @@ export class BrandMasterService {
     return this.brandMasterModel.listAll(validQuery);
   }
 
-  async createNewBrandMaster(data: TBrandMaster, user: user) {
+  async createNewBrandMaster(data: TBrandMaster) {
     const validData = brandMasterSchema.parse(data);
 
     const { admName, admEmail, admPhone, admPassword, ...brandMasterData } =
@@ -126,6 +126,10 @@ export class BrandMasterService {
       );
     }
 
+    if (user.idBrandMaster && user.idBrandMaster !== idBrandMaster) {
+      throw new AppError(ERROR_MESSAGE.FORBIDDEN, STATUS_CODE.FORBIDDEN);
+    }
+
     let updatedAdminUser = null;
     if (admName || admEmail || admPhone || admPassword) {
       const existingAdmin =
@@ -193,6 +197,21 @@ export class BrandMasterService {
     }
 
     if (
+      brandMasterData.brandLogo !== undefined &&
+      brandMasterData.brandLogo !== oldBrandMaster.brandLogo &&
+      user.role !== "admin"
+    ) {
+      throw new AppError(
+        "Apenas administradores podem alterar a logo da empresa",
+        STATUS_CODE.FORBIDDEN,
+      );
+    }
+
+    if (user.role === "member") {
+      throw new AppError(ERROR_MESSAGE.FORBIDDEN, STATUS_CODE.FORBIDDEN);
+    }
+
+    if (
       brandMasterData.isPoc === true &&
       oldBrandMaster.isPoc !== true &&
       !oldBrandMaster.pocOpenedAt
@@ -213,7 +232,7 @@ export class BrandMasterService {
     };
   }
 
-  async deleteBrandMaster(idBrandMaster: number, user: user) {
+  async deleteBrandMaster(idBrandMaster: number) {
     const oldBrandMaster = await this.brandMasterModel.getById(idBrandMaster);
     if (!oldBrandMaster) {
       throw new AppError(
