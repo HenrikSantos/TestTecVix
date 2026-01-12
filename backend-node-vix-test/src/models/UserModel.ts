@@ -20,6 +20,15 @@ export class UserModel {
         lastLoginDate: true,
         createdAt: true,
         updatedAt: true,
+        field: true,
+        department: true,
+        contractDate: true,
+        brandMaster: {
+          select: {
+            idBrandMaster: true,
+            brandName: true,
+          },
+        },
       },
     });
   }
@@ -79,6 +88,7 @@ export class UserModel {
           ? [
               { username: { contains: query.search } },
               { email: { contains: query.search } },
+              { fullName: { contains: query.search } },
             ]
           : undefined,
       },
@@ -95,6 +105,15 @@ export class UserModel {
         lastLoginDate: true,
         createdAt: true,
         updatedAt: true,
+        field: true,
+        department: true,
+        contractDate: true,
+        brandMaster: {
+          select: {
+            idBrandMaster: true,
+            brandName: true,
+          },
+        },
       },
       take: limit || undefined,
       skip,
@@ -117,6 +136,9 @@ export class UserModel {
         role: data.role || "member",
         idBrandMaster: data.idBrandMaster,
         isActive: data.isActive ?? true,
+        field: data.field,
+        department: data.department,
+        contractDate: data.contractDate ? new Date(data.contractDate) : null,
       },
       select: {
         idUser: true,
@@ -129,17 +151,22 @@ export class UserModel {
         idBrandMaster: true,
         isActive: true,
         createdAt: true,
+        field: true,
+        department: true,
+        contractDate: true,
       },
     });
   }
 
   async updateUser(idUser: string, data: TUserUpdated & { password?: string }) {
+    const updateData = {
+      ...data,
+      updatedAt: new Date(),
+      ...(data.contractDate && { contractDate: new Date(data.contractDate) }),
+    };
     return prisma.user.update({
       where: { idUser },
-      data: {
-        ...data,
-        updatedAt: new Date(),
-      },
+      data: updateData,
       select: {
         idUser: true,
         username: true,
@@ -153,6 +180,9 @@ export class UserModel {
         lastLoginDate: true,
         createdAt: true,
         updatedAt: true,
+        field: true,
+        department: true,
+        contractDate: true,
       },
     });
   }
