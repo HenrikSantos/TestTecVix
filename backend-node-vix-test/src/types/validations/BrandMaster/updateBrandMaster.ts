@@ -2,7 +2,6 @@ import { z } from "zod";
 
 export const brandMasterUpdatedSchema = z.object({
   brandName: z.string().nullable().optional(),
-  idBrandTheme: z.number().int().nullable().optional(),
   isActive: z.boolean().default(false).optional(),
   brandLogo: z.string().nullable().optional(),
   domain: z.string().nullable().optional(),
@@ -22,16 +21,12 @@ export const brandMasterUpdatedSchema = z.object({
   cityCode: z.number().nullable().optional(),
   district: z.string().nullable().optional(),
   stripeUserId: z.string().nullable().optional(),
-  isStripeActive: z.boolean().default(false).optional(),
   isPoc: z.boolean().default(false).optional(),
   discountRate: z.number().min(0).optional(),
   minConsumption: z.number().min(0).optional(),
   manual: z.string().nullable().optional(),
   termsOfUse: z.string().nullable().optional(),
   privacyPolicy: z.string().nullable().optional(),
-  retailPercentageDefault: z.number().min(0).optional(),
-  hasSelfRegister: z.boolean().optional(),
-  hasPrepaid: z.boolean().optional(),
 });
 
 export type TBrandMasterUpdate = z.infer<typeof brandMasterUpdatedSchema>;

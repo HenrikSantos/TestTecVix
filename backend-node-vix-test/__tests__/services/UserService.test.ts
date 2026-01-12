@@ -16,6 +16,8 @@ describe("UserService", () => {
     email: "test@example.com",
     password: "$2a$10$hashedpassword",
     profileImgUrl: null,
+    fullName: null,
+    userPhoneNumber: null,
     role: "member" as const,
     idBrandMaster: 1,
     isActive: true,
