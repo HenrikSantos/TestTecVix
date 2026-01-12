@@ -6,6 +6,7 @@ import { MSPRegisterRouter } from "./MSPRegisterRouter";
 import { RegisterRouter } from "./RegisterRouter";
 import { LoginRouter } from "./LoginRouter";
 import { WhiteLabelRouter } from "./WhiteLabelRouter";
+import { ColaboratorRegisterRouter } from "./ColaboratorRegisterRouter";
 
 export const mainRoutes = [
   DefaultRouter,
@@ -16,4 +17,5 @@ export const mainRoutes = [
   MyVMsRouter,
   MSPRegisterRouter,
   WhiteLabelRouter,
+  ColaboratorRegisterRouter,
 ];

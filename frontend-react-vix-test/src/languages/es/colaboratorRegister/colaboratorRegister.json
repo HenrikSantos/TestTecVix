@@ -1,5 +1,5 @@
 {
-  "title": "Registro",
+  "title": "Registro de Empleados",
   "sideTitle": "Permisos de Usuarios",
   "subtitle": "Asignar y ajustar niveles de acceso de usuarios",
   "completeName": "Nombre Completo",
@@ -24,6 +24,7 @@
   "confirm": "Confirmar Registro",
   "back": "Volver",
   "clear": "Limpiar",
+  "cancel": "Cancelar",
   "save": "Guardar",
   "tableTitle": "Usuarios Registrados",
   "fillFields": "El campo anterior debe completarse.",
@@ -36,13 +37,16 @@
   "cnpjAlertMessage": "Por favor, introduzca un NIF válido",
   "companyName": "Nombre de la Empresa",
   "username": "Nombre de Usuario",
-  "password": "Contraseño",
-  "confirmPassword": "Confirmar contraseño",
+  "password": "Contraseña",
+  "confirmPassword": "Confirmar Contraseña",
   "dontMatch": "Las contraseñas no coinciden",
   "userCreated": "Usuario creado con éxito",
   "userEdited": "Usuario editado con éxito",
   "ok": "OK",
   "registersManagement": "Gestión de registros",
   "pinCode": "PinCode",
-  "areYouSure": "¿Está seguro de que desea eliminar el usuario {{ username }}?"
+  "areYouSure": "¿Está seguro de que desea eliminar el usuario {{ username }}?",
+  "createEmployee": "Nuevo Empleado",
+  "editEmployee": "Editar Empleado",
+  "deleteEmployee": "Eliminar"
 }
