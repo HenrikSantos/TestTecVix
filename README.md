@@ -546,9 +546,9 @@ git commit -m "docs: atualiza README com credenciais de teste"
 
 **Referência visual**: `screenshots/CadastroDeFuncionarios.png`
 
-- [ ] Implementar a tela de **cadastro de funcionários** seguindo a imagem de referência
-- [ ] Atentar para a **responsividade**
-- [ ] Considerar as **traduções** (i18n)
+- [x] Implementar a tela de **cadastro de funcionários** seguindo a imagem de referência
+- [x] Atentar para a **responsividade**
+- [x] Considerar as **traduções** (i18n)
 
 ---
 
