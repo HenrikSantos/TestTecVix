@@ -49,5 +49,48 @@ describe("BrandMasterService", () => {
 
       expect(mockUpdateBrandMaster).not.toHaveBeenCalled();
     });
+    it("updateBrandMaster should not allow non-admin to update logo", async () => {
+      const idBrandMaster = 1;
+      mockGetById.mockResolvedValue({
+        idBrandMaster: 1,
+        brandLogo: "old-logo.png",
+      });
+
+      try {
+        await brandMasterService.updateBrandMaster(
+          idBrandMaster,
+          { brandLogo: "new-logo.png" },
+          { idBrandMaster: 1, role: "member" } as any,
+        );
+        fail("Should have thrown an error");
+      } catch (error: any) {
+        expect(error.message).toBe(
+          "Apenas administradores podem alterar a logo da empresa",
+        );
+      }
+
+      expect(mockUpdateBrandMaster).not.toHaveBeenCalled();
+    });
+
+    it("updateBrandMaster should allow admin to update logo", async () => {
+      const idBrandMaster = 1;
+      mockGetById.mockResolvedValue({
+        idBrandMaster: 1,
+        brandLogo: "old-logo.png",
+      });
+      mockUpdateBrandMaster.mockResolvedValue({
+        idBrandMaster: 1,
+        brandLogo: "new-logo.png",
+      });
+
+      const result = await brandMasterService.updateBrandMaster(
+        idBrandMaster,
+        { brandLogo: "new-logo.png" },
+        { idBrandMaster: 1, role: "admin" } as any,
+      );
+
+      expect(mockUpdateBrandMaster).toHaveBeenCalled();
+      expect(result.brandLogo).toBe("new-logo.png");
+    });
   });
 });
