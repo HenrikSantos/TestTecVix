@@ -575,8 +575,8 @@ git commit -m "docs: atualiza README com credenciais de teste"
 
 ### 🎨 Configuração White Label
 
-- [ ] Permitir que a **logo da empresa** do usuário seja alterada
-- [ ] Somente usuários **admin** podem realizar essa alteração
+- [x] Permitir que a **logo da empresa** do usuário seja alterada
+- [x] Somente usuários **admin** podem realizar essa alteração
 
 ---
 

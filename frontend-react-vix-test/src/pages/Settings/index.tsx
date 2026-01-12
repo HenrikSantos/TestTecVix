@@ -38,7 +38,7 @@ export const SettingsPage = () => {
     const list = [];
 
     const canSeeWhiteLabel =
-      !!user.idBrand && (user.role === "admin" || user.role === "manager");
+      !!user.idBrand && (user.role === "admin");
 
     if (canSeeWhiteLabel) {
       list.push({
