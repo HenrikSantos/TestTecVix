@@ -1,9 +1,11 @@
 export interface IUserResponse {
   idUser: number;
-  idBrandMaster: 1;
+  idBrandMaster: number;
   createdAt: string | Date;
   deletedAt: string | Date | null;
   email: string | null;
+  fullName: string | null;
+  userPhoneNumber: string | null;
   isActive: boolean;
   lastLoginDate: string | Date;
   profileImgUrl: string | null;

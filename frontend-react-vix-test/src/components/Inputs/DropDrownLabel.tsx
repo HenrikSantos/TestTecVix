@@ -128,21 +128,20 @@ export const DropDrownLabel = ({
           borderRadius: "12px",
           "& .MuiOutlinedInput-root": {
             height: "40px",
-            backgroundColor: theme[mode].grayLight,
+            backgroundColor: "#474b54",
             borderRadius: "12px",
             "& fieldset": {
               borderColor: errorMessage ? theme[mode].danger : "transparent",
             },
             "&:hover fieldset": {
-              borderColor: errorMessage ? theme[mode].danger : theme[mode].blue,
+              borderColor: errorMessage ? theme[mode].danger : "transparent",
             },
             "&.Mui-focused": {
-              backgroundColor: theme[mode].mainBackground,
+              backgroundColor: "#474b54",
               "& fieldset": {
                 borderColor: errorMessage
                   ? theme[mode].danger
                   : theme[mode].blue,
-                boxShadow: `0px 0px 4px ${theme[mode].blue}`,
                 borderWidth: "1px",
               },
             },

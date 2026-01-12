@@ -11,6 +11,7 @@ interface IMspRegisterPage {
   sector: string;
   contactEmail: string;
   cep: string;
+  location: string;
   locality: string;
   countryState: string;
   city: string;
@@ -45,8 +46,6 @@ interface IMspRegisterPage {
   brandMasterDeleted: IBrandMasterBasicInfo | null;
   vmsToBeDeleted: IVMCreatedResponse[];
   notesBrandMasterDescription: string;
-  retailPercentageDefault: string | number;
-  hasSelfRegister: boolean;
 }
 
 const INIT_STATE: IMspRegisterPage = {
@@ -57,6 +56,7 @@ const INIT_STATE: IMspRegisterPage = {
   sector: "",
   contactEmail: "",
   cep: "",
+  location: "",
   locality: "",
   countryState: "",
   city: "",
@@ -91,8 +91,6 @@ const INIT_STATE: IMspRegisterPage = {
   brandMasterDeleted: null,
   vmsToBeDeleted: [],
   notesBrandMasterDescription: "",
-  retailPercentageDefault: 0,
-  hasSelfRegister: false,
 };
 
 const {
@@ -113,6 +111,7 @@ interface IMspRegisterPageState extends IMspRegisterPage {
   setSector: (sector: string) => void;
   setContactEmail: (contactEmail: string) => void;
   setCep: (cep: string) => void;
+  setLocation: (location: string) => void;
   setLocality: (locality: string) => void;
   setCountryState: (state: string) => void;
   setCity: (city: string) => void;
@@ -157,10 +156,6 @@ interface IMspRegisterPageState extends IMspRegisterPage {
   ) => void;
   setVmsToBeDeleted: (vmsToBeDeleted: IVMCreatedResponse[]) => void;
   setNotesBrandMasterDescription: (notesBrandMasterDescription: string) => void;
-  setRetailPercentageDefault: (
-    retailPercentageDefault: string | number,
-  ) => void;
-  setHasSelfRegister: (hasSelfRegister: boolean) => void;
 }
 
 export const useZMspRegisterPage = create<IMspRegisterPageState>((set) => ({
@@ -175,6 +170,7 @@ export const useZMspRegisterPage = create<IMspRegisterPageState>((set) => ({
   setContactEmail: (contactEmail: string) =>
     set((state) => ({ ...state, contactEmail })),
   setCep: (cep: string) => set((state) => ({ ...state, cep })),
+  setLocation: (location: string) => set((state) => ({ ...state, location })),
   setLocality: (locality: string) => set((state) => ({ ...state, locality })),
   setCountryState: (countryState: string) =>
     set((state) => ({ ...state, countryState })),
@@ -234,18 +230,6 @@ export const useZMspRegisterPage = create<IMspRegisterPageState>((set) => ({
     set((state) => ({
       ...state,
       notesBrandMasterDescription,
-    }));
-  },
-  setRetailPercentageDefault(retailPercentageDefault: number | string) {
-    set((state) => ({
-      ...state,
-      retailPercentageDefault,
-    }));
-  },
-  setHasSelfRegister(hasSelfRegister: boolean) {
-    set((state) => ({
-      ...state,
-      hasSelfRegister,
     }));
   },
 }));

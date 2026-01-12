@@ -67,5 +67,13 @@
   "vmsFromThisMSP": "VMS de este MSP",
   "mspDeleted": "MSP {{ brandName }} eliminado con éxito!",
   "doYouWantToDeleteThisVMs": "Desea realmente eliminar estas VMS?",
-  "deletedVMs": "VMS eliminadas con éxito!"
+  "deletedVMs": "VMS eliminadas con éxito!",
+  "newMsp": "Nuevo MSP",
+  "continue": "Continuar",
+  "username": "Nombre de Usuario",
+  "changeLogo": "Cambiar logo",
+  "removeLogo": "Eliminar logo",
+  "clickToUpload": "Haga clic aquí para cargar su logo",
+  "editTitle": "Edición de MSP",
+  "confirmEdit": "Confirmar edición"
 }
