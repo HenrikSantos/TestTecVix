@@ -9,6 +9,7 @@ const mockSetIsOpenModalUserNotActive = vi.fn();
 const mockResetAllStates = vi.fn();
 const mockPost = vi.fn();
 const mockToastError = vi.fn();
+const mockSetBrandInfo = vi.fn();
 
 vi.mock("react-router-dom", () => ({
   useNavigate: () => mockNavigate,
@@ -24,6 +25,12 @@ vi.mock("../../src/stores/useZGlobalVar", () => ({
 vi.mock("../../src/stores/useZUserProfile", () => ({
   useZUserProfile: () => ({
     setUser: mockSetUser,
+  }),
+}));
+
+vi.mock("../../src/stores/useZBrandStore", () => ({
+  useZBrandInfo: () => ({
+    setBrandInfo: mockSetBrandInfo,
   }),
 }));
 
@@ -65,6 +72,12 @@ describe("useLogin Hook", () => {
             idBrandMaster: 1,
             isActive: true,
             userPhoneNumber: null,
+            fullName: "Test User",
+          },
+          brandMaster: {
+            emailContact: "contact@example.com",
+            smsContact: "999999999",
+            timezone: "UTC",
           },
         },
       };
@@ -90,6 +103,11 @@ describe("useLogin Hook", () => {
         tryRefetch: true,
       });
       expect(mockSetUser).toHaveBeenCalled();
+      expect(mockSetBrandInfo).toHaveBeenCalledWith({
+        emailContact: "contact@example.com",
+        smsContact: "999999999",
+        timezone: "UTC",
+      });
       expect(mockNavigate).toHaveBeenCalledWith("/");
     });
 
@@ -107,7 +125,9 @@ describe("useLogin Hook", () => {
             idBrandMaster: null,
             isActive: true,
             userPhoneNumber: null,
+            fullName: "Test User",
           },
+          brandMaster: null,
         },
       };
       mockPost.mockResolvedValue(mockResponse);
@@ -132,6 +152,11 @@ describe("useLogin Hook", () => {
         tryRefetch: true,
       });
       expect(mockSetUser).toHaveBeenCalled();
+      expect(mockSetBrandInfo).toHaveBeenCalledWith({
+        emailContact: "",
+        smsContact: "",
+        timezone: "",
+      });
     });
 
     it("nao deve fazer login sem username e email", async () => {
@@ -219,6 +244,7 @@ describe("useLogin Hook", () => {
         idBrandMaster: 5,
         isActive: true,
         userPhoneNumber: "+55119999999",
+        fullName: "Test User",
       };
 
       mockPost.mockResolvedValue({
@@ -226,6 +252,7 @@ describe("useLogin Hook", () => {
         data: {
           token: "jwt-token-123",
           user: mockUserData,
+          brandMaster: null,
         },
       });
 
@@ -242,7 +269,9 @@ describe("useLogin Hook", () => {
       expect(mockSetUser).toHaveBeenCalledWith({
         idUser: mockUserData.idUser,
         profileImgUrl: mockUserData.profileImgUrl,
+        imageUrl: mockUserData.profileImgUrl,
         username: mockUserData.username,
+        fullName: mockUserData.fullName,
         userEmail: mockUserData.email,
         idBrand: mockUserData.idBrandMaster,
         token: "jwt-token-123",

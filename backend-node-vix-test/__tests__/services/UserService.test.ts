@@ -1,5 +1,6 @@
 import { UserService } from "../../src/services/UserService";
 import { UserModel } from "../../src/models/UserModel";
+import { BrandMasterModel } from "../../src/models/BrandMasterModel";
 import { AppError } from "../../src/errors/AppError";
 import { STATUS_CODE } from "../../src/constants/statusCode";
 import { ERROR_MESSAGE } from "../../src/constants/erroMessages";
@@ -50,6 +51,7 @@ describe("UserService", () => {
       .spyOn(UserModel.prototype, "updateLastLogin")
       .mockResolvedValue(mockUser);
     jest.spyOn(UserModel.prototype, "deleteUser").mockResolvedValue(mockUser);
+    jest.spyOn(BrandMasterModel.prototype, "getById").mockResolvedValue(null);
   });
 
   afterEach(() => {
@@ -78,6 +80,23 @@ describe("UserService", () => {
         expect((error as AppError).message).toBe(ERROR_MESSAGE.USER_NOT_FOUND);
       }
     });
+
+    it("deve lancar erro quando usuario pertence a outro brand", async () => {
+      jest.spyOn(UserModel.prototype, "getById").mockResolvedValue({
+        ...mockUser,
+        idBrandMaster: 2,
+      });
+
+      try {
+        await userService.getById("user-123", {
+          idBrandMaster: 1,
+        } as any);
+        fail("Deveria ter lancado erro");
+      } catch (error) {
+        expect(error).toBeInstanceOf(AppError);
+        expect((error as AppError).status).toBe(STATUS_CODE.FORBIDDEN);
+      }
+    });
   });
 
   describe("listAll", () => {
@@ -99,6 +118,17 @@ describe("UserService", () => {
       await userService.listAll(query);
 
       expect(UserModel.prototype.listAll).toHaveBeenCalled();
+    });
+
+    it("deve restringir listAll ao brand do usuario", async () => {
+      const mockList = { totalCount: 0, result: [] };
+      jest.spyOn(UserModel.prototype, "listAll").mockResolvedValue(mockList);
+
+      await userService.listAll({}, { idBrandMaster: 1 } as any);
+
+      expect(UserModel.prototype.listAll).toHaveBeenCalledWith(
+        expect.objectContaining({ idBrandMaster: 1 }),
+      );
     });
   });
 
@@ -134,6 +164,31 @@ describe("UserService", () => {
       expect(bcrypt.hash).toHaveBeenCalledWith(validUserData.password, 10);
       expect(UserModel.prototype.createUser).toHaveBeenCalled();
       expect(result).toBeDefined();
+    });
+
+    it("deve bloquear criacao para usuarios member", async () => {
+      try {
+        await userService.createUser(validUserData, { role: "member" } as any);
+        fail("Deveria ter lancado erro");
+      } catch (error) {
+        expect(error).toBeInstanceOf(AppError);
+        expect((error as AppError).status).toBe(STATUS_CODE.FORBIDDEN);
+      }
+    });
+
+    it("deve sobrescrever idBrandMaster quando usuario possui brand", async () => {
+      jest.spyOn(UserModel.prototype, "getByEmail").mockResolvedValue(null);
+      jest.spyOn(UserModel.prototype, "getByUsername").mockResolvedValue(null);
+      jest.spyOn(UserModel.prototype, "createUser").mockResolvedValue(mockUser);
+
+      await userService.createUser(
+        { ...validUserData, idBrandMaster: 999 },
+        { idBrandMaster: 1 } as any,
+      );
+
+      expect(UserModel.prototype.createUser).toHaveBeenCalledWith(
+        expect.objectContaining({ idBrandMaster: 1 }),
+      );
     });
 
     it("deve lancar erro quando email ja existe", async () => {
@@ -199,6 +254,21 @@ describe("UserService", () => {
       expect(result.username).toBe(updateData.username);
     });
 
+    it("deve bloquear member atualizando outro usuario", async () => {
+      jest.spyOn(UserModel.prototype, "getById").mockResolvedValue(mockUser);
+
+      try {
+        await userService.updateUser("user-123", updateData, {
+          idUser: "other-user",
+          role: "member",
+        } as any);
+        fail("Deveria ter lancado erro");
+      } catch (error) {
+        expect(error).toBeInstanceOf(AppError);
+        expect((error as AppError).status).toBe(STATUS_CODE.FORBIDDEN);
+      }
+    });
+
     it("deve lancar erro quando usuario nao existe", async () => {
       jest.spyOn(UserModel.prototype, "getById").mockResolvedValue(null);
 
@@ -252,6 +322,46 @@ describe("UserService", () => {
 
       expect(bcrypt.hash).toHaveBeenCalledWith("newpassword123", 10);
     });
+
+    it("nao deve permitir alterar role e status para nao-admin", async () => {
+      jest.spyOn(UserModel.prototype, "getById").mockResolvedValue(mockUser);
+      jest.spyOn(UserModel.prototype, "updateUser").mockResolvedValue(mockUser);
+
+      await userService.updateUser(
+        "user-123",
+        {
+          role: "admin",
+          idBrandMaster: 99,
+          isActive: false,
+        },
+        { role: "manager", idBrandMaster: 1 } as any,
+      );
+
+      expect(UserModel.prototype.updateUser).toHaveBeenCalledWith(
+        "user-123",
+        expect.not.objectContaining({
+          role: "admin",
+          idBrandMaster: 99,
+          isActive: false,
+        }),
+      );
+    });
+
+    it("nao deve permitir admin com brand alterar idBrandMaster", async () => {
+      jest.spyOn(UserModel.prototype, "getById").mockResolvedValue(mockUser);
+      jest.spyOn(UserModel.prototype, "updateUser").mockResolvedValue(mockUser);
+
+      await userService.updateUser(
+        "user-123",
+        { idBrandMaster: 99 },
+        { role: "admin", idBrandMaster: 1 } as any,
+      );
+
+      expect(UserModel.prototype.updateUser).toHaveBeenCalledWith(
+        "user-123",
+        expect.not.objectContaining({ idBrandMaster: 99 }),
+      );
+    });
   });
 
   describe("deleteUser", () => {
@@ -264,6 +374,16 @@ describe("UserService", () => {
       expect(UserModel.prototype.getById).toHaveBeenCalledWith("user-123");
       expect(UserModel.prototype.deleteUser).toHaveBeenCalledWith("user-123");
       expect(result).toBeDefined();
+    });
+
+    it("deve bloquear delete para manager", async () => {
+      try {
+        await userService.deleteUser("user-123", { role: "manager" } as any);
+        fail("Deveria ter lancado erro");
+      } catch (error) {
+        expect(error).toBeInstanceOf(AppError);
+        expect((error as AppError).status).toBe(STATUS_CODE.FORBIDDEN);
+      }
     });
 
     it("deve lancar erro quando usuario nao existe", async () => {
@@ -396,6 +516,26 @@ describe("UserService", () => {
       const result = await userService.login(loginData);
 
       expect(result.user).not.toHaveProperty("password");
+    });
+
+    it("deve retornar contatos do brandMaster quando existir", async () => {
+      jest.spyOn(UserModel.prototype, "getByEmail").mockResolvedValue(mockUser);
+      jest
+        .spyOn(UserModel.prototype, "updateLastLogin")
+        .mockResolvedValue(mockUser);
+      (BrandMasterModel.prototype.getById as jest.Mock).mockResolvedValue({
+        emailContact: "brand@example.com",
+        smsContact: "(11) 98888-8888",
+        timezone: "America/Sao_Paulo",
+      } as any);
+
+      const result = await userService.login(loginData);
+
+      expect(result.brandMaster).toEqual({
+        emailContact: "brand@example.com",
+        smsContact: "(11) 98888-8888",
+        timezone: "America/Sao_Paulo",
+      });
     });
   });
 });

@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import { UserModel } from "../models/UserModel";
+import { BrandMasterModel } from "../models/BrandMasterModel";
 import {
   userCreatedSchema,
   TUserCreated,
@@ -88,15 +89,28 @@ export class UserService {
   }
 
   async updateUser(idUser: string, data: TUserUpdated, user?: user) {
-    if (user?.role === "member") {
+    const existingUser = await this.userModel.getById(idUser);
+    if (!existingUser) {
+      throw new AppError(ERROR_MESSAGE.USER_NOT_FOUND, STATUS_CODE.NOT_FOUND);
+    }
+
+    const isSelf = user?.idUser === idUser;
+
+    if (user?.role === "member" && !isSelf) {
       throw new AppError(ERROR_MESSAGE.FORBIDDEN, STATUS_CODE.FORBIDDEN);
     }
 
     const validData = userUpdatedSchema.parse(data);
+    const updateData: TUserUpdated & { password?: string } = { ...validData };
 
-    const existingUser = await this.userModel.getById(idUser);
-    if (!existingUser) {
-      throw new AppError(ERROR_MESSAGE.USER_NOT_FOUND, STATUS_CODE.NOT_FOUND);
+    if (user && user.role !== "admin") {
+      delete updateData.role;
+      delete updateData.idBrandMaster;
+      delete updateData.isActive;
+    }
+
+    if (user?.role === "admin" && user.idBrandMaster) {
+      delete updateData.idBrandMaster;
     }
 
     if (
@@ -127,8 +141,6 @@ export class UserService {
         );
       }
     }
-
-    const updateData: TUserUpdated & { password?: string } = { ...validData };
 
     if (validData.password) {
       updateData.password = await bcrypt.hash(validData.password, 10);
@@ -198,12 +210,20 @@ export class UserService {
       idBrandMaster: user.idBrandMaster,
     });
 
+    let brandMaster = null;
+    if (user.idBrandMaster) {
+      const brandMasterModel = new BrandMasterModel();
+      brandMaster = await brandMasterModel.getById(user.idBrandMaster);
+    }
+
     return {
       token,
       user: {
         idUser: user.idUser,
         username: user.username,
         email: user.email,
+        fullName: user.fullName,
+        userPhoneNumber: user.userPhoneNumber,
         profileImgUrl: user.profileImgUrl,
         role: user.role,
         idBrandMaster: user.idBrandMaster,
@@ -212,6 +232,13 @@ export class UserService {
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       },
+      brandMaster: brandMaster
+        ? {
+            emailContact: brandMaster.emailContact,
+            smsContact: brandMaster.smsContact,
+            timezone: brandMaster.timezone,
+          }
+        : null,
     };
   }
 }

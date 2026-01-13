@@ -1,4 +1,5 @@
 import { Divider, List, Stack } from "@mui/material";
+import type { SVGProps } from "react";
 import { useZTheme } from "../../../stores/useZTheme";
 import { useTranslation } from "react-i18next";
 import { useSetSidebar } from "../../../hooks/useSetSidebar";
@@ -32,19 +33,27 @@ export const ListItemSidebar = () => {
   const baseUrl = import.meta.env.VITE_BASE_URL || "http://localhost:3001";
   const manualUrl = `${baseUrl}/uploads/dark-user-manual-vituax-${lan}.pdf`;
 
-  const registersList = [
+  type RegisterListItem = {
+    text: string;
+    path: string;
+    isSelected: boolean;
+    icon: (props: SVGProps<SVGSVGElement>) => JSX.Element;
+    isInternalOnly: boolean;
+  };
+
+  const registersList: RegisterListItem[] = [
     {
       text: t("sidebar.mspRegister"),
       path: "/msp-register",
       isSelected: pathname === "/msp-register",
-      icon: (props: any) => <UserCheckDone {...props} />,
+      icon: (props) => <UserCheckDone {...props} />,
       isInternalOnly: true,
     },
     {
       text: t("sidebar.colaboratorRegister"),
       path: "/colaborator-register",
       isSelected: pathname === "/colaborator-register",
-      icon: (props: any) => <UserCheckDone {...props} />,
+      icon: (props) => <UserCheckDone {...props} />,
       isInternalOnly: false,
     },
   ];

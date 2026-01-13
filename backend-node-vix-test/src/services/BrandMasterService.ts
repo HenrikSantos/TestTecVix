@@ -117,6 +117,13 @@ export class BrandMasterService {
     // Extract admin fields from validData
     const { admName, admEmail, admPhone, admPassword, ...brandMasterData } =
       validData;
+    const isBrandAdmin = user.role === "admin" && Boolean(user.idBrandMaster);
+
+    if (!isBrandAdmin) {
+      delete brandMasterData.emailContact;
+      delete brandMasterData.smsContact;
+      delete brandMasterData.timezone;
+    }
 
     const oldBrandMaster = await this.brandMasterModel.getById(idBrandMaster);
     if (!oldBrandMaster) {
