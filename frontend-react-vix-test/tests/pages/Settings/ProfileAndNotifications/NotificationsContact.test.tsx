@@ -163,12 +163,9 @@ describe("NotificationsContact", () => {
 
     mockSetFormProfileNotifications.mockClear();
 
-    fireEvent.change(
-      screen.getByTestId("input-(00) 00000-0000"),
-      {
-        target: { value: "11999999999" },
-      },
-    );
+    fireEvent.change(screen.getByTestId("input-(00) 00000-0000"), {
+      target: { value: "11999999999" },
+    });
 
     expect(mockMaskPhone).toHaveBeenCalledWith("11999999999");
     expect(mockSetFormProfileNotifications).toHaveBeenCalledWith(

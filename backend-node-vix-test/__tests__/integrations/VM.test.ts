@@ -97,7 +97,6 @@ describe("Testing VM API - listAll", () => {
   });
 });
 
-
 describe("Testing VM API - getById", () => {
   it("should return a specific VM", async () => {
     // @ts-ignore

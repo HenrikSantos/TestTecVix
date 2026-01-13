@@ -181,10 +181,9 @@ describe("UserService", () => {
       jest.spyOn(UserModel.prototype, "getByUsername").mockResolvedValue(null);
       jest.spyOn(UserModel.prototype, "createUser").mockResolvedValue(mockUser);
 
-      await userService.createUser(
-        { ...validUserData, idBrandMaster: 999 },
-        { idBrandMaster: 1 } as any,
-      );
+      await userService.createUser({ ...validUserData, idBrandMaster: 999 }, {
+        idBrandMaster: 1,
+      } as any);
 
       expect(UserModel.prototype.createUser).toHaveBeenCalledWith(
         expect.objectContaining({ idBrandMaster: 1 }),
@@ -351,11 +350,10 @@ describe("UserService", () => {
       jest.spyOn(UserModel.prototype, "getById").mockResolvedValue(mockUser);
       jest.spyOn(UserModel.prototype, "updateUser").mockResolvedValue(mockUser);
 
-      await userService.updateUser(
-        "user-123",
-        { idBrandMaster: 99 },
-        { role: "admin", idBrandMaster: 1 } as any,
-      );
+      await userService.updateUser("user-123", { idBrandMaster: 99 }, {
+        role: "admin",
+        idBrandMaster: 1,
+      } as any);
 
       expect(UserModel.prototype.updateUser).toHaveBeenCalledWith(
         "user-123",

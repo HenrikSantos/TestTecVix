@@ -110,9 +110,7 @@ describe("CTAsButtons", () => {
 
     render(<CTAsButtons />);
 
-    fireEvent.click(
-      screen.getByText("profileAndNotifications.saveChanges"),
-    );
+    fireEvent.click(screen.getByText("profileAndNotifications.saveChanges"));
 
     await waitFor(() => {
       expect(mockToastError).toHaveBeenCalledWith(
@@ -128,9 +126,7 @@ describe("CTAsButtons", () => {
 
     render(<CTAsButtons />);
 
-    fireEvent.click(
-      screen.getByText("profileAndNotifications.saveChanges"),
-    );
+    fireEvent.click(screen.getByText("profileAndNotifications.saveChanges"));
 
     await waitFor(() => {
       expect(mockToastError).toHaveBeenCalledWith(
@@ -181,9 +177,7 @@ describe("CTAsButtons", () => {
 
     render(<CTAsButtons />);
 
-    fireEvent.click(
-      screen.getByText("profileAndNotifications.saveChanges"),
-    );
+    fireEvent.click(screen.getByText("profileAndNotifications.saveChanges"));
 
     await waitFor(() => {
       expect(mockPut).toHaveBeenCalledTimes(2);

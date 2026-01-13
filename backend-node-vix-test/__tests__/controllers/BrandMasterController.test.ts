@@ -80,12 +80,17 @@ describe("BrandMasterController", () => {
   });
 
   it("createNewBrandMaster should return CREATED", async () => {
-    mockService.createNewBrandMaster.mockResolvedValueOnce({ idBrandMaster: 3 });
+    mockService.createNewBrandMaster.mockResolvedValueOnce({
+      idBrandMaster: 3,
+    });
     const mockRequest = {
       body: { brandName: "Test" },
     } as unknown as CustomRequest<unknown>;
 
-    await controller.createNewBrandMaster(mockRequest, mockResponse as Response);
+    await controller.createNewBrandMaster(
+      mockRequest,
+      mockResponse as Response,
+    );
 
     expect(mockService.createNewBrandMaster).toHaveBeenCalledWith({
       brandName: "Test",

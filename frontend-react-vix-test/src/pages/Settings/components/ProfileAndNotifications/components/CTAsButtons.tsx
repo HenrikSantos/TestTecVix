@@ -36,12 +36,7 @@ export const CTAsButtons = () => {
     role,
     idBrand,
   } = useZUserProfile();
-  const {
-    emailContact,
-    smsContact,
-    timezone,
-    setBrandInfo,
-  } = useZBrandInfo();
+  const { emailContact, smsContact, timezone, setBrandInfo } = useZBrandInfo();
 
   interface UserUpdatePayload {
     fullName: string;

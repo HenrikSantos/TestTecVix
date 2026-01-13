@@ -9,7 +9,10 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ToastContainer theme="colored" />
-      <RouterProvider router={appRoutes} future={{ v7_startTransition: true }} />
+      <RouterProvider
+        router={appRoutes}
+        future={{ v7_startTransition: true }}
+      />
     </QueryClientProvider>
   );
 };

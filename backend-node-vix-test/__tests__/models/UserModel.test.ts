@@ -108,9 +108,10 @@ describe("UserModel", () => {
   });
 
   it("createUser should apply defaults and convert contractDate", async () => {
-    prismaMock.user.create.mockResolvedValueOnce(
-      { idUser: "user-1", username: "john" } as any,
-    );
+    prismaMock.user.create.mockResolvedValueOnce({
+      idUser: "user-1",
+      username: "john",
+    } as any);
 
     await model.createUser({
       username: "john",

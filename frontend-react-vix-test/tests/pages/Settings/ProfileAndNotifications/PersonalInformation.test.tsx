@@ -70,9 +70,12 @@ vi.mock("../../../../src/icons/EditCirclePencilIcon", () => ({
   EditCirclePencilIcon: () => <span />,
 }));
 
-vi.mock("../../../../src/pages/Settings/components/ProfileAndNotifications/components/PerfilPhotoUpload", () => ({
-  PerfilPhotoUpload: () => <div data-testid="perfil-photo-upload" />,
-}));
+vi.mock(
+  "../../../../src/pages/Settings/components/ProfileAndNotifications/components/PerfilPhotoUpload",
+  () => ({
+    PerfilPhotoUpload: () => <div data-testid="perfil-photo-upload" />,
+  }),
+);
 
 vi.mock("../../../../src/components/Inputs/InputLabelAndFeedback", () => ({
   InputLabelAndFeedback: ({
@@ -126,12 +129,9 @@ describe("PersonalInformation", () => {
 
     mockSetFormProfileNotifications.mockClear();
 
-    fireEvent.change(
-      screen.getByTestId("input-(00) 0000-0000"),
-      {
-        target: { value: "11999999999" },
-      },
-    );
+    fireEvent.change(screen.getByTestId("input-(00) 0000-0000"), {
+      target: { value: "11999999999" },
+    });
 
     expect(mockMaskPhone).toHaveBeenCalledWith("11999999999");
     expect(mockSetFormProfileNotifications).toHaveBeenCalledWith(

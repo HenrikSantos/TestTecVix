@@ -133,7 +133,9 @@ describe("BrandMasterService", () => {
     it("should throw when brand master not found", async () => {
       mockGetById.mockResolvedValue(null);
 
-      await expect(brandMasterService.deleteBrandMaster(1)).rejects.toBeTruthy();
+      await expect(
+        brandMasterService.deleteBrandMaster(1),
+      ).rejects.toBeTruthy();
     });
 
     it("should delete when brand master exists", async () => {

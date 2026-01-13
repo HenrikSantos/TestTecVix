@@ -62,7 +62,8 @@ const {
   deleteBrandMaster,
 } = (jest.requireMock("../../src/controllers/BrandMasterController") as any)
   .__mocks;
-const { authUser } = (jest.requireMock("../../src/auth/authUser") as any).__mocks;
+const { authUser } = (jest.requireMock("../../src/auth/authUser") as any)
+  .__mocks;
 const { isAdmin } = (jest.requireMock("../../src/auth/isAdmin") as any).__mocks;
 const { isManagerOrIsAdmin } = (
   jest.requireMock("../../src/auth/isManagerOrIsAdmin") as any

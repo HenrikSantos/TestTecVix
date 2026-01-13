@@ -54,10 +54,10 @@ describe("VMService", () => {
 
   it("createNewVM should forbid member users", async () => {
     await expect(
-      vmService.createNewVM(
-        { vCPU: 1, ram: 1, disk: 20 },
-        { ...baseUser, role: "member" } as any,
-      ),
+      vmService.createNewVM({ vCPU: 1, ram: 1, disk: 20 }, {
+        ...baseUser,
+        role: "member",
+      } as any),
     ).rejects.toBeInstanceOf(AppError);
   });
 
@@ -87,11 +87,10 @@ describe("VMService", () => {
 
   it("updateVM should forbid member users", async () => {
     await expect(
-      vmService.updateVM(
-        1,
-        { vmName: "Updated" },
-        { ...baseUser, role: "member" } as any,
-      ),
+      vmService.updateVM(1, { vmName: "Updated" }, {
+        ...baseUser,
+        role: "member",
+      } as any),
     ).rejects.toMatchObject({ status: STATUS_CODE.FORBIDDEN });
   });
 
@@ -107,11 +106,7 @@ describe("VMService", () => {
     mockGetById.mockResolvedValue({ idVM: 1, idBrandMaster: 1 });
     mockUpdateVM.mockResolvedValue({ idVM: 1, vmName: "Updated" });
 
-    const result = await vmService.updateVM(
-      1,
-      { vmName: "Updated" },
-      baseUser,
-    );
+    const result = await vmService.updateVM(1, { vmName: "Updated" }, baseUser);
 
     expect(mockUpdateVM).toHaveBeenCalledWith(1, { vmName: "Updated" });
     expect(result).toEqual({ idVM: 1, vmName: "Updated" });

@@ -47,15 +47,11 @@ jest.mock("../../src/auth/isSelfOrIsManagerOrIsAdm", () => {
   return { isSelfOrIsManagerOrIsAdm, __mocks: { isSelfOrIsManagerOrIsAdm } };
 });
 
-const {
-  login,
-  createUser,
-  listAll,
-  getById,
-  updateUser,
-  deleteUser,
-} = (jest.requireMock("../../src/controllers/UserController") as any).__mocks;
-const { authUser } = (jest.requireMock("../../src/auth/authUser") as any).__mocks;
+const { login, createUser, listAll, getById, updateUser, deleteUser } = (
+  jest.requireMock("../../src/controllers/UserController") as any
+).__mocks;
+const { authUser } = (jest.requireMock("../../src/auth/authUser") as any)
+  .__mocks;
 const { isAdmin } = (jest.requireMock("../../src/auth/isAdmin") as any).__mocks;
 const { isSelfOrIsManagerOrIsAdm } = (
   jest.requireMock("../../src/auth/isSelfOrIsManagerOrIsAdm") as any

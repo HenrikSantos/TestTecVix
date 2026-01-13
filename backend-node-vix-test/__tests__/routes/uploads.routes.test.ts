@@ -33,12 +33,9 @@ jest.mock("../../src/controllers/BucketController", () => {
   };
 });
 
-const {
-  getFileInBucketByObjectName,
-  getFileByObjectName,
-  uploadFile,
-} = (jest.requireMock("../../src/controllers/BucketController") as any)
-  .__mocks;
+const { getFileInBucketByObjectName, getFileByObjectName, uploadFile } = (
+  jest.requireMock("../../src/controllers/BucketController") as any
+).__mocks;
 
 const BASE_PATH = API_VERSION.V1 + ROOT_PATH.UPLOADS;
 const UPLOAD_BASE_PATH = API_VERSION.V1 + "/upload";

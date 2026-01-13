@@ -98,9 +98,9 @@ describe("BrandMasterModel", () => {
   });
 
   it("createNewBrandMaster should create brand master", async () => {
-    prismaMock.brandMaster.create.mockResolvedValueOnce(
-      { idBrandMaster: 1 } as any,
-    );
+    prismaMock.brandMaster.create.mockResolvedValueOnce({
+      idBrandMaster: 1,
+    } as any);
 
     await model.createNewBrandMaster({
       brandName: "Test",
@@ -124,9 +124,9 @@ describe("BrandMasterModel", () => {
   });
 
   it("updateBrandMaster should update with updatedAt", async () => {
-    prismaMock.brandMaster.update.mockResolvedValueOnce(
-      { idBrandMaster: 1 } as any,
-    );
+    prismaMock.brandMaster.update.mockResolvedValueOnce({
+      idBrandMaster: 1,
+    } as any);
 
     await model.updateBrandMaster(1, {
       brandName: "Updated",
@@ -153,9 +153,9 @@ describe("BrandMasterModel", () => {
   });
 
   it("deleteBrandMaster should mark as deleted", async () => {
-    prismaMock.brandMaster.update.mockResolvedValueOnce(
-      { idBrandMaster: 1 } as any,
-    );
+    prismaMock.brandMaster.update.mockResolvedValueOnce({
+      idBrandMaster: 1,
+    } as any);
 
     await model.deleteBrandMaster(1);
 

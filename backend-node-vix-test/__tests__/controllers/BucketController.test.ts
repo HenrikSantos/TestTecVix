@@ -31,15 +31,10 @@ describe("BucketController", () => {
       params: { objectName: "file.txt" },
     } as unknown as CustomRequest<unknown>;
 
-    await controller.getFileInBucketByObjectName(
-      req,
-      res as Response,
-    );
+    await controller.getFileInBucketByObjectName(req, res as Response);
 
     expect(res.sendFile).toHaveBeenCalledWith(
-      expect.stringContaining(
-        `${path.sep}uploads${path.sep}file.txt`,
-      ),
+      expect.stringContaining(`${path.sep}uploads${path.sep}file.txt`),
     );
   });
 
@@ -79,10 +74,7 @@ describe("BucketController", () => {
 
     await controller.uploadFile(req, res as Response);
 
-    expect(bucketService.uploadFile).toHaveBeenCalledWith(
-      "bucket",
-      req.file,
-    );
+    expect(bucketService.uploadFile).toHaveBeenCalledWith("bucket", req.file);
     expect(res.status).toHaveBeenCalledWith(STATUS_CODE.OK);
     expect(res.json).toHaveBeenCalledWith({ url: "http://file" });
   });

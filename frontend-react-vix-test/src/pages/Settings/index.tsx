@@ -37,8 +37,7 @@ export const SettingsPage = () => {
   const tabList = useMemo(() => {
     const list = [];
 
-    const canSeeWhiteLabel =
-      !!user.idBrand && (user.role === "admin");
+    const canSeeWhiteLabel = !!user.idBrand && user.role === "admin";
 
     if (canSeeWhiteLabel) {
       list.push({
