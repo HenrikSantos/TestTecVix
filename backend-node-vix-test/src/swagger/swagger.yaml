@@ -30,7 +30,7 @@ paths:
                 location: "Brasil"
                 city: "Mogi das Cruzes"
                 emailContact: "cds@upix.tech"
-                smsContact: "1120001001"
+                smsContact: "(11) 20001-001"
                 state: "SP"
                 street: "R. Gertrúdes da Conceição Cabral, 142"
                 placeNumber: "sala 1108"
@@ -447,6 +447,15 @@ paths:
                 password:
                   type: string
                   description: Nova senha
+                fullName:
+                  type: string
+                  description: Nome completo do usuário
+                userPhoneNumber:
+                  type: string
+                  description: Número de telefone do usuário
+                profileImgUrl:
+                  type: string
+                  description: URL da imagem de perfil
                 role:
                   type: string
                   enum: [admin, manager, member]
@@ -457,6 +466,9 @@ paths:
             example:
               username: "adminatualizado"
               email: "admin.novo@vituax.com"
+              fullName: "Admin Atualizado Silva"
+              userPhoneNumber: "11988887777"
+              profileImgUrl: "https://exemplo.com/foto.png"
       responses:
         "200":
           description: Atualizado com sucesso
