@@ -1,4 +1,5 @@
 import http from "http";
+import type { Socket } from "net";
 import { PassThrough } from "stream";
 import { app } from "../src/app";
 
@@ -9,9 +10,9 @@ type RequestOptions = {
   headers?: Record<string, string>;
 };
 
-type ResponseData = {
+type ResponseData<TBody = unknown> = {
   status: number;
-  body: unknown;
+  body: TBody;
   text: string;
   headers: http.OutgoingHttpHeaders;
 };
@@ -21,8 +22,8 @@ type MockSocket = PassThrough & {
   readable: boolean;
   remoteAddress: string;
   remotePort: number;
-  destroy: () => void;
-  setTimeout: () => MockSocket;
+  destroy: (error?: Error) => MockSocket;
+  setTimeout: (timeout?: number, callback?: () => void) => MockSocket;
   cork: () => void;
   uncork: () => void;
 };
@@ -33,22 +34,22 @@ const createSocket = () => {
   socket.readable = true;
   socket.remoteAddress = "127.0.0.1";
   socket.remotePort = 0;
-  socket.destroy = () => {};
+  socket.destroy = () => socket;
   socket.setTimeout = () => socket;
   socket.cork = () => {};
   socket.uncork = () => {};
   return socket;
 };
 
-export const appRequest = async ({
+export const appRequest = async <TBody = unknown>({
   method,
   path,
   body,
   headers = {},
-}: RequestOptions): Promise<ResponseData> => {
+}: RequestOptions): Promise<ResponseData<TBody>> => {
   return new Promise((resolve, reject) => {
     const socket = createSocket();
-    const req = new http.IncomingMessage(socket);
+    const req = new http.IncomingMessage(socket as unknown as Socket);
     req.method = method;
     req.url = path;
     req.headers = { ...headers };
@@ -63,7 +64,7 @@ export const appRequest = async ({
 
     const res = new http.ServerResponse(req);
     const resSocket = createSocket();
-    res.assignSocket(resSocket);
+    res.assignSocket(resSocket as unknown as Socket);
 
     const chunks: Buffer[] = [];
     const originalWrite: http.ServerResponse["write"] = res.write.bind(res);
@@ -104,7 +105,7 @@ export const appRequest = async ({
       }
       resolve({
         status: res.statusCode,
-        body: parsed,
+        body: parsed as TBody,
         text,
         headers: res.getHeaders(),
       });

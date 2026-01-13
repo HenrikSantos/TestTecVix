@@ -46,13 +46,23 @@ const mockVM = {
   },
 };
 
+type VMListResponse = {
+  result: typeof VMListMock;
+  totalCount: number;
+};
+
+type VMResponse = typeof mockVM | null;
+
 describe("Testing VM API - listAll", () => {
   it("should return a list of VMs", async () => {
     // @ts-ignore
     prismaMock.vM.findMany.mockResolvedValue(VMListMock);
     prismaMock.vM.count.mockResolvedValue(2);
 
-    const response = await appRequest({ method: "GET", path: BASE_PATH });
+    const response = await appRequest<VMListResponse>({
+      method: "GET",
+      path: BASE_PATH,
+    });
 
     expect(response.status).toBe(200);
     expect(response.body.result).toHaveLength(2);
@@ -63,7 +73,10 @@ describe("Testing VM API - listAll", () => {
     prismaMock.vM.findMany.mockResolvedValue([]);
     prismaMock.vM.count.mockResolvedValue(0);
 
-    const response = await appRequest({ method: "GET", path: BASE_PATH });
+    const response = await appRequest<VMListResponse>({
+      method: "GET",
+      path: BASE_PATH,
+    });
 
     expect(response.status).toBe(200);
     expect(response.body.result).toHaveLength(0);
@@ -74,7 +87,7 @@ describe("Testing VM API - listAll", () => {
     prismaMock.vM.findMany.mockResolvedValue([]);
     prismaMock.vM.count.mockResolvedValue(0);
 
-    const response = await appRequest({
+    const response = await appRequest<VMListResponse>({
       method: "GET",
       path: `${BASE_PATH}?status=RUNNING`,
     });
@@ -87,7 +100,7 @@ describe("Testing VM API - listAll", () => {
     prismaMock.vM.findMany.mockResolvedValue([]);
     prismaMock.vM.count.mockResolvedValue(0);
 
-    const response = await appRequest({
+    const response = await appRequest<VMListResponse>({
       method: "GET",
       path: `${BASE_PATH}?search=test`,
     });
@@ -102,7 +115,7 @@ describe("Testing VM API - getById", () => {
     // @ts-ignore
     prismaMock.vM.findUnique.mockResolvedValue(mockVM);
 
-    const response = await appRequest({
+    const response = await appRequest<VMResponse>({
       method: "GET",
       path: `${BASE_PATH}/1`,
     });
@@ -115,7 +128,7 @@ describe("Testing VM API - getById", () => {
   it("should return null when VM not found", async () => {
     prismaMock.vM.findUnique.mockResolvedValue(null);
 
-    const response = await appRequest({
+    const response = await appRequest<VMResponse>({
       method: "GET",
       path: `${BASE_PATH}/999`,
     });
@@ -133,7 +146,7 @@ describe("Testing VM API - updateVM", () => {
     // @ts-ignore
     prismaMock.vM.update.mockResolvedValue(updatedVM);
 
-    const response = await appRequest({
+    const response = await appRequest<VMResponse>({
       method: "PUT",
       path: `${BASE_PATH}/1`,
       body: { vmName: "Updated VM Name" },
@@ -150,7 +163,7 @@ describe("Testing VM API - updateVM", () => {
     // @ts-ignore
     prismaMock.vM.update.mockResolvedValue(stoppedVM);
 
-    const response = await appRequest({
+    const response = await appRequest<VMResponse>({
       method: "PUT",
       path: `${BASE_PATH}/1`,
       body: { status: "STOPPED" },
@@ -181,7 +194,7 @@ describe("Testing VM API - deleteVM", () => {
     // @ts-ignore
     prismaMock.vM.update.mockResolvedValue(deletedVM);
 
-    const response = await appRequest({
+    const response = await appRequest<VMResponse>({
       method: "DELETE",
       path: `${BASE_PATH}/1`,
     });
@@ -193,7 +206,7 @@ describe("Testing VM API - deleteVM", () => {
   it("should return 404 when VM not found", async () => {
     prismaMock.vM.findUnique.mockResolvedValue(null);
 
-    const response = await appRequest({
+    const response = await appRequest<VMResponse>({
       method: "DELETE",
       path: `${BASE_PATH}/999`,
     });
