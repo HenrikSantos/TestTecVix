@@ -260,6 +260,7 @@ label[data-shrink=false]+.MuiInputBase-formControl .emotion-3:focus::-ms-input-p
             class="emotion-5"
           >
             <span
+              aria-hidden="true"
               class="notranslate"
             >
               ​

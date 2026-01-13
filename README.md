@@ -102,11 +102,11 @@ Antes de enviar, certifique-se de que:
 - [x] O código está no **seu repositório pessoal** do GitHub
 - [x] O repositório está configurado como **público** (não privado)
 - [x] A branch `main` contém o projeto original
-- [ ] A branch `release` contém todas as suas modificações
-- [ ] Existe um Pull Request da `release` para a `main` **no seu repositório**
-- [ ] O README está atualizado com suas modificações
-- [ ] O projeto está funcionando corretamente
-- [ ] As credenciais de teste estão documentadas
+- [x] A branch `release` contém todas as suas modificações
+- [x] Existe um Pull Request da `release` para a `main` **no seu repositório**
+- [x] O README está atualizado com suas modificações
+- [x] O projeto está funcionando corretamente
+- [x] As credenciais de teste estão documentadas
 
 > **🎯 LEMBRE-SE**: O link que você enviará deve ser do formato:
 > `https://github.com/SEU-USUARIO/TestTecVix`
@@ -592,15 +592,15 @@ git commit -m "docs: atualiza README com credenciais de teste"
 
 #### Testes
 
-- [ ] Implementar **testes de snapshot**
-- [ ] Implementar **testes unitários**
-- [ ] Implementar **testes de integração**
-- [ ] Implementar **testes E2E (end-to-end)**
+- [x] Implementar **testes de snapshot**
+- [x] Implementar **testes unitários**
+- [x] Implementar **testes de integração**
+- [x] Implementar **testes E2E (end-to-end)**
 
 #### Documentação Swagger
 
-- [ ] Fazer a **documentação Swagger da API**
-- [ ] Verificar a rota `/docs` na API para visualizar a documentação
+- [x] Fazer a **documentação Swagger da API**
+- [x] Verificar a rota `/docs` na API para visualizar a documentação
 
 ---
 

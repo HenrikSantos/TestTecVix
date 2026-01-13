@@ -56,7 +56,7 @@ describe("useRegister Hook", () => {
       confirmPassword: "password123",
     };
 
-    it("deve registrar usuario com sucesso", async () => {
+    it("should register user successfully", async () => {
       mockPost.mockResolvedValue({
         error: false,
         data: { idUser: 1, username: "newuser" },
@@ -80,7 +80,7 @@ describe("useRegister Hook", () => {
       expect(mockNavigate).toHaveBeenCalledWith("/login");
     });
 
-    it("deve mostrar erro quando username esta vazio", async () => {
+    it("should show error when username is empty", async () => {
       const { result } = renderHook(() => useRegister());
 
       await act(async () => {
@@ -94,7 +94,7 @@ describe("useRegister Hook", () => {
       expect(mockPost).not.toHaveBeenCalled();
     });
 
-    it("deve mostrar erro quando email e invalido", async () => {
+    it("should show error when email is invalid", async () => {
       const { result } = renderHook(() => useRegister());
 
       await act(async () => {
@@ -108,7 +108,7 @@ describe("useRegister Hook", () => {
       expect(mockPost).not.toHaveBeenCalled();
     });
 
-    it("deve mostrar erro quando email esta vazio", async () => {
+    it("should show error when email is empty", async () => {
       const { result } = renderHook(() => useRegister());
 
       await act(async () => {
@@ -122,7 +122,7 @@ describe("useRegister Hook", () => {
       expect(mockPost).not.toHaveBeenCalled();
     });
 
-    it("deve mostrar erro quando senha esta vazia", async () => {
+    it("should show error when password is empty", async () => {
       const { result } = renderHook(() => useRegister());
 
       await act(async () => {
@@ -136,7 +136,7 @@ describe("useRegister Hook", () => {
       expect(mockPost).not.toHaveBeenCalled();
     });
 
-    it("deve mostrar erro quando senhas nao conferem", async () => {
+    it("should show error when passwords do not match", async () => {
       const { result } = renderHook(() => useRegister());
 
       await act(async () => {
@@ -150,7 +150,7 @@ describe("useRegister Hook", () => {
       expect(mockPost).not.toHaveBeenCalled();
     });
 
-    it("deve mostrar erro quando API retorna erro", async () => {
+    it("should show error when API returns an error", async () => {
       mockPost.mockResolvedValue({
         error: true,
         message: "Email already exists",
@@ -166,7 +166,7 @@ describe("useRegister Hook", () => {
       expect(mockNavigate).not.toHaveBeenCalled();
     });
 
-    it("deve enviar idBrandMaster do store", async () => {
+    it("should send idBrandMaster from store", async () => {
       mockPost.mockResolvedValue({ error: false, data: {} });
 
       const { result } = renderHook(() => useRegister());
@@ -184,7 +184,7 @@ describe("useRegister Hook", () => {
       );
     });
 
-    it("deve redirecionar para /login apos registro bem-sucedido", async () => {
+    it("should redirect to /login after successful registration", async () => {
       mockPost.mockResolvedValue({ error: false, data: {} });
 
       const { result } = renderHook(() => useRegister());
@@ -196,7 +196,7 @@ describe("useRegister Hook", () => {
       expect(mockNavigate).toHaveBeenCalledWith("/login");
     });
 
-    it("nao deve redirecionar quando registro falha", async () => {
+    it("should not redirect when registration fails", async () => {
       mockPost.mockResolvedValue({
         error: true,
         message: "Registration failed",
@@ -212,8 +212,8 @@ describe("useRegister Hook", () => {
     });
   });
 
-  describe("validacao de email", () => {
-    it("deve aceitar email valido com dominio comum", async () => {
+  describe("email validation", () => {
+    it("should accept valid email with common domain", async () => {
       mockPost.mockResolvedValue({ error: false, data: {} });
 
       const { result } = renderHook(() => useRegister());
@@ -230,7 +230,7 @@ describe("useRegister Hook", () => {
       expect(mockPost).toHaveBeenCalled();
     });
 
-    it("deve aceitar email valido com subdominio", async () => {
+    it("should accept valid email with subdomain", async () => {
       mockPost.mockResolvedValue({ error: false, data: {} });
 
       const { result } = renderHook(() => useRegister());
@@ -247,7 +247,7 @@ describe("useRegister Hook", () => {
       expect(mockPost).toHaveBeenCalled();
     });
 
-    it("deve rejeitar email sem @", async () => {
+    it("should reject email without @", async () => {
       const { result } = renderHook(() => useRegister());
 
       await act(async () => {
@@ -263,7 +263,7 @@ describe("useRegister Hook", () => {
       expect(mockPost).not.toHaveBeenCalled();
     });
 
-    it("deve rejeitar email sem dominio", async () => {
+    it("should reject email without domain", async () => {
       const { result } = renderHook(() => useRegister());
 
       await act(async () => {

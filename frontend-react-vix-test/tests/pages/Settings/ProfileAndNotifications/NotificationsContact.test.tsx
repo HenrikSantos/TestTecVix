@@ -1,6 +1,7 @@
 import React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
+import "@testing-library/jest-dom/vitest";
 import { NotificationsContact } from "../../../../src/pages/Settings/components/ProfileAndNotifications/components/NotificationsContact";
 
 const mockSetFormProfileNotifications = vi.fn();
@@ -157,17 +158,14 @@ describe("NotificationsContact", () => {
     mockRole = "admin";
   });
 
-  it("aplica mascara de telefone e placeholder para admin", () => {
+  it("should apply phone mask and placeholder for admin", () => {
     render(<NotificationsContact />);
 
     mockSetFormProfileNotifications.mockClear();
 
-    fireEvent.change(
-      screen.getByTestId("input-(00) 00000-0000"),
-      {
-        target: { value: "11999999999" },
-      },
-    );
+    fireEvent.change(screen.getByTestId("input-(00) 00000-0000"), {
+      target: { value: "11999999999" },
+    });
 
     expect(mockMaskPhone).toHaveBeenCalledWith("11999999999");
     expect(mockSetFormProfileNotifications).toHaveBeenCalledWith(
@@ -182,7 +180,7 @@ describe("NotificationsContact", () => {
     );
   });
 
-  it("desabilita campos quando nao e admin", () => {
+  it("should disable fields when user is not admin", () => {
     mockRole = "member";
     render(<NotificationsContact />);
 

@@ -1,8 +1,7 @@
-import request from "supertest";
-import { app } from "../../src/app";
 import { API_VERSION, ROOT_PATH } from "../../src/constants/basePathRoutes";
 import { prismaMock } from "../singleton";
 import { VMListMock } from "../__mocks__/VMList";
+import { appRequest } from "../../test-utils/appRequest";
 
 const BASE_PATH = API_VERSION.V1 + ROOT_PATH.VM;
 
@@ -53,7 +52,7 @@ describe("Testing VM API - listAll", () => {
     prismaMock.vM.findMany.mockResolvedValue(VMListMock);
     prismaMock.vM.count.mockResolvedValue(2);
 
-    const response = await request(app).get(BASE_PATH);
+    const response = await appRequest({ method: "GET", path: BASE_PATH });
 
     expect(response.status).toBe(200);
     expect(response.body.result).toHaveLength(2);
@@ -64,7 +63,7 @@ describe("Testing VM API - listAll", () => {
     prismaMock.vM.findMany.mockResolvedValue([]);
     prismaMock.vM.count.mockResolvedValue(0);
 
-    const response = await request(app).get(BASE_PATH);
+    const response = await appRequest({ method: "GET", path: BASE_PATH });
 
     expect(response.status).toBe(200);
     expect(response.body.result).toHaveLength(0);
@@ -75,7 +74,10 @@ describe("Testing VM API - listAll", () => {
     prismaMock.vM.findMany.mockResolvedValue([]);
     prismaMock.vM.count.mockResolvedValue(0);
 
-    const response = await request(app).get(`${BASE_PATH}?status=RUNNING`);
+    const response = await appRequest({
+      method: "GET",
+      path: `${BASE_PATH}?status=RUNNING`,
+    });
 
     expect(response.status).toBe(200);
     expect(prismaMock.vM.findMany).toHaveBeenCalled();
@@ -85,7 +87,10 @@ describe("Testing VM API - listAll", () => {
     prismaMock.vM.findMany.mockResolvedValue([]);
     prismaMock.vM.count.mockResolvedValue(0);
 
-    const response = await request(app).get(`${BASE_PATH}?search=test`);
+    const response = await appRequest({
+      method: "GET",
+      path: `${BASE_PATH}?search=test`,
+    });
 
     expect(response.status).toBe(200);
     expect(prismaMock.vM.findMany).toHaveBeenCalled();
@@ -97,7 +102,10 @@ describe("Testing VM API - getById", () => {
     // @ts-ignore
     prismaMock.vM.findUnique.mockResolvedValue(mockVM);
 
-    const response = await request(app).get(`${BASE_PATH}/1`);
+    const response = await appRequest({
+      method: "GET",
+      path: `${BASE_PATH}/1`,
+    });
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("idVM", 1);
@@ -107,7 +115,10 @@ describe("Testing VM API - getById", () => {
   it("should return null when VM not found", async () => {
     prismaMock.vM.findUnique.mockResolvedValue(null);
 
-    const response = await request(app).get(`${BASE_PATH}/999`);
+    const response = await appRequest({
+      method: "GET",
+      path: `${BASE_PATH}/999`,
+    });
 
     expect(response.status).toBe(200);
     expect(response.body).toBeNull();
@@ -122,9 +133,11 @@ describe("Testing VM API - updateVM", () => {
     // @ts-ignore
     prismaMock.vM.update.mockResolvedValue(updatedVM);
 
-    const response = await request(app)
-      .put(`${BASE_PATH}/1`)
-      .send({ vmName: "Updated VM Name" });
+    const response = await appRequest({
+      method: "PUT",
+      path: `${BASE_PATH}/1`,
+      body: { vmName: "Updated VM Name" },
+    });
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("vmName", "Updated VM Name");
@@ -137,9 +150,11 @@ describe("Testing VM API - updateVM", () => {
     // @ts-ignore
     prismaMock.vM.update.mockResolvedValue(stoppedVM);
 
-    const response = await request(app)
-      .put(`${BASE_PATH}/1`)
-      .send({ status: "STOPPED" });
+    const response = await appRequest({
+      method: "PUT",
+      path: `${BASE_PATH}/1`,
+      body: { status: "STOPPED" },
+    });
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("status", "STOPPED");
@@ -148,9 +163,11 @@ describe("Testing VM API - updateVM", () => {
   it("should return 404 when VM not found", async () => {
     prismaMock.vM.findUnique.mockResolvedValue(null);
 
-    const response = await request(app)
-      .put(`${BASE_PATH}/999`)
-      .send({ vmName: "test" });
+    const response = await appRequest({
+      method: "PUT",
+      path: `${BASE_PATH}/999`,
+      body: { vmName: "test" },
+    });
 
     expect(response.status).toBe(404);
   });
@@ -164,7 +181,10 @@ describe("Testing VM API - deleteVM", () => {
     // @ts-ignore
     prismaMock.vM.update.mockResolvedValue(deletedVM);
 
-    const response = await request(app).delete(`${BASE_PATH}/1`);
+    const response = await appRequest({
+      method: "DELETE",
+      path: `${BASE_PATH}/1`,
+    });
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("deletedAt");
@@ -173,7 +193,10 @@ describe("Testing VM API - deleteVM", () => {
   it("should return 404 when VM not found", async () => {
     prismaMock.vM.findUnique.mockResolvedValue(null);
 
-    const response = await request(app).delete(`${BASE_PATH}/999`);
+    const response = await appRequest({
+      method: "DELETE",
+      path: `${BASE_PATH}/999`,
+    });
 
     expect(response.status).toBe(404);
   });

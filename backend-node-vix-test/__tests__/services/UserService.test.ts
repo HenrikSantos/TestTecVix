@@ -59,7 +59,7 @@ describe("UserService", () => {
   });
 
   describe("getById", () => {
-    it("deve retornar usuario quando encontrado", async () => {
+    it("should return user when found", async () => {
       jest.spyOn(UserModel.prototype, "getById").mockResolvedValue(mockUser);
 
       const result = await userService.getById("user-123");
@@ -68,12 +68,12 @@ describe("UserService", () => {
       expect(result).toEqual(mockUser);
     });
 
-    it("deve lancar erro com status NOT_FOUND quando usuario nao existe", async () => {
+    it("should throw NOT_FOUND when user does not exist", async () => {
       jest.spyOn(UserModel.prototype, "getById").mockResolvedValue(null);
 
       try {
         await userService.getById("invalid-id");
-        fail("Deveria ter lancado erro");
+        fail("Expected to throw an error");
       } catch (error) {
         expect(error).toBeInstanceOf(AppError);
         expect((error as AppError).status).toBe(STATUS_CODE.NOT_FOUND);
@@ -81,7 +81,7 @@ describe("UserService", () => {
       }
     });
 
-    it("deve lancar erro quando usuario pertence a outro brand", async () => {
+    it("should throw when user belongs to another brand", async () => {
       jest.spyOn(UserModel.prototype, "getById").mockResolvedValue({
         ...mockUser,
         idBrandMaster: 2,
@@ -91,7 +91,7 @@ describe("UserService", () => {
         await userService.getById("user-123", {
           idBrandMaster: 1,
         } as any);
-        fail("Deveria ter lancado erro");
+        fail("Expected to throw an error");
       } catch (error) {
         expect(error).toBeInstanceOf(AppError);
         expect((error as AppError).status).toBe(STATUS_CODE.FORBIDDEN);
@@ -100,7 +100,7 @@ describe("UserService", () => {
   });
 
   describe("listAll", () => {
-    it("deve retornar lista de usuarios", async () => {
+    it("should return user list", async () => {
       const mockList = { totalCount: 1, result: [mockUser] };
       jest.spyOn(UserModel.prototype, "listAll").mockResolvedValue(mockList);
 
@@ -110,7 +110,7 @@ describe("UserService", () => {
       expect(result).toEqual(mockList);
     });
 
-    it("deve passar query parameters para o model", async () => {
+    it("should pass query parameters to the model", async () => {
       const mockList = { totalCount: 0, result: [] };
       jest.spyOn(UserModel.prototype, "listAll").mockResolvedValue(mockList);
 
@@ -120,7 +120,7 @@ describe("UserService", () => {
       expect(UserModel.prototype.listAll).toHaveBeenCalled();
     });
 
-    it("deve restringir listAll ao brand do usuario", async () => {
+    it("should restrict listAll to user's brand", async () => {
       const mockList = { totalCount: 0, result: [] };
       jest.spyOn(UserModel.prototype, "listAll").mockResolvedValue(mockList);
 
@@ -144,7 +144,7 @@ describe("UserService", () => {
       (bcrypt.hash as jest.Mock).mockResolvedValue("hashedPassword");
     });
 
-    it("deve criar usuario com sucesso", async () => {
+    it("should create user successfully", async () => {
       jest.spyOn(UserModel.prototype, "getByEmail").mockResolvedValue(null);
       jest.spyOn(UserModel.prototype, "getByUsername").mockResolvedValue(null);
       jest.spyOn(UserModel.prototype, "createUser").mockResolvedValue({
@@ -166,37 +166,36 @@ describe("UserService", () => {
       expect(result).toBeDefined();
     });
 
-    it("deve bloquear criacao para usuarios member", async () => {
+    it("should block creation for member users", async () => {
       try {
         await userService.createUser(validUserData, { role: "member" } as any);
-        fail("Deveria ter lancado erro");
+        fail("Expected to throw an error");
       } catch (error) {
         expect(error).toBeInstanceOf(AppError);
         expect((error as AppError).status).toBe(STATUS_CODE.FORBIDDEN);
       }
     });
 
-    it("deve sobrescrever idBrandMaster quando usuario possui brand", async () => {
+    it("should override idBrandMaster when user has brand", async () => {
       jest.spyOn(UserModel.prototype, "getByEmail").mockResolvedValue(null);
       jest.spyOn(UserModel.prototype, "getByUsername").mockResolvedValue(null);
       jest.spyOn(UserModel.prototype, "createUser").mockResolvedValue(mockUser);
 
-      await userService.createUser(
-        { ...validUserData, idBrandMaster: 999 },
-        { idBrandMaster: 1 } as any,
-      );
+      await userService.createUser({ ...validUserData, idBrandMaster: 999 }, {
+        idBrandMaster: 1,
+      } as any);
 
       expect(UserModel.prototype.createUser).toHaveBeenCalledWith(
         expect.objectContaining({ idBrandMaster: 1 }),
       );
     });
 
-    it("deve lancar erro quando email ja existe", async () => {
+    it("should throw when email already exists", async () => {
       jest.spyOn(UserModel.prototype, "getByEmail").mockResolvedValue(mockUser);
 
       try {
         await userService.createUser(validUserData);
-        fail("Deveria ter lancado erro");
+        fail("Expected to throw an error");
       } catch (error) {
         expect(error).toBeInstanceOf(AppError);
         expect((error as AppError).status).toBe(STATUS_CODE.CONFLICT);
@@ -206,7 +205,7 @@ describe("UserService", () => {
       }
     });
 
-    it("deve lancar erro quando username ja existe", async () => {
+    it("should throw when username already exists", async () => {
       jest.spyOn(UserModel.prototype, "getByEmail").mockResolvedValue(null);
       jest
         .spyOn(UserModel.prototype, "getByUsername")
@@ -214,7 +213,7 @@ describe("UserService", () => {
 
       try {
         await userService.createUser(validUserData);
-        fail("Deveria ter lancado erro");
+        fail("Expected to throw an error");
       } catch (error) {
         expect(error).toBeInstanceOf(AppError);
         expect((error as AppError).status).toBe(STATUS_CODE.CONFLICT);
@@ -224,7 +223,7 @@ describe("UserService", () => {
       }
     });
 
-    it("deve fazer hash da senha antes de salvar", async () => {
+    it("should hash password before saving", async () => {
       jest.spyOn(UserModel.prototype, "getByEmail").mockResolvedValue(null);
       jest.spyOn(UserModel.prototype, "getByUsername").mockResolvedValue(null);
       jest.spyOn(UserModel.prototype, "createUser").mockResolvedValue(mockUser);
@@ -240,7 +239,7 @@ describe("UserService", () => {
       username: "updateduser",
     };
 
-    it("deve atualizar usuario com sucesso", async () => {
+    it("should update user successfully", async () => {
       jest.spyOn(UserModel.prototype, "getById").mockResolvedValue(mockUser);
       jest.spyOn(UserModel.prototype, "updateUser").mockResolvedValue({
         ...mockUser,
@@ -254,7 +253,7 @@ describe("UserService", () => {
       expect(result.username).toBe(updateData.username);
     });
 
-    it("deve bloquear member atualizando outro usuario", async () => {
+    it("should block member updating another user", async () => {
       jest.spyOn(UserModel.prototype, "getById").mockResolvedValue(mockUser);
 
       try {
@@ -262,26 +261,26 @@ describe("UserService", () => {
           idUser: "other-user",
           role: "member",
         } as any);
-        fail("Deveria ter lancado erro");
+        fail("Expected to throw an error");
       } catch (error) {
         expect(error).toBeInstanceOf(AppError);
         expect((error as AppError).status).toBe(STATUS_CODE.FORBIDDEN);
       }
     });
 
-    it("deve lancar erro quando usuario nao existe", async () => {
+    it("should throw when user does not exist", async () => {
       jest.spyOn(UserModel.prototype, "getById").mockResolvedValue(null);
 
       try {
         await userService.updateUser("invalid-id", updateData);
-        fail("Deveria ter lancado erro");
+        fail("Expected to throw an error");
       } catch (error) {
         expect(error).toBeInstanceOf(AppError);
         expect((error as AppError).status).toBe(STATUS_CODE.NOT_FOUND);
       }
     });
 
-    it("deve lancar erro quando novo email ja existe", async () => {
+    it("should throw when new email already exists", async () => {
       jest.spyOn(UserModel.prototype, "getById").mockResolvedValue(mockUser);
       jest.spyOn(UserModel.prototype, "getByEmail").mockResolvedValue({
         ...mockUser,
@@ -290,14 +289,14 @@ describe("UserService", () => {
 
       try {
         await userService.updateUser("user-123", { email: "other@email.com" });
-        fail("Deveria ter lancado erro");
+        fail("Expected to throw an error");
       } catch (error) {
         expect(error).toBeInstanceOf(AppError);
         expect((error as AppError).status).toBe(STATUS_CODE.CONFLICT);
       }
     });
 
-    it("deve lancar erro quando novo username ja existe", async () => {
+    it("should throw when new username already exists", async () => {
       jest.spyOn(UserModel.prototype, "getById").mockResolvedValue(mockUser);
       jest.spyOn(UserModel.prototype, "getByUsername").mockResolvedValue({
         ...mockUser,
@@ -306,14 +305,14 @@ describe("UserService", () => {
 
       try {
         await userService.updateUser("user-123", { username: "existinguser" });
-        fail("Deveria ter lancado erro");
+        fail("Expected to throw an error");
       } catch (error) {
         expect(error).toBeInstanceOf(AppError);
         expect((error as AppError).status).toBe(STATUS_CODE.CONFLICT);
       }
     });
 
-    it("deve fazer hash da nova senha ao atualizar", async () => {
+    it("should hash new password on update", async () => {
       jest.spyOn(UserModel.prototype, "getById").mockResolvedValue(mockUser);
       jest.spyOn(UserModel.prototype, "updateUser").mockResolvedValue(mockUser);
       (bcrypt.hash as jest.Mock).mockResolvedValue("newHashedPassword");
@@ -323,7 +322,7 @@ describe("UserService", () => {
       expect(bcrypt.hash).toHaveBeenCalledWith("newpassword123", 10);
     });
 
-    it("nao deve permitir alterar role e status para nao-admin", async () => {
+    it("should not allow non-admin to change role and status", async () => {
       jest.spyOn(UserModel.prototype, "getById").mockResolvedValue(mockUser);
       jest.spyOn(UserModel.prototype, "updateUser").mockResolvedValue(mockUser);
 
@@ -347,15 +346,14 @@ describe("UserService", () => {
       );
     });
 
-    it("nao deve permitir admin com brand alterar idBrandMaster", async () => {
+    it("should not allow admin with brand to change idBrandMaster", async () => {
       jest.spyOn(UserModel.prototype, "getById").mockResolvedValue(mockUser);
       jest.spyOn(UserModel.prototype, "updateUser").mockResolvedValue(mockUser);
 
-      await userService.updateUser(
-        "user-123",
-        { idBrandMaster: 99 },
-        { role: "admin", idBrandMaster: 1 } as any,
-      );
+      await userService.updateUser("user-123", { idBrandMaster: 99 }, {
+        role: "admin",
+        idBrandMaster: 1,
+      } as any);
 
       expect(UserModel.prototype.updateUser).toHaveBeenCalledWith(
         "user-123",
@@ -365,7 +363,7 @@ describe("UserService", () => {
   });
 
   describe("deleteUser", () => {
-    it("deve deletar usuario com sucesso", async () => {
+    it("should delete user successfully", async () => {
       jest.spyOn(UserModel.prototype, "getById").mockResolvedValue(mockUser);
       jest.spyOn(UserModel.prototype, "deleteUser").mockResolvedValue(mockUser);
 
@@ -376,22 +374,22 @@ describe("UserService", () => {
       expect(result).toBeDefined();
     });
 
-    it("deve bloquear delete para manager", async () => {
+    it("should block delete for manager", async () => {
       try {
         await userService.deleteUser("user-123", { role: "manager" } as any);
-        fail("Deveria ter lancado erro");
+        fail("Expected to throw an error");
       } catch (error) {
         expect(error).toBeInstanceOf(AppError);
         expect((error as AppError).status).toBe(STATUS_CODE.FORBIDDEN);
       }
     });
 
-    it("deve lancar erro quando usuario nao existe", async () => {
+    it("should throw when user does not exist", async () => {
       jest.spyOn(UserModel.prototype, "getById").mockResolvedValue(null);
 
       try {
         await userService.deleteUser("invalid-id");
-        fail("Deveria ter lancado erro");
+        fail("Expected to throw an error");
       } catch (error) {
         expect(error).toBeInstanceOf(AppError);
         expect((error as AppError).status).toBe(STATUS_CODE.NOT_FOUND);
@@ -409,7 +407,7 @@ describe("UserService", () => {
       (bcrypt.compare as jest.Mock).mockResolvedValue(true);
     });
 
-    it("deve fazer login com sucesso usando email", async () => {
+    it("should log in successfully using email", async () => {
       jest.spyOn(UserModel.prototype, "getByEmail").mockResolvedValue(mockUser);
       jest
         .spyOn(UserModel.prototype, "updateLastLogin")
@@ -429,7 +427,7 @@ describe("UserService", () => {
       expect(result.user.email).toBe(mockUser.email);
     });
 
-    it("deve fazer login com sucesso usando username", async () => {
+    it("should log in successfully using username", async () => {
       const loginWithUsername = {
         username: "testuser",
         password: "password123",
@@ -449,13 +447,13 @@ describe("UserService", () => {
       expect(result.token).toBeDefined();
     });
 
-    it("deve lancar erro quando usuario nao encontrado", async () => {
+    it("should throw when user is not found", async () => {
       jest.spyOn(UserModel.prototype, "getByEmail").mockResolvedValue(null);
       jest.spyOn(UserModel.prototype, "getByUsername").mockResolvedValue(null);
 
       try {
         await userService.login(loginData);
-        fail("Deveria ter lancado erro");
+        fail("Expected to throw an error");
       } catch (error) {
         expect(error).toBeInstanceOf(AppError);
         expect((error as AppError).status).toBe(STATUS_CODE.UNAUTHORIZED);
@@ -465,13 +463,13 @@ describe("UserService", () => {
       }
     });
 
-    it("deve lancar erro quando senha incorreta", async () => {
+    it("should throw when password is incorrect", async () => {
       jest.spyOn(UserModel.prototype, "getByEmail").mockResolvedValue(mockUser);
       (bcrypt.compare as jest.Mock).mockResolvedValue(false);
 
       try {
         await userService.login(loginData);
-        fail("Deveria ter lancado erro");
+        fail("Expected to throw an error");
       } catch (error) {
         expect(error).toBeInstanceOf(AppError);
         expect((error as AppError).status).toBe(STATUS_CODE.UNAUTHORIZED);
@@ -481,7 +479,7 @@ describe("UserService", () => {
       }
     });
 
-    it("deve atualizar lastLoginDate apos login bem-sucedido", async () => {
+    it("should update lastLoginDate after successful login", async () => {
       jest.spyOn(UserModel.prototype, "getByEmail").mockResolvedValue(mockUser);
       jest
         .spyOn(UserModel.prototype, "updateLastLogin")
@@ -494,7 +492,7 @@ describe("UserService", () => {
       );
     });
 
-    it("deve retornar token JWT valido", async () => {
+    it("should return a valid JWT token", async () => {
       jest.spyOn(UserModel.prototype, "getByEmail").mockResolvedValue(mockUser);
       jest
         .spyOn(UserModel.prototype, "updateLastLogin")
@@ -507,7 +505,7 @@ describe("UserService", () => {
       expect(result.token.split(".")).toHaveLength(3);
     });
 
-    it("nao deve retornar senha no objeto user", async () => {
+    it("should not return password in user object", async () => {
       jest.spyOn(UserModel.prototype, "getByEmail").mockResolvedValue(mockUser);
       jest
         .spyOn(UserModel.prototype, "updateLastLogin")
@@ -518,7 +516,7 @@ describe("UserService", () => {
       expect(result.user).not.toHaveProperty("password");
     });
 
-    it("deve retornar contatos do brandMaster quando existir", async () => {
+    it("should return brandMaster contacts when present", async () => {
       jest.spyOn(UserModel.prototype, "getByEmail").mockResolvedValue(mockUser);
       jest
         .spyOn(UserModel.prototype, "updateLastLogin")

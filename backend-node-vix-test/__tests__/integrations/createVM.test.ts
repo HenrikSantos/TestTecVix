@@ -1,7 +1,6 @@
-import request from "supertest";
 import { prismaMock } from "../singleton";
-import { app } from "../../src/app";
 import { API_VERSION, ROOT_PATH } from "../../src/constants/basePathRoutes";
+import { appRequest } from "../../test-utils/appRequest";
 
 // Mock middlewares
 jest.mock("../../src/auth/authUser", () => ({
@@ -46,7 +45,11 @@ describe("VM Creation Integration", () => {
     // @ts-ignore
     prismaMock.vM.create.mockResolvedValue(mockCreatedVM);
 
-    const response = await request(app).post(BASE_PATH).send(payload);
+    const response = await appRequest({
+      method: "POST",
+      path: BASE_PATH,
+      body: payload,
+    });
 
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty("idVM", 1);
@@ -72,7 +75,11 @@ describe("VM Creation Integration", () => {
     };
 
     // Zod validation should fail before hitting prisma
-    const response = await request(app).post(BASE_PATH).send(payload);
+    const response = await appRequest({
+      method: "POST",
+      path: BASE_PATH,
+      body: payload,
+    });
 
     expect(response.status).toBe(400);
   });

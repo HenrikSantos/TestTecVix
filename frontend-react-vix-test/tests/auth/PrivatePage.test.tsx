@@ -37,8 +37,8 @@ describe("PrivatePage Component", () => {
     mockRole = null;
   });
 
-  describe("usuario nao autenticado", () => {
-    it("deve redirecionar para /login quando token nao existe", async () => {
+  describe("unauthenticated user", () => {
+    it("should redirect to /login when token is missing", async () => {
       mockToken = null;
 
       render(
@@ -52,7 +52,7 @@ describe("PrivatePage Component", () => {
       });
     });
 
-    it("deve resetar estados quando usuario nao tem token", async () => {
+    it("should reset states when user has no token", async () => {
       mockToken = null;
 
       render(
@@ -66,7 +66,7 @@ describe("PrivatePage Component", () => {
       });
     });
 
-    it("deve mostrar skeleton enquanto verifica autenticacao", () => {
+    it("should show skeleton while checking authentication", () => {
       mockToken = null;
 
       render(
@@ -79,8 +79,8 @@ describe("PrivatePage Component", () => {
     });
   });
 
-  describe("usuario autenticado", () => {
-    it("deve renderizar children quando usuario tem token", async () => {
+  describe("authenticated user", () => {
+    it("should render children when user has a token", async () => {
       mockToken = "valid-jwt-token";
       mockRole = "member";
 
@@ -95,7 +95,7 @@ describe("PrivatePage Component", () => {
       });
     });
 
-    it("nao deve redirecionar quando usuario tem token valido", async () => {
+    it("should not redirect when user has a valid token", async () => {
       mockToken = "valid-jwt-token";
       mockRole = "member";
 
@@ -111,8 +111,8 @@ describe("PrivatePage Component", () => {
     });
   });
 
-  describe("restricao onlyAdmin", () => {
-    it("deve permitir acesso quando usuario e admin", async () => {
+  describe("onlyAdmin restriction", () => {
+    it("should allow access when user is admin", async () => {
       mockToken = "valid-jwt-token";
       mockRole = "admin";
 
@@ -127,7 +127,7 @@ describe("PrivatePage Component", () => {
       });
     });
 
-    it("deve redirecionar quando usuario nao e admin", async () => {
+    it("should redirect when user is not admin", async () => {
       mockToken = "valid-jwt-token";
       mockRole = "member";
 
@@ -142,7 +142,7 @@ describe("PrivatePage Component", () => {
       });
     });
 
-    it("deve redirecionar manager quando onlyAdmin e true", async () => {
+    it("should redirect manager when onlyAdmin is true", async () => {
       mockToken = "valid-jwt-token";
       mockRole = "manager";
 
@@ -158,8 +158,8 @@ describe("PrivatePage Component", () => {
     });
   });
 
-  describe("restricao onlyManagerOrAdmin", () => {
-    it("deve permitir acesso quando usuario e admin", async () => {
+  describe("onlyManagerOrAdmin restriction", () => {
+    it("should allow access when user is admin", async () => {
       mockToken = "valid-jwt-token";
       mockRole = "admin";
 
@@ -174,7 +174,7 @@ describe("PrivatePage Component", () => {
       });
     });
 
-    it("deve permitir acesso quando usuario e manager", async () => {
+    it("should allow access when user is manager", async () => {
       mockToken = "valid-jwt-token";
       mockRole = "manager";
 
@@ -189,7 +189,7 @@ describe("PrivatePage Component", () => {
       });
     });
 
-    it("deve redirecionar quando usuario e member", async () => {
+    it("should redirect when user is member", async () => {
       mockToken = "valid-jwt-token";
       mockRole = "member";
 
@@ -205,8 +205,8 @@ describe("PrivatePage Component", () => {
     });
   });
 
-  describe("combinacao de restricoes", () => {
-    it("deve verificar onlyAdmin antes de onlyManagerOrAdmin", async () => {
+  describe("restriction combination", () => {
+    it("should check onlyAdmin before onlyManagerOrAdmin", async () => {
       mockToken = "valid-jwt-token";
       mockRole = "manager";
 
@@ -222,8 +222,8 @@ describe("PrivatePage Component", () => {
     });
   });
 
-  describe("estado de loading", () => {
-    it("deve mostrar skeleton durante verificacao de permissoes", async () => {
+  describe("loading state", () => {
+    it("should show skeleton while checking permissions", async () => {
       mockToken = "valid-jwt-token";
       mockRole = "admin";
 

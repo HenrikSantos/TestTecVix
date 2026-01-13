@@ -70,9 +70,12 @@ vi.mock("../../../../src/icons/EditCirclePencilIcon", () => ({
   EditCirclePencilIcon: () => <span />,
 }));
 
-vi.mock("../../../../src/pages/Settings/components/ProfileAndNotifications/components/PerfilPhotoUpload", () => ({
-  PerfilPhotoUpload: () => <div data-testid="perfil-photo-upload" />,
-}));
+vi.mock(
+  "../../../../src/pages/Settings/components/ProfileAndNotifications/components/PerfilPhotoUpload",
+  () => ({
+    PerfilPhotoUpload: () => <div data-testid="perfil-photo-upload" />,
+  }),
+);
 
 vi.mock("../../../../src/components/Inputs/InputLabelAndFeedback", () => ({
   InputLabelAndFeedback: ({
@@ -108,7 +111,7 @@ describe("PersonalInformation", () => {
     mockUserState = { ...defaultUserState };
   });
 
-  it("inicializa formulario com dados do usuario", () => {
+  it("should initialize form with user data", () => {
     render(<PersonalInformation />);
 
     expect(mockSetFormProfileNotifications).toHaveBeenCalledWith(
@@ -121,17 +124,14 @@ describe("PersonalInformation", () => {
     );
   });
 
-  it("aplica mascara no telefone ao digitar", () => {
+  it("should apply phone mask when typing", () => {
     render(<PersonalInformation />);
 
     mockSetFormProfileNotifications.mockClear();
 
-    fireEvent.change(
-      screen.getByTestId("input-(00) 0000-0000"),
-      {
-        target: { value: "11999999999" },
-      },
-    );
+    fireEvent.change(screen.getByTestId("input-(00) 0000-0000"), {
+      target: { value: "11999999999" },
+    });
 
     expect(mockMaskPhone).toHaveBeenCalledWith("11999999999");
     expect(mockSetFormProfileNotifications).toHaveBeenCalledWith(

@@ -26,8 +26,8 @@ describe("authUser Middleware", () => {
     mockNext = jest.fn();
   });
 
-  describe("autenticacao bem-sucedida", () => {
-    it("deve chamar next() quando token valido e fornecido", async () => {
+  describe("successful authentication", () => {
+    it("should call next() when a valid token is provided", async () => {
       const token = genToken(validPayload);
       mockRequest.headers = {
         authorization: `Bearer ${token}`,
@@ -42,7 +42,7 @@ describe("authUser Middleware", () => {
       expect(mockNext).toHaveBeenCalled();
     });
 
-    it("deve adicionar dados do usuario ao request", async () => {
+    it("should add user data to the request", async () => {
       const token = genToken(validPayload);
       mockRequest.headers = {
         authorization: `Bearer ${token}`,
@@ -60,7 +60,7 @@ describe("authUser Middleware", () => {
       expect(mockRequest.user?.role).toBe(validPayload.role);
     });
 
-    it("deve funcionar com usuario sem idBrandMaster", async () => {
+    it("should work with a user without idBrandMaster", async () => {
       const payloadWithoutBrand: IJwtPayload = {
         ...validPayload,
         idBrandMaster: null,
@@ -81,8 +81,8 @@ describe("authUser Middleware", () => {
     });
   });
 
-  describe("falhas de autenticacao", () => {
-    it("deve lancar erro com status UNAUTHORIZED quando header ausente", async () => {
+  describe("authentication failures", () => {
+    it("should throw UNAUTHORIZED when header is missing", async () => {
       mockRequest.headers = {};
 
       try {
@@ -91,14 +91,14 @@ describe("authUser Middleware", () => {
           mockResponse as Response,
           mockNext,
         );
-        fail("Deveria ter lancado erro");
+        fail("Expected to throw an error");
       } catch (error) {
         expect(error).toBeInstanceOf(AppError);
         expect((error as AppError).status).toBe(STATUS_CODE.UNAUTHORIZED);
       }
     });
 
-    it("deve lancar erro quando token nao tem prefixo Bearer", async () => {
+    it("should throw when token does not have Bearer prefix", async () => {
       const token = genToken(validPayload);
       mockRequest.headers = {
         authorization: token,
@@ -110,14 +110,14 @@ describe("authUser Middleware", () => {
           mockResponse as Response,
           mockNext,
         );
-        fail("Deveria ter lancado erro");
+        fail("Expected to throw an error");
       } catch (error) {
         expect(error).toBeInstanceOf(AppError);
         expect((error as AppError).status).toBe(STATUS_CODE.UNAUTHORIZED);
       }
     });
 
-    it("deve lancar erro quando prefixo nao e Bearer", async () => {
+    it("should throw when prefix is not Bearer", async () => {
       const token = genToken(validPayload);
       mockRequest.headers = {
         authorization: `Basic ${token}`,
@@ -129,14 +129,14 @@ describe("authUser Middleware", () => {
           mockResponse as Response,
           mockNext,
         );
-        fail("Deveria ter lancado erro");
+        fail("Expected to throw an error");
       } catch (error) {
         expect(error).toBeInstanceOf(AppError);
         expect((error as AppError).status).toBe(STATUS_CODE.UNAUTHORIZED);
       }
     });
 
-    it("deve lancar erro quando token e invalido", async () => {
+    it("should throw when token is invalid", async () => {
       mockRequest.headers = {
         authorization: "Bearer invalid-token",
       };
@@ -147,14 +147,14 @@ describe("authUser Middleware", () => {
           mockResponse as Response,
           mockNext,
         );
-        fail("Deveria ter lancado erro");
+        fail("Expected to throw an error");
       } catch (error) {
         expect(error).toBeInstanceOf(AppError);
         expect((error as AppError).status).toBe(STATUS_CODE.UNAUTHORIZED);
       }
     });
 
-    it("deve lancar erro quando authorization tem mais de 2 partes", async () => {
+    it("should throw when authorization has more than 2 parts", async () => {
       mockRequest.headers = {
         authorization: "Bearer token extra",
       };
@@ -165,14 +165,14 @@ describe("authUser Middleware", () => {
           mockResponse as Response,
           mockNext,
         );
-        fail("Deveria ter lancado erro");
+        fail("Expected to throw an error");
       } catch (error) {
         expect(error).toBeInstanceOf(AppError);
         expect((error as AppError).status).toBe(STATUS_CODE.UNAUTHORIZED);
       }
     });
 
-    it("nao deve chamar next() quando autenticacao falha", async () => {
+    it("should not call next() when authentication fails", async () => {
       mockRequest.headers = {};
 
       try {
@@ -182,7 +182,7 @@ describe("authUser Middleware", () => {
           mockNext,
         );
       } catch {
-        // Esperado
+        // Expected
       }
 
       expect(mockNext).not.toHaveBeenCalled();

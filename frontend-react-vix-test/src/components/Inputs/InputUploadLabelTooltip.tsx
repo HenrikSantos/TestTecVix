@@ -48,7 +48,7 @@ export const InputUploadLabelTooltip = ({
     }
   };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: { "image/*": [".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp"] },
     maxSize: 50 * 1024 * 1024, // Limita para 50MB

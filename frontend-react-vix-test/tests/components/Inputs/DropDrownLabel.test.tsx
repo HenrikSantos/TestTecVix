@@ -33,7 +33,7 @@ vi.mock("../../../src/icons/CloseXIcon", () => ({
 }));
 
 describe("DropDrownLabel", () => {
-  it("aplica placeholder no input", () => {
+  it("should render placeholder in the input", () => {
     render(
       <DropDrownLabel
         label="Timezone"

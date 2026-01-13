@@ -20,6 +20,11 @@ describe("BrandMasterService", () => {
   let mockGetByEmail: jest.Mock;
   let mockGetByUsername: jest.Mock;
   let mockUpdateUser: jest.Mock;
+  let mockCreateNewBrandMaster: jest.Mock;
+  let mockListAll: jest.Mock;
+  let mockDeleteBrandMaster: jest.Mock;
+  let mockGetSelf: jest.Mock;
+  let mockCreateUser: jest.Mock;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -30,16 +35,118 @@ describe("BrandMasterService", () => {
     mockGetByEmail = jest.fn();
     mockGetByUsername = jest.fn();
     mockUpdateUser = jest.fn();
+    mockCreateNewBrandMaster = jest.fn();
+    mockListAll = jest.fn();
+    mockDeleteBrandMaster = jest.fn();
+    mockGetSelf = jest.fn();
+    mockCreateUser = jest.fn();
 
     MockedBrandMasterModel.prototype.getById = mockGetById;
+    MockedBrandMasterModel.prototype.getSelf = mockGetSelf;
     MockedBrandMasterModel.prototype.updateBrandMaster = mockUpdateBrandMaster;
+    MockedBrandMasterModel.prototype.createNewBrandMaster =
+      mockCreateNewBrandMaster;
+    MockedBrandMasterModel.prototype.listAll = mockListAll;
+    MockedBrandMasterModel.prototype.deleteBrandMaster = mockDeleteBrandMaster;
     MockedUserModel.prototype.getAdminByBrandMasterId =
       mockGetAdminByBrandMasterId;
     MockedUserModel.prototype.getByEmail = mockGetByEmail;
     MockedUserModel.prototype.getByUsername = mockGetByUsername;
     MockedUserModel.prototype.updateUser = mockUpdateUser;
+    MockedUserModel.prototype.createUser = mockCreateUser;
 
     brandMasterService = new BrandMasterService();
+  });
+
+  describe("createNewBrandMaster", () => {
+    it("should create brand master and admin user when admin data exists", async () => {
+      (bcrypt.hash as jest.Mock).mockResolvedValue("hashed");
+      mockGetByEmail.mockResolvedValue(null);
+      mockGetByUsername.mockResolvedValue(null);
+      mockCreateNewBrandMaster.mockResolvedValue({ idBrandMaster: 10 });
+      mockCreateUser.mockResolvedValue({ idUser: "admin-1" } as any);
+
+      const result = await brandMasterService.createNewBrandMaster({
+        brandName: "Test",
+        admName: "Admin User",
+        admEmail: "admin@example.com",
+        admPassword: "password123",
+      } as any);
+
+      expect(mockCreateNewBrandMaster).toHaveBeenCalledWith(
+        expect.objectContaining({ brandName: "Test" }),
+      );
+      expect(mockCreateUser).toHaveBeenCalledWith(
+        expect.objectContaining({
+          email: "admin@example.com",
+          username: "admin.user",
+          role: "admin",
+          idBrandMaster: 10,
+        }),
+      );
+      expect(result.adminUser).toBeTruthy();
+    });
+
+    it("should throw when admEmail already exists", async () => {
+      mockGetByEmail.mockResolvedValue({ idUser: "user-1" });
+
+      await expect(
+        brandMasterService.createNewBrandMaster({
+          brandName: "Test",
+          admEmail: "admin@example.com",
+        } as any),
+      ).rejects.toBeTruthy();
+    });
+
+    it("should set contractAt and pocOpenedAt when flags are true", async () => {
+      mockGetByEmail.mockResolvedValue(null);
+      mockGetByUsername.mockResolvedValue(null);
+      mockCreateNewBrandMaster.mockResolvedValue({ idBrandMaster: 11 });
+
+      await brandMasterService.createNewBrandMaster({
+        brandName: "Test",
+        contract: "signed",
+        isPoc: true,
+      } as any);
+
+      expect(mockCreateNewBrandMaster).toHaveBeenCalledWith(
+        expect.objectContaining({
+          contractAt: expect.any(Date),
+          pocOpenedAt: expect.any(Date),
+        }),
+      );
+    });
+  });
+
+  describe("listAll", () => {
+    it("should parse query and call model", async () => {
+      mockListAll.mockResolvedValue({ totalCount: 0, result: [] });
+
+      const result = await brandMasterService.listAll({ page: "0" });
+
+      expect(mockListAll).toHaveBeenCalled();
+      expect(result).toEqual({ totalCount: 0, result: [] });
+    });
+  });
+
+  describe("deleteBrandMaster", () => {
+    it("should throw when brand master not found", async () => {
+      mockGetById.mockResolvedValue(null);
+
+      await expect(
+        brandMasterService.deleteBrandMaster(1),
+      ).rejects.toBeTruthy();
+    });
+
+    it("should delete when brand master exists", async () => {
+      mockGetById.mockResolvedValue({ idBrandMaster: 1 });
+      mockDeleteBrandMaster.mockResolvedValue({ idBrandMaster: 1 });
+
+      const result = await brandMasterService.deleteBrandMaster(1);
+
+      expect(mockDeleteBrandMaster).toHaveBeenCalledWith(1);
+      expect(result).toEqual({ brandMaster: { idBrandMaster: 1 } });
+    });
   });
 
   describe("updateBrandMaster", () => {
