@@ -1,6 +1,7 @@
 import React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom/vitest";
 import { ProfileAndNotifications } from "../../../../src/pages/Settings/components/ProfileAndNotifications";
 
 let mockRole = "admin";
@@ -52,7 +53,7 @@ describe("ProfileAndNotifications", () => {
     mockIdBrand = null;
   });
 
-  it("nao exibe notificacoes quando idBrand esta ausente", () => {
+  it("should not show notifications when idBrand is missing", () => {
     render(<ProfileAndNotifications />);
 
     expect(
@@ -61,7 +62,7 @@ describe("ProfileAndNotifications", () => {
     expect(screen.getByTestId("personal-information")).toBeInTheDocument();
   });
 
-  it("exibe notificacoes quando role permitido e idBrand presente", () => {
+  it("should show notifications when role is allowed and idBrand is present", () => {
     mockIdBrand = 10;
     render(<ProfileAndNotifications />);
 

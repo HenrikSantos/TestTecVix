@@ -108,7 +108,7 @@ describe("PersonalInformation", () => {
     mockUserState = { ...defaultUserState };
   });
 
-  it("inicializa formulario com dados do usuario", () => {
+  it("should initialize form with user data", () => {
     render(<PersonalInformation />);
 
     expect(mockSetFormProfileNotifications).toHaveBeenCalledWith(
@@ -121,7 +121,7 @@ describe("PersonalInformation", () => {
     );
   });
 
-  it("aplica mascara no telefone ao digitar", () => {
+  it("should apply phone mask when typing", () => {
     render(<PersonalInformation />);
 
     mockSetFormProfileNotifications.mockClear();

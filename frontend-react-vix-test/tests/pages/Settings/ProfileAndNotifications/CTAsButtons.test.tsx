@@ -33,7 +33,7 @@ const defaultUserState = {
   userEmail: "stored@example.com",
   userPhoneNumber: "11911111111",
   role: "member",
-  idBrand: null,
+  idBrand: null as number | null,
 };
 
 const defaultBrandState = {
@@ -105,7 +105,7 @@ describe("CTAsButtons", () => {
     mockBrandState = { ...defaultBrandState };
   });
 
-  it("mostra erro quando nome completo e invalido", async () => {
+  it("should show error when full name is invalid", async () => {
     mockFormState.fullNameForm = { value: "Ab", errorMessage: "" };
 
     render(<CTAsButtons />);
@@ -122,7 +122,7 @@ describe("CTAsButtons", () => {
     expect(mockPut).not.toHaveBeenCalled();
   });
 
-  it("mostra erro quando senha nao confere", async () => {
+  it("should show error when passwords do not match", async () => {
     mockFormState.password = { value: "123", errorMessage: "" };
     mockFormState.confirmPassword = { value: "456", errorMessage: "" };
 
@@ -140,7 +140,7 @@ describe("CTAsButtons", () => {
     expect(mockPut).not.toHaveBeenCalled();
   });
 
-  it("salva usuario e marca quando admin", async () => {
+  it("should save user and brand data when admin", async () => {
     mockUserState = {
       ...mockUserState,
       role: "admin",
@@ -224,7 +224,7 @@ describe("CTAsButtons", () => {
     expect(mockToastSuccess).toHaveBeenCalledWith("generic.dataSavesuccess");
   });
 
-  it("redefine formulario com dados do store", () => {
+  it("should reset form with store data", () => {
     render(<CTAsButtons />);
 
     fireEvent.click(

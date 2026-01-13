@@ -29,8 +29,8 @@ exports[`Screen component > should match snapshot 1`] = `
   }
 
   100% {
-    stroke-dasharray: 100px,200px;
-    stroke-dashoffset: -125px;
+    stroke-dasharray: 1px,200px;
+    stroke-dashoffset: -126px;
   }
 }
 
@@ -88,13 +88,15 @@ exports[`Screen component > should match snapshot 1`] = `
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+  max-height: 768px;
+  max-width: 1024px;
 }
 
 <div>
   <div
     aria-hidden="true"
     class="MuiBackdrop-root emotion-0"
-    style="opacity: 1; webkit-transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+    style="opacity: 1; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
   >
     <span
       class="MuiCircularProgress-root MuiCircularProgress-indeterminate MuiCircularProgress-colorInherit emotion-1"
@@ -269,6 +271,10 @@ exports[`renders Searchbar correctly 1`] = `
 .emotion-3.Mui-disabled {
   background-color: transparent;
   color: rgba(0, 0, 0, 0.26);
+}
+
+.emotion-3.MuiIconButton-loading {
+  color: transparent;
 }
 
 .emotion-3:hover {

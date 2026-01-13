@@ -12,7 +12,7 @@ exports[`HomePage/components/VmsCardsList > should match snapshot 1`] = `
   height: 224px;
   min-height: 224px;
   width: 100%;
-  background: linear-gradient(360deg, #647AF4 53%, #3D04AA 100%);
+  background: #C1CAFB;
   border-bottom-left-radius: 24px;
   border-bottom-right-radius: 24px;
   margin-bottom: -75px;

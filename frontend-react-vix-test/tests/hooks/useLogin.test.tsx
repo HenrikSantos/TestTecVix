@@ -58,7 +58,7 @@ describe("useLogin Hook", () => {
   });
 
   describe("goLogin", () => {
-    it("deve fazer login com sucesso usando email", async () => {
+    it("should log in successfully using email", async () => {
       const mockResponse = {
         error: false,
         data: {
@@ -111,7 +111,7 @@ describe("useLogin Hook", () => {
       expect(mockNavigate).toHaveBeenCalledWith("/");
     });
 
-    it("deve fazer login com sucesso usando username", async () => {
+    it("should log in successfully using username", async () => {
       const mockResponse = {
         error: false,
         data: {
@@ -159,7 +159,7 @@ describe("useLogin Hook", () => {
       });
     });
 
-    it("nao deve fazer login sem username e email", async () => {
+    it("should not log in without username or email", async () => {
       const { result } = renderHook(() => useLogin());
 
       await act(async () => {
@@ -173,7 +173,7 @@ describe("useLogin Hook", () => {
       expect(mockPost).not.toHaveBeenCalled();
     });
 
-    it("nao deve fazer login sem password", async () => {
+    it("should not log in without password", async () => {
       const { result } = renderHook(() => useLogin());
 
       await act(async () => {
@@ -187,7 +187,7 @@ describe("useLogin Hook", () => {
       expect(mockPost).not.toHaveBeenCalled();
     });
 
-    it("deve mostrar erro quando login falha", async () => {
+    it("should show error when login fails", async () => {
       mockPost.mockResolvedValue({
         error: true,
         message: "Invalid credentials",
@@ -208,7 +208,7 @@ describe("useLogin Hook", () => {
       expect(mockNavigate).not.toHaveBeenCalled();
     });
 
-    it("deve abrir modal quando usuario nao esta ativo", async () => {
+    it("should open modal when user is not active", async () => {
       mockPost.mockResolvedValue({
         error: false,
         data: {
@@ -234,7 +234,7 @@ describe("useLogin Hook", () => {
       expect(mockSetUser).not.toHaveBeenCalled();
     });
 
-    it("deve salvar dados do usuario no store apos login", async () => {
+    it("should store user data after login", async () => {
       const mockUserData = {
         idUser: 1,
         username: "testuser",
@@ -280,7 +280,7 @@ describe("useLogin Hook", () => {
       });
     });
 
-    it("deve definir loginTime apos login bem-sucedido", async () => {
+    it("should set loginTime after successful login", async () => {
       mockPost.mockResolvedValue({
         error: false,
         data: {
@@ -302,7 +302,7 @@ describe("useLogin Hook", () => {
       expect(mockSetLoginTime).toHaveBeenCalled();
     });
 
-    it("deve gerenciar estado de loading durante login", async () => {
+    it("should handle loading state during login", async () => {
       mockPost.mockImplementation(
         () =>
           new Promise((resolve) =>
@@ -336,7 +336,7 @@ describe("useLogin Hook", () => {
   });
 
   describe("goLogout", () => {
-    it("deve fazer logout e redirecionar para /login", () => {
+    it("should log out and redirect to /login", () => {
       const { result } = renderHook(() => useLogin());
 
       act(() => {
@@ -347,7 +347,7 @@ describe("useLogin Hook", () => {
       expect(mockNavigate).toHaveBeenCalledWith("/login");
     });
 
-    it("deve limpar todos os estados ao fazer logout", () => {
+    it("should clear all states on logout", () => {
       const { result } = renderHook(() => useLogin());
 
       act(() => {
