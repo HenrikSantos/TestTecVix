@@ -592,10 +592,10 @@ git commit -m "docs: atualiza README com credenciais de teste"
 
 #### Testes
 
-- [ ] Implementar **testes de snapshot**
-- [ ] Implementar **testes unitários**
-- [ ] Implementar **testes de integração**
-- [ ] Implementar **testes E2E (end-to-end)**
+- [x] Implementar **testes de snapshot**
+- [x] Implementar **testes unitários**
+- [x] Implementar **testes de integração**
+- [x] Implementar **testes E2E (end-to-end)**
 
 #### Documentação Swagger
 
