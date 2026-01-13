@@ -97,6 +97,8 @@ exports[`HomePage/components/VmsCardsList > should match snapshot 1`] = `
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+  max-height: 768px;
+  max-width: 1024px;
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;

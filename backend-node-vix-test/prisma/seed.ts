@@ -1,8 +1,132 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import fs from "fs/promises";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 const SEEDS_FOLDER_NAME = ""; // "seeds" folder inside temp folder: ex: "temp/SEEDS_FOLDER_NAME"
+
+async function seedTestUsers() {
+  console.log("------ Seeding test users ----------------");
+
+  const testUsers = [
+    {
+      username: "admin",
+      email: "admin@vituax.com",
+      password: "Admin@123",
+      role: "admin" as const,
+      isActive: true,
+      fullName: "Admin Vituax",
+      userPhoneNumber: "(11) 99999-9999",
+      field: "IT",
+      department: "Board",
+      idBrandMaster: null,
+    },
+    {
+      username: "manager",
+      email: "manager@vituax.com",
+      password: "Manager@123",
+      role: "manager" as const,
+      isActive: true,
+      fullName: "Manager Vituax",
+      userPhoneNumber: "(11) 99999-9999",
+      field: "IT",
+      department: "Management",
+      idBrandMaster: null,
+    },
+    {
+      username: "member",
+      email: "member@vituax.com",
+      password: "Member@123",
+      role: "member" as const,
+      isActive: true,
+      fullName: "Member Vituax",
+      userPhoneNumber: "(11) 99999-9999",
+      field: "IT",
+      department: "Development",
+      idBrandMaster: null,
+    },
+    {
+      username: "admin_upix",
+      email: "admin@upix.com",
+      password: "Admin@123",
+      role: "admin" as const,
+      isActive: true,
+      fullName: "Admin UPIX",
+      userPhoneNumber: "(11) 99999-9999",
+      field: "Telecom",
+      department: "Board",
+      idBrandMaster: 1,
+    },
+    {
+      username: "manager_upix",
+      email: "manager@upix.com",
+      password: "Manager@123",
+      role: "manager" as const,
+      isActive: true,
+      fullName: "Manager UPIX",
+      userPhoneNumber: "(11) 99999-9999",
+      field: "Telecom",
+      department: "Management",
+      idBrandMaster: 1,
+    },
+    {
+      username: "member_upix",
+      email: "member@upix.com",
+      password: "Member@123",
+      role: "member" as const,
+      isActive: true,
+      fullName: "Member UPIX",
+      userPhoneNumber: "(11) 99999-9999",
+      field: "Telecom",
+      department: "Support",
+      idBrandMaster: 1,
+    },
+    {
+      username: "admin_vituax_msp",
+      email: "admin@vituaxmsp.com",
+      password: "Admin@123",
+      role: "admin" as const,
+      isActive: true,
+      fullName: "Admin Vituax MSP",
+      userPhoneNumber: "(11) 99999-9999",
+      field: "Cloud",
+      department: "Board",
+      idBrandMaster: 2,
+    },
+  ];
+
+  for (const user of testUsers) {
+    const existingUser = await prisma.user.findFirst({
+      where: { email: user.email },
+    });
+
+    if (existingUser) {
+      console.log(`Usuario ${user.email} ja existe, pulando...`);
+      continue;
+    }
+
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+
+    await prisma.user.create({
+      data: {
+        username: user.username,
+        email: user.email,
+        password: hashedPassword,
+        role: user.role,
+        isActive: user.isActive,
+        fullName: user.fullName,
+        userPhoneNumber: user.userPhoneNumber,
+        field: user.field,
+        department: user.department,
+        idBrandMaster: user.idBrandMaster,
+      },
+    });
+
+    console.log(`Usuario ${user.email} criado com sucesso!`);
+  }
+
+  console.log("------ Test users seeded ----------------");
+}
 
 async function main() {
   const isDroped = true;
@@ -107,6 +231,7 @@ async function main() {
 
   console.log("------ Wait for seed all ----------------");
   await seedAll();
+  await seedTestUsers();
 
   if (tablesTryAgain.length > 0) {
     while (tablesTryAgain.length > 0 && limit-- > 0) {

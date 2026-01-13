@@ -14,5 +14,5 @@ RUN npm run build
 
 EXPOSE 3001
 
-ENTRYPOINT ["sh", "-c", "npx prisma generate && npx prisma migrate deploy && npm start"]
+CMD ["sh", "-c", "npx prisma generate && npx prisma migrate deploy && npm start"]
 

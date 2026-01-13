@@ -30,9 +30,6 @@ export const useBrandMasterInfos = () => {
       manual: data?.manual || null,
       termsOfUse: data?.termsOfUse || null,
       privacyPolicy: data?.privacyPolicy || null,
-      hasSelfRegister: Boolean(data?.hasSelfRegister),
-      hasPrepaid: Boolean(data?.hasPrepaid),
-      retailPercentageDefault: Number(data?.retailPercentageDefault) || 1,
     });
 
     if (!data.brandTheme) return;

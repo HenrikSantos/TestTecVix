@@ -9,6 +9,13 @@
   "phone": "Phone",
   "sector": "Business Sector",
   "sectorPlaceholder": "Telecom",
+  "sectorTelecom": "Telecom",
+  "sectorTechnology": "Technology",
+  "sectorFinancial": "Financial",
+  "sectorHealthcare": "Healthcare",
+  "sectorEducation": "Education",
+  "sectorRetail": "Retail",
+  "sectorOther": "Other",
   "contactEmail": "Contact Email",
   "address": "Address",
   "cep": "Postal Code",
@@ -67,5 +74,13 @@
   "vmsFromThisMSP": "VMS from this MSP",
   "mspDeleted": "MSP {{ brandName }} deleted successfully!",
   "doYouWantToDeleteThisVMs": "Do you really want to delete these VMs?",
-  "deletedVMs": "VMs deleted successfully!"
+  "deletedVMs": "VMs deleted successfully!",
+  "newMsp": "New MSP",
+  "continue": "Continue",
+  "username": "Username",
+  "changeLogo": "Change logo",
+  "removeLogo": "Remove logo",
+  "clickToUpload": "Click here to upload your logo",
+  "editTitle": "Edit MSP",
+  "confirmEdit": "Confirm edit"
 }

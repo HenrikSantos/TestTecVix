@@ -12,7 +12,7 @@ exports[`components/HeaderMobile/HeaderMobile > should match snapshot 1`] = `
   height: 224px;
   min-height: 224px;
   width: 100%;
-  background: linear-gradient(360deg, #647AF4 53%, #3D04AA 100%);
+  background: #C1CAFB;
   border-bottom-left-radius: 24px;
   border-bottom-right-radius: 24px;
   margin-bottom: -75px;
@@ -137,7 +137,37 @@ exports[`components/HeaderMobile/HeaderMobile > should match snapshot 1`] = `
   color: rgba(0, 0, 0, 0.26);
 }
 
+.emotion-3.MuiIconButton-loading {
+  color: transparent;
+}
+
 .emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  background-color: #FFFFFF;
+  height: 50px;
+  max-height: 50px;
+  overflow: hidden;
+  background: transparent;
+}
+
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -159,7 +189,7 @@ exports[`components/HeaderMobile/HeaderMobile > should match snapshot 1`] = `
   margin-top: -6px;
 }
 
-.emotion-5 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -187,14 +217,14 @@ exports[`components/HeaderMobile/HeaderMobile > should match snapshot 1`] = `
 }
 
 @media (max-width: 955px) {
-  .emotion-5 {
+  .emotion-7 {
     background-color: transparent;
     padding: 0px;
     padding-right: 22px;
   }
 }
 
-.emotion-6 {
+.emotion-8 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -247,6 +277,8 @@ exports[`components/HeaderMobile/HeaderMobile > should match snapshot 1`] = `
   --variant-outlinedBorder: rgba(25, 118, 210, 0.5);
   --variant-containedColor: #fff;
   --variant-containedBg: #1976d2;
+  -webkit-transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   min-width: 45px;
   border-radius: 100%;
   padding: 0px;
@@ -255,33 +287,33 @@ exports[`components/HeaderMobile/HeaderMobile > should match snapshot 1`] = `
   overflow: hidden;
 }
 
-.emotion-6::-moz-focus-inner {
+.emotion-8::-moz-focus-inner {
   border-style: none;
 }
 
-.emotion-6.Mui-disabled {
+.emotion-8.Mui-disabled {
   pointer-events: none;
   cursor: default;
 }
 
 @media print {
-  .emotion-6 {
+  .emotion-8 {
     -webkit-print-color-adjust: exact;
     color-adjust: exact;
   }
 }
 
-.emotion-6:hover {
+.emotion-8:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-6.Mui-disabled {
+.emotion-8.Mui-disabled {
   color: rgba(0, 0, 0, 0.26);
 }
 
 @media (hover: hover) {
-  .emotion-6:hover {
+  .emotion-8:hover {
     --variant-containedBg: #1565c0;
     --variant-textBg: rgba(25, 118, 210, 0.04);
     --variant-outlinedBorder: #1976d2;
@@ -289,7 +321,11 @@ exports[`components/HeaderMobile/HeaderMobile > should match snapshot 1`] = `
   }
 }
 
-.emotion-7 {
+.emotion-8.MuiButton-loading {
+  color: transparent;
+}
+
+.emotion-9 {
   position: relative;
   display: -webkit-box;
   display: -webkit-flex;
@@ -322,7 +358,7 @@ exports[`components/HeaderMobile/HeaderMobile > should match snapshot 1`] = `
   box-shadow: 0px 0px 4px 0px #D9D9D97a;
 }
 
-.emotion-8 {
+.emotion-10 {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -339,7 +375,7 @@ exports[`components/HeaderMobile/HeaderMobile > should match snapshot 1`] = `
   font-size: 1.5rem;
 }
 
-.emotion-9 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -354,15 +390,16 @@ exports[`components/HeaderMobile/HeaderMobile > should match snapshot 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  max-width: calc(100% - 45px);
 }
 
 @media (max-width: 955px) {
-  .emotion-9 {
+  .emotion-11 {
     display: none;
   }
 }
 
-.emotion-10 {
+.emotion-12 {
   margin: 0;
   font-family: "Roboto","Helvetica","Arial",sans-serif;
   font-weight: 400;
@@ -381,7 +418,7 @@ exports[`components/HeaderMobile/HeaderMobile > should match snapshot 1`] = `
   max-width: 100%;
 }
 
-.emotion-12 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -390,21 +427,6 @@ exports[`components/HeaderMobile/HeaderMobile > should match snapshot 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   gap: 12px;
-}
-
-.emotion-13 {
-  margin: 0;
-  font-family: "Roboto","Helvetica","Arial",sans-serif;
-  font-weight: 400;
-  font-size: 1rem;
-  line-height: 1.5;
-  letter-spacing: 0.00938em;
-  color: #4B5CB7;
-  font-family: Roboto;
-  font-weight: 500;
-  font-size: 28px;
-  line-height: 40px;
-  letter-spacing: 1%;
 }
 
 <div>
@@ -458,17 +480,30 @@ exports[`components/HeaderMobile/HeaderMobile > should match snapshot 1`] = `
         <div
           class="MuiStack-root emotion-5"
         >
+          <img
+            alt="logo"
+            src="data:image/svg+xml,%3c?xml%20version='1.0'%20encoding='UTF-8'?%3e%3csvg%20id='Camada_1'%20data-name='Camada%201'%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%202834.71%20900'%3e%3cdefs%3e%3cstyle%3e%20.cls-1%20{%20fill:%20none;%20}%20.cls-1,%20.cls-2,%20.cls-3%20{%20stroke-width:%200px;%20}%20.cls-2%20{%20fill:%20%23647af2;%20}%20.cls-3%20{%20fill:%20%233d04a8;%20}%20%3c/style%3e%3c/defs%3e%3crect%20class='cls-1'%20width='2834.71'%20height='900'/%3e%3cg%3e%3cg%3e%3cpath%20class='cls-3'%20d='m685.51,324.63h121.69l72.06,239.71,72.06-239.71h121.69l-122.43,352.95h-142.65l-122.43-352.95Z'/%3e%3cpolygon%20class='cls-3'%20points='1174.15%20324.63%201174.15%20677.58%201058.34%20677.58%201058.34%20474.09%201110.26%20324.63%201174.15%20324.63'/%3e%3cpath%20class='cls-3'%20d='m1211.75,324.63h56.25v-113.24h112.13v113.24h106.99v94.49h-103.31v113.97c0,38.24,21.69,50,52.21,50,16.91,0,39.34-5.15,56.99-12.13l8.09,94.12c-22.79,11.76-60.66,19.85-93.75,19.85-80.88,0-139.34-38.97-139.34-133.09v-132.72h-56.25v-94.49Z'/%3e%3cpath%20class='cls-3'%20d='m1522.34,557.72v-233.09h115.81v200c0,39.34,31.25,58.09,59.19,58.09s58.82-18.75,58.82-58.09v-200h115.81v352.95h-106.25l-3.68-33.46c-25,31.62-67.65,44.49-109.19,44.49-66.55,0-130.52-46.69-130.52-130.88Z'/%3e%3cpath%20class='cls-3'%20d='m1900.12,577.58c0-70.22,69.12-112.5,149.27-112.5,25.37,0,49.27,3.31,70.59,9.19v-6.99c0-27.57-24.27-47.79-66.18-47.79-35.66,0-66.18,18.38-84.93,39.34l-63.97-68.75c26.84-29.78,81.99-72.8,158.83-72.8,107.35,0,172.06,56.62,172.06,150.74v209.56h-109.93v-36.03c-18.01,24.27-52.21,43.38-94.12,43.38-74.63,0-131.62-40.44-131.62-107.35Zm156.99,28.31c35.29,0,62.87-23.9,62.87-61.4-12.5-5.51-32.72-9.19-50-9.19-36.03,0-58.82,12.5-58.82,35.29,0,20.96,19.12,35.29,45.96,35.29Z'/%3e%3cpath%20class='cls-3'%20d='m2249.05,324.63h133.09l62.13,93.02,61.03-93.02h132.35l-125.37,172.8,128.31,180.15h-128.68l-67.65-102.94-66.91,102.94h-127.58l126.47-180.15-127.21-172.8Z'/%3e%3c/g%3e%3cg%3e%3cpolygon%20class='cls-2'%20points='508.41%20450%20194.11%20268.54%20194.11%20631.46%20508.41%20450'/%3e%3cpolygon%20class='cls-2'%20points='628%20519.04%20313.7%20337.58%20313.7%20700.51%20628%20519.04'/%3e%3cpolygon%20class='cls-2'%20points='628%20380.96%20313.7%20562.42%20313.7%20199.49%20628%20380.96'/%3e%3cpolygon%20class='cls-3'%20points='313.7%20562.42%20508.41%20450%20313.7%20337.58%20313.7%20562.42'/%3e%3c/g%3e%3c/g%3e%3c/svg%3e"
+            style="width: 100%; height: 100%; object-fit: contain;"
+          />
+        </div>
+      </div>
+      <div
+        class="MuiStack-root emotion-6"
+      >
+        <div
+          class="MuiStack-root emotion-7"
+        >
           <button
-            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary emotion-6"
+            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary emotion-8"
             tabindex="0"
             type="button"
           >
             <div
-              class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault emotion-7"
+              class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault emotion-9"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium emotion-8"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium emotion-10"
                 data-testid="PersonIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -480,10 +515,10 @@ exports[`components/HeaderMobile/HeaderMobile > should match snapshot 1`] = `
             </div>
           </button>
           <div
-            class="MuiStack-root emotion-9"
+            class="MuiStack-root emotion-11"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 emotion-10"
+              class="MuiTypography-root MuiTypography-body1 emotion-12"
             >
               home.hi
               , 
@@ -512,13 +547,9 @@ exports[`components/HeaderMobile/HeaderMobile > should match snapshot 1`] = `
       </div>
     </div>
     <div
-      class="MuiStack-root emotion-12"
+      class="MuiStack-root emotion-14"
     >
-      <p
-        class="MuiTypography-root MuiTypography-body1 emotion-13"
-      >
-        Test Header
-      </p>
+      Test Header
     </div>
   </div>
 </div>

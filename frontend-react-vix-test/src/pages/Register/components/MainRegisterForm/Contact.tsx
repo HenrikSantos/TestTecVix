@@ -8,7 +8,9 @@ import { useZBrandInfo } from "../../../../stores/useZBrandStore";
 export const Contact = () => {
   const { mode, theme } = useZTheme();
   const { t } = useTranslation();
-  const { brandName, brandSite, brandPrivacyPolicy } = useZBrandInfo();
+  const { brandName, brandSite, brandPrivacyPolicy, brandContact } =
+    useZBrandInfo();
+  const fallbackLink = "/";
   return (
     <Stack
       sx={{
@@ -20,7 +22,7 @@ export const Contact = () => {
         marginTop: "auto",
       }}
     >
-      <Link to={brandSite || "#"} target="_blank">
+      <Link to={brandSite || fallbackLink} target="_blank">
         <TextRob14FontXsB
           sx={{
             color: theme[mode].btnDarkBlue,
@@ -43,8 +45,7 @@ export const Contact = () => {
               />
             </svg>
           </>
-          {/* depois voltar linha abaixo para apenas brandName */}
-          {brandName !== "Vituax" ? "Vituax" : brandName}
+          {brandName}
         </TextRob14FontXsB>
       </Link>
       {/* Separator */}
@@ -55,7 +56,23 @@ export const Contact = () => {
           backgroundColor: theme[mode].blue,
         }}
       />
-      <Link to={brandPrivacyPolicy || "#"} target="_blank">
+      <Link to={brandContact || fallbackLink} target="_blank">
+        <TextRob14FontXsB
+          sx={{
+            color: theme[mode].btnDarkBlue,
+          }}
+        >
+          {t("loginRegister.contact")}
+        </TextRob14FontXsB>
+      </Link>
+      <Stack
+        sx={{
+          width: "8px",
+          height: "4px",
+          backgroundColor: theme[mode].blue,
+        }}
+      />
+      <Link to={brandPrivacyPolicy || fallbackLink} target="_blank">
         <TextRob14FontXsB
           sx={{
             color: theme[mode].btnDarkBlue,

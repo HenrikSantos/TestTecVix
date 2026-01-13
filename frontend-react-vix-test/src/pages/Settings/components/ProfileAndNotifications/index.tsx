@@ -7,7 +7,7 @@ import { useZUserProfile } from "../../../../stores/useZUserProfile";
 
 export const ProfileAndNotifications = () => {
   const { mode, theme } = useZTheme();
-  const { role } = useZUserProfile();
+  const { role, idBrand } = useZUserProfile();
   return (
     <Stack
       sx={{
@@ -26,7 +26,7 @@ export const ProfileAndNotifications = () => {
           background: theme[mode].grayLight,
         }}
       />
-      {Boolean(role === "admin" || role === "manager") && (
+      {Boolean((role === "admin" || role === "manager") && idBrand) && (
         <>
           {/* Notifications */}
           <NotificationsContact />

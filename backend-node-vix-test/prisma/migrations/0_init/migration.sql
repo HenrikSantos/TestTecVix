@@ -30,6 +30,8 @@ CREATE TABLE `brandMaster` (
     `manual` VARCHAR(191) NULL,
     `termsOfUse` VARCHAR(191) NULL,
     `privacyPolicy` VARCHAR(191) NULL,
+    `discountRate` DOUBLE NULL,
+    `minConsumption` DOUBLE NULL,
 
     PRIMARY KEY (`idBrandMaster`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -48,6 +50,8 @@ CREATE TABLE `vM` (
     `updatedAt` DATETIME(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
     `deletedAt` DATETIME(0) NULL,
     `os` VARCHAR(191) NULL,
+    `pass` VARCHAR(191) NULL,
+    `location` ENUM('bre_barueri', 'usa_miami') NULL,
 
     INDEX `vM_idBrandMaster_fkey`(`idBrandMaster`),
     PRIMARY KEY (`idVM`)
@@ -60,6 +64,8 @@ CREATE TABLE `user` (
     `password` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `profileImgUrl` VARCHAR(191) NULL,
+    `fullName` VARCHAR(191) NULL,
+    `userPhoneNumber` VARCHAR(191) NULL,
     `role` ENUM('admin', 'manager', 'member') NOT NULL DEFAULT 'member',
     `idBrandMaster` INTEGER NULL,
     `isActive` BOOLEAN NULL DEFAULT true,
@@ -67,7 +73,12 @@ CREATE TABLE `user` (
     `createdAt` DATETIME(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
     `updatedAt` DATETIME(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
     `deletedAt` DATETIME(0) NULL,
+    `field` VARCHAR(191) NULL,
+    `department` VARCHAR(191) NULL,
+    `contractDate` DATETIME(0) NULL,
 
+    UNIQUE INDEX `user_username_key`(`username`),
+    UNIQUE INDEX `user_email_key`(`email`),
     INDEX `user_idBrandMaster_fkey`(`idBrandMaster`),
     PRIMARY KEY (`idUser`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

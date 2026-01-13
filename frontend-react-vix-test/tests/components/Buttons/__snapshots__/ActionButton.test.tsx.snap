@@ -83,6 +83,10 @@ exports[`components/Buttons/ActionButton > should match snapshot 1`] = `
   color: rgba(0, 0, 0, 0.26);
 }
 
+.emotion-0.MuiIconButton-loading {
+  color: transparent;
+}
+
 .emotion-0:hover {
   background-color: blue;
   opacity: 0.8;

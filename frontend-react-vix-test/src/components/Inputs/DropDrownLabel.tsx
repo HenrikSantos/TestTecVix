@@ -17,6 +17,7 @@ interface Props {
   onChange: (value: { label: string; value: unknown } | null) => void;
   onBlur?: () => void;
   label?: React.ReactNode;
+  placeholder?: string;
   sideLabel?: React.ReactNode;
   sxSidelabel?: React.CSSProperties;
   sxLabel?: SxProps;
@@ -31,6 +32,7 @@ export const DropDrownLabel = ({
   value = null,
   onChange,
   label,
+  placeholder,
   sxLabel,
   sxContainer,
   errorMessage,
@@ -69,6 +71,7 @@ export const DropDrownLabel = ({
           <TextField
             {...params}
             disabled={disabled}
+            placeholder={placeholder}
             sx={{
               "& .MuiAutocomplete-input": {
                 color: theme[mode].primary,
@@ -134,15 +137,14 @@ export const DropDrownLabel = ({
               borderColor: errorMessage ? theme[mode].danger : "transparent",
             },
             "&:hover fieldset": {
-              borderColor: errorMessage ? theme[mode].danger : theme[mode].blue,
+              borderColor: errorMessage ? theme[mode].danger : "transparent",
             },
             "&.Mui-focused": {
-              backgroundColor: theme[mode].mainBackground,
+              backgroundColor: theme[mode].grayLight,
               "& fieldset": {
                 borderColor: errorMessage
                   ? theme[mode].danger
                   : theme[mode].blue,
-                boxShadow: `0px 0px 4px ${theme[mode].blue}`,
                 borderWidth: "1px",
               },
             },

@@ -1,7 +1,7 @@
 import {
   FormControl,
   IconButton,
-  Stack,
+  InputAdornment,
   SxProps,
   TextField,
 } from "@mui/material";
@@ -89,12 +89,52 @@ export const InputLabelAndFeedback = ({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         type={showPassword ? "text" : type}
+        InputProps={{
+          endAdornment: (
+            <>
+              {type === "password" && (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle-password-visibility"
+                    onClick={handleTogglePasswordVisibility}
+                    sx={{
+                      color: theme[mode].primary,
+                      marginRight: "-8px", // Slight adjustment for spacing
+                    }}
+                  >
+                    {showPassword ? (
+                      <VisibilityOff fill={theme[mode].tertiary} />
+                    ) : (
+                      <VisibilityOn fill={theme[mode].tertiary} />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              )}
+              {icon && type !== "password" && (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="icon-edit-indicator"
+                    onClick={onClickIcon ? onClickIcon : () => onChange("")}
+                    sx={{
+                      color: theme[mode].primary,
+                      marginRight: "-8px",
+                    }}
+                  >
+                    {icon}
+                  </IconButton>
+                </InputAdornment>
+              )}
+            </>
+          ),
+        }}
         sx={{
           width: "100%",
           backgroundColor: theme[mode].grayLight,
           borderRadius: "12px",
           border: errorMessage ? "1px solid " + theme[mode].danger : "none",
           "& .MuiOutlinedInput-root": {
+            height: "40px",
+            paddingRight: "14px", // Ensure space for adornment
             "& fieldset": {
               border: errorMessage ? `1px solid ${theme[mode].danger}` : "none",
               borderRadius: "12px",
@@ -110,9 +150,8 @@ export const InputLabelAndFeedback = ({
           ".MuiInputBase-input": {
             padding: "4px 8px",
             paddingLeft: "16px",
-            height: "32px",
+            // height: "36px", // Removed explicit input height
             color: theme[mode].primary,
-            ...(type === "password" && { paddingRight: "40px" }),
             "&::placeholder": {
               color: theme[mode].tertiary,
               opacity: 1,
@@ -132,60 +171,6 @@ export const InputLabelAndFeedback = ({
         placeholder={placeholder}
         aria-describedby={`outlined-${label}-helper-text`}
       />
-      {type === "password" && (
-        <Stack
-          sx={{
-            width: "28px",
-            height: "28px",
-            position: "absolute",
-            right: "8px",
-            top: "36px",
-          }}
-        >
-          <IconButton
-            aria-label="toggle-password-visibility"
-            onClick={handleTogglePasswordVisibility}
-            sx={{
-              color: theme[mode].primary,
-              minWidth: "0px",
-              minHeight: "0px",
-              padding: "0px",
-              borderRadius: "50%",
-            }}
-          >
-            {showPassword ? (
-              <VisibilityOff fill={theme[mode].tertiary} />
-            ) : (
-              <VisibilityOn fill={theme[mode].tertiary} />
-            )}
-          </IconButton>
-        </Stack>
-      )}
-      {icon && (
-        <Stack
-          sx={{
-            width: "28px",
-            height: "28px",
-            position: "absolute",
-            right: "8px",
-            top: "36px",
-          }}
-        >
-          <IconButton
-            aria-label="icon-edit-indicator"
-            sx={{
-              color: theme[mode].primary,
-              minWidth: "0px",
-              minHeight: "0px",
-              padding: "0px",
-              borderRadius: "50%",
-            }}
-            onClick={onClickIcon ? onClickIcon : () => onChange("")}
-          >
-            {icon}
-          </IconButton>
-        </Stack>
-      )}
       {errorMessage && (
         <TextRob16FontL
           sx={{

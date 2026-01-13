@@ -9,7 +9,8 @@ import { useZSettingsVar } from "../../stores/useZSettingsVar";
 import { TabPanel } from "../../components/Tab/TabPanel";
 import { ProfileAndNotifications } from "./components/ProfileAndNotifications";
 import { UnderConstruction } from "../../components/UnderConstruction";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import { useZUserProfile } from "../../stores/useZUserProfile";
 
 export interface IWhiteLabelChildProps {
   theme: {
@@ -22,6 +23,7 @@ export const SettingsPage = () => {
   const { mode, theme } = useZTheme();
   const { currentTabIndex, setSettings } = useZSettingsVar();
   const { t } = useTranslation();
+  const user = useZUserProfile();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -30,30 +32,41 @@ export const SettingsPage = () => {
         setSettings({ currentTabIndex: 2 });
       }
     }
-  }, []);
+  }, [setSettings]);
 
-  const tabList = [
-    {
-      label: t("tabs.whiteLabel"),
-      component: <WhiteLabel />,
-      title: t("whiteLabel.title"),
-    },
-    {
-      label: t("tabs.profileNotifications"),
-      component: <ProfileAndNotifications />,
-      title: t("tabs.profileNotifications"),
-    },
-    {
-      label: t("tabs.billingsPlans"),
-      component: <UnderConstruction />,
-      title: t("tabs.billingsPlans"),
-    },
-    {
-      label: t("tabs.logsHistory"),
-      component: <UnderConstruction />,
-      title: t("tabs.logsHistory"),
-    },
-  ];
+  const tabList = useMemo(() => {
+    const list = [];
+
+    const canSeeWhiteLabel = !!user.idBrand && user.role === "admin";
+
+    if (canSeeWhiteLabel) {
+      list.push({
+        label: t("tabs.whiteLabel"),
+        component: <WhiteLabel />,
+        title: t("whiteLabel.title"),
+      });
+    }
+
+    list.push(
+      {
+        label: t("tabs.profileNotifications"),
+        component: <ProfileAndNotifications />,
+        title: t("tabs.profileNotifications"),
+      },
+      {
+        label: t("tabs.billingsPlans"),
+        component: <UnderConstruction />,
+        title: t("tabs.billingsPlans"),
+      },
+      {
+        label: t("tabs.logsHistory"),
+        component: <UnderConstruction />,
+        title: t("tabs.logsHistory"),
+      },
+    );
+
+    return list;
+  }, [user.idBrand, user.role, t]);
 
   return (
     <ScreenFullPage

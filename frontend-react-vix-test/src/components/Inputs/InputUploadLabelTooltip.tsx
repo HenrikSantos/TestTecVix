@@ -48,7 +48,7 @@ export const InputUploadLabelTooltip = ({
     }
   };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: { "image/*": [".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp"] },
     maxSize: 50 * 1024 * 1024, // Limita para 50MB
@@ -56,67 +56,75 @@ export const InputUploadLabelTooltip = ({
 
   return (
     <Stack
-      gap={"8px"}
       width={"100%"}
       sx={{
         ...sxContainer,
       }}
     >
-      <Stack flexDirection={"row"} gap={"8px"} alignItems={"center"}>
-        <TextRob16FontL
-          sx={{
-            color: theme[mode].black,
-            fontSize: "14px",
-            fontFamily: "Roboto",
-            fontWeight: "400",
-            lineHeight: "16px",
-            wordWrap: "break-word",
-            ...sxLabel,
-          }}
+      {(label || toolTipMessage) && (
+        <Stack
+          flexDirection={"row"}
+          gap={"8px"}
+          alignItems={"center"}
+          sx={{ marginBottom: "8px" }}
         >
-          {label}
-        </TextRob16FontL>
-        {Boolean(toolTipMessage) && (
-          <Tooltip title={toolTipMessage}>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <TooltipIcon fill={theme[mode].btnDarkBlue} />
-            </div>
-          </Tooltip>
-        )}
-      </Stack>
+          <TextRob16FontL
+            sx={{
+              color: theme[mode].black,
+              fontSize: "14px",
+              fontFamily: "Roboto",
+              fontWeight: "400",
+              lineHeight: "16px",
+              wordWrap: "break-word",
+              ...sxLabel,
+            }}
+          >
+            {label}
+          </TextRob16FontL>
+          {Boolean(toolTipMessage) && (
+            <Tooltip title={toolTipMessage}>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <TooltipIcon fill={theme[mode].btnDarkBlue} />
+              </div>
+            </Tooltip>
+          )}
+        </Stack>
+      )}
       <Box
         {...getRootProps()}
         sx={{
           width: "100%",
-          height: "70px",
-          border: `1px dashed ${theme[mode].grayLight}`,
+          height: "120px", // Increased height
+          border: `1px dashed ${theme[mode].gray}`,
           display: "flex",
-          flexDirection: "row",
+          flexDirection: "column", // Column layout
           justifyContent: "center",
           alignItems: "center",
-          gap: "16px",
+          gap: "12px",
+          padding: "16px",
           borderRadius: "12px",
-          background: isDragActive
-            ? theme[mode].grayLight
-            : theme[mode].mainBackground,
+          background: theme[mode].grayLight,
           cursor: disabled ? "not-allowed" : "pointer",
           opacity: disabled ? 0.5 : 1,
         }}
       >
         <input {...getInputProps()} disabled={disabled} />
-        <UploadIcon fill={theme[mode].gray} />
+        <UploadIcon fill={theme[mode].gray} width="32px" height="32px" />
         <TextRob16FontL
           sx={{
             color: theme[mode].gray,
             fontWeight: "400",
-            fontSize: "12px",
-            maxWidth: "136px",
-            textAlign: "center",
-            lineHeight: "20px",
+            fontSize: "14px",
+            textAlign: "center", // Center text
+            lineHeight: "18px",
             userSelect: "none",
+            whiteSpace: "normal", // Allow wrapping
           }}
         >
-          {isUploading ? t("whiteLabel.loading") : t("isos.clickToUpload")}
+          {isUploading
+            ? t("whiteLabel.loading")
+            : t("mspRegister.clickToUpload") ||
+              "Clique aqui para fazer\nupload do seu logo"}
         </TextRob16FontL>
       </Box>
     </Stack>

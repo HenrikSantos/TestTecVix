@@ -11,7 +11,9 @@ import {
   useZFormProfileNotifications,
 } from "../../../../../stores/useZFormProfileNotifications";
 import { useZBrandInfo } from "../../../../../stores/useZBrandStore";
+import { useZUserProfile } from "../../../../../stores/useZUserProfile";
 import { useEffect } from "react";
+import { maskPhone } from "../../../../../utils/maskPhone";
 
 export const NotificationsContact = () => {
   const { t } = useTranslation();
@@ -20,12 +22,11 @@ export const NotificationsContact = () => {
   const { companyEmail, companySMS, timeZone, setFormProfileNotifications } =
     useZFormProfileNotifications();
   const { emailContact, smsContact, timezone } = useZBrandInfo();
-  const { contactEmail, phoneNumber } = {
-    contactEmail: emailContact,
-    phoneNumber: smsContact,
-  };
+  const { role } = useZUserProfile();
+  const isEditable = role === "admin";
 
   const validEmail = () => {
+    if (!isEditable) return;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex para validar email
     if (!companyEmail.value) {
       return setFormProfileNotifications({
@@ -58,6 +59,10 @@ export const NotificationsContact = () => {
   };
 
   const validPhoneNumber = () => {
+    if (!isEditable) return;
+    const phoneRegex = /^\d+$/;
+    const cleanPhone = companySMS.value.replace(/\D/g, "");
+
     if (!companySMS.value) {
       return setFormProfileNotifications({
         companySMS: {
@@ -66,18 +71,8 @@ export const NotificationsContact = () => {
         },
       });
     }
-    const phoneRegex = /^\d+$/; // Regex para validar telefone com 10 ou 11 dígitos
 
-    if (!companySMS.value) {
-      return setFormProfileNotifications({
-        companySMS: {
-          ...companySMS,
-          errorMessage: t("profileAndNotifications.requiredField"),
-        },
-      });
-    }
-
-    if (!phoneRegex.test(companySMS.value) || companySMS.value.length > 20) {
+    if (!phoneRegex.test(cleanPhone) || cleanPhone.length > 20) {
       return setFormProfileNotifications({
         companySMS: {
           ...companySMS,
@@ -99,6 +94,7 @@ export const NotificationsContact = () => {
     key: keyof IFormProfileNotificationsVar,
     val: string,
   ) => {
+    if (!isEditable) return;
     setFormProfileNotifications({
       [key]: {
         ...[key],
@@ -111,12 +107,12 @@ export const NotificationsContact = () => {
     setFormProfileNotifications({
       companyEmail: {
         ...companyEmail,
-        value: contactEmail || emailContact || "",
+        value: emailContact || "",
         errorMessage: "",
       },
       companySMS: {
         ...companySMS,
-        value: phoneNumber || smsContact || "",
+        value: smsContact || "",
         errorMessage: "",
       },
       timeZone: {
@@ -125,7 +121,7 @@ export const NotificationsContact = () => {
         errorMessage: "",
       },
     });
-  }, []);
+  }, [emailContact, smsContact, timezone]);
 
   return (
     <Stack
@@ -161,9 +157,11 @@ export const NotificationsContact = () => {
       >
         <InputLabelAndFeedback
           label={t("profileAndNotifications.email")}
+          placeholder={t("profileAndNotifications.email")}
           value={companyEmail.value}
           onChange={(val) => handleChange("companyEmail", val)}
           errorMessage={companyEmail.errorMessage}
+          disabled={!isEditable}
           onBlur={() => validEmail()}
           icon={
             <EditCirclePencilIcon
@@ -177,9 +175,11 @@ export const NotificationsContact = () => {
         />
         <InputLabelAndFeedback
           label={t("profileAndNotifications.sms")}
+          placeholder="(00) 00000-0000"
           value={companySMS.value}
-          onChange={(val) => handleChange("companySMS", val)}
+          onChange={(val) => handleChange("companySMS", maskPhone(val))}
           errorMessage={companySMS.errorMessage}
+          disabled={!isEditable}
           onBlur={() => validPhoneNumber()}
           icon={
             <EditCirclePencilIcon
@@ -194,7 +194,9 @@ export const NotificationsContact = () => {
         {
           <DropDrownLabel
             label={t("profileAndNotifications.timeZone")}
+            placeholder={t("profileAndNotifications.timeZone")}
             data={timeZones}
+            disabled={!isEditable}
             value={
               timeZone.value
                 ? { label: timeZone.value, value: timeZone.value }

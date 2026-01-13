@@ -25,9 +25,6 @@ export interface IBrandMasterResponse {
   manual?: string | null;
   termsOfUse?: string | null;
   privacyPolicy?: string | null;
-  hasSelfRegister?: boolean;
-  hasPrepaid?: boolean;
-  retailPercentageDefault?: string | number;
 }
 
 export interface IBrandMasterBasicInfo {

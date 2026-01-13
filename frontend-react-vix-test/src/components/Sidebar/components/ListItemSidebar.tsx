@@ -1,4 +1,5 @@
 import { Divider, List, Stack } from "@mui/material";
+import type { SVGProps } from "react";
 import { useZTheme } from "../../../stores/useZTheme";
 import { useTranslation } from "react-i18next";
 import { useSetSidebar } from "../../../hooks/useSetSidebar";
@@ -15,6 +16,7 @@ import { ItemListed } from "./ItemListed";
 import { useZBrandInfo } from "../../../stores/useZBrandStore";
 import { UserCheckDone } from "../../../icons/UserCheckDone";
 import { CloudIcon } from "../../../icons/CloudIcon";
+import { useZUserProfile } from "../../../stores/useZUserProfile";
 
 export const ListItemSidebar = () => {
   const { mode, theme } = useZTheme();
@@ -26,9 +28,40 @@ export const ListItemSidebar = () => {
   const { goLogout } = useLogin();
   const { pathname } = useLocation();
   const { manual, termsOfUse, privacyPolicy } = useZBrandInfo();
+  const { idBrand } = useZUserProfile();
   const lan = t("costsAndFinances.lan") === "pt" ? "pt" : "eng";
   const baseUrl = import.meta.env.VITE_BASE_URL || "http://localhost:3001";
   const manualUrl = `${baseUrl}/uploads/dark-user-manual-vituax-${lan}.pdf`;
+
+  type RegisterListItem = {
+    text: string;
+    path: string;
+    isSelected: boolean;
+    icon: (props: SVGProps<SVGSVGElement>) => JSX.Element;
+    isInternalOnly: boolean;
+  };
+
+  const registersList: RegisterListItem[] = [
+    {
+      text: t("sidebar.mspRegister"),
+      path: "/msp-register",
+      isSelected: pathname === "/msp-register",
+      icon: (props) => <UserCheckDone {...props} />,
+      isInternalOnly: true,
+    },
+    {
+      text: t("sidebar.colaboratorRegister"),
+      path: "/colaborator-register",
+      isSelected: pathname === "/colaborator-register",
+      icon: (props) => <UserCheckDone {...props} />,
+      isInternalOnly: false,
+    },
+  ];
+
+  const filteredRegistersList = registersList.filter((item) => {
+    if (item.isInternalOnly && idBrand !== null) return false;
+    return true;
+  });
 
   return (
     <Stack
@@ -84,20 +117,7 @@ export const ListItemSidebar = () => {
           text={t("sidebar.registers")}
           handleSelect={handleSelect}
           selected={selected}
-          listItems={[
-            {
-              text: t("sidebar.mspRegister"),
-              path: "/msp-register",
-              isSelected: pathname === "/msp-register",
-              icon: (props) => <UserCheckDone {...props} />,
-            },
-            {
-              text: t("sidebar.colaboratorRegister"),
-              path: "/colaborator-register",
-              isSelected: pathname === "/colaborator-register",
-              icon: (props) => <UserCheckDone {...props} />,
-            },
-          ]}
+          listItems={filteredRegistersList}
           hadleSelectItem={(val) =>
             handleSelect(t("sidebar.registers"), val.path)
           }

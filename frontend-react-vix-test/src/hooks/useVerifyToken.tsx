@@ -9,9 +9,7 @@ export const useVerifyToken = () => {
 
   const verifyPinCode = async (pinCode: string) => {
     if (!pinCode) return;
-    const url = false
-      ? `/user-vituax/verify-pincode/${idUser}`
-      : `/user/verify-pincode/${idUser}`;
+    const url = `/user/verify-pincode/${idUser}`;
 
     setIsLoading(true);
     const response = await api.post<{ token: string | null }>({

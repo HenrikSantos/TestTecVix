@@ -1,5 +1,5 @@
 {
-  "title": "Cadastro",
+  "title": "Cadastro de Colaboradores",
   "sideTitle": "Permissões de usuários",
   "subtitle": "Atribuir e ajustar niveis de acesso de usuários",
   "completeName": "Nome completo",
@@ -24,6 +24,7 @@
   "confirm": "Confirmar cadastro",
   "back": "Voltar",
   "clear": "Limpar",
+  "cancel": "Cancelar",
   "save": "Salvar",
   "tableTitle": "Usuários cadastrados",
   "fillFields": "O campo acima deve ser preenchido.",
@@ -44,5 +45,8 @@
   "ok": "OK",
   "registersManagement": "Gerenciamento de usuários",
   "pinCode": "PinCode",
-  "areYouSure": "Tem certeza que deseja deletar o usuário {{ username }}?"
+  "areYouSure": "Tem certeza que deseja deletar o usuário {{ username }}?",
+  "createEmployee": "Novo Colaborador",
+  "editEmployee": "Editar Colaborador",
+  "deleteEmployee": "Excluir"
 }

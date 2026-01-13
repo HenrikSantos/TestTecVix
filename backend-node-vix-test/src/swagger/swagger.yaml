@@ -2,15 +2,794 @@ openapi: 3.0.3
 info:
   title: API CLOUD
   version: 1.0.0
+  description: API para gerenciamento de Brand Masters, VMs e Usuários
   contact: {}
 servers:
   - url: "{{url}}"
 paths:
+  # ==========================
+  # BrandMaster Routes
+  # ==========================
+  /api/v1/brand-master/self:
+    get:
+      tags:
+        - brandMaster
+      summary: Obtém informações do brand master do usuário autenticado
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              example:
+                idBrandMaster: 1
+                brandName: "UPIX"
+                isActive: true
+                brandLogo: "https://cataas.com/cat/gif"
+                domain: "192.168.0.105:3000"
+                setorName: "Telecom"
+                location: "Brasil"
+                city: "Mogi das Cruzes"
+                emailContact: "cds@upix.tech"
+                smsContact: "(11) 20001-001"
+                state: "SP"
+                street: "R. Gertrúdes da Conceição Cabral, 142"
+                placeNumber: "sala 1108"
+                cnpj: "00.000.001/0001-22"
+
+  /api/v1/brand-master/{idBrandMaster}:
+    get:
+      tags:
+        - brandMaster
+      summary: Obtém brand master por ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: idBrandMaster
+          in: path
+          required: true
+          description: "ID do brand master (ex: 1 para UPIX, 2 para Vituax MSP test)"
+          schema:
+            type: integer
+          example: 1
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              example:
+                idBrandMaster: 1
+                brandName: "UPIX"
+                isActive: true
+                brandLogo: "https://cataas.com/cat/gif"
+                domain: "192.168.0.105:3000"
+                setorName: "Telecom"
+                location: "Brasil"
+                city: "Mogi das Cruzes"
+                state: "SP"
+    put:
+      tags:
+        - brandMaster
+      summary: Atualiza brand master
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: idBrandMaster
+          in: path
+          required: true
+          description: ID do brand master a ser atualizado
+          schema:
+            type: integer
+          example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                brandName:
+                  type: string
+                  description: Nome do brand master
+                isActive:
+                  type: boolean
+                  description: Status ativo/inativo
+                brandLogo:
+                  type: string
+                  description: URL do logo
+                domain:
+                  type: string
+                  description: Domínio do brand master
+                setorName:
+                  type: string
+                  description: Nome do setor
+                location:
+                  type: string
+                  description: Localização (país)
+                city:
+                  type: string
+                  description: Cidade
+                emailContact:
+                  type: string
+                  description: Email de contato
+                smsContact:
+                  type: string
+                  description: Telefone/SMS de contato
+                state:
+                  type: string
+                  description: Estado (UF)
+                street:
+                  type: string
+                  description: Endereço
+                placeNumber:
+                  type: string
+                  description: Número/Complemento
+                cnpj:
+                  type: string
+                  description: CNPJ da empresa
+            example:
+              brandName: "UPIX Atualizado"
+              setorName: "Telecom e Cloud"
+              emailContact: "contato@upix.tech"
+      responses:
+        "200":
+          description: Atualizado com sucesso
+    delete:
+      tags:
+        - brandMaster
+      summary: Remove brand master (soft delete)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: idBrandMaster
+          in: path
+          required: true
+          description: ID do brand master a ser removido
+          schema:
+            type: integer
+          example: 2
+      responses:
+        "200":
+          description: Removido com sucesso
+
+  /api/v1/brand-master:
+    get:
+      tags:
+        - brandMaster
+      summary: Lista todos os brand masters
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              example:
+                - idBrandMaster: 1
+                  brandName: "UPIX"
+                  isActive: true
+                  setorName: "Telecom"
+                  city: "Mogi das Cruzes"
+                  state: "SP"
+                - idBrandMaster: 2
+                  brandName: "Vituax MSP test"
+                  isActive: true
+                  setorName: "Cloud"
+                  city: "São Paulo"
+                  state: "SP"
+    post:
+      tags:
+        - brandMaster
+      summary: Cria novo brand master
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - brandName
+                - cnpj
+              properties:
+                brandName:
+                  type: string
+                  description: Nome do brand master
+                isActive:
+                  type: boolean
+                  description: Status ativo/inativo
+                  default: true
+                brandLogo:
+                  type: string
+                  description: URL do logo
+                domain:
+                  type: string
+                  description: Domínio do brand master
+                setorName:
+                  type: string
+                  description: Nome do setor
+                location:
+                  type: string
+                  description: Localização (país)
+                city:
+                  type: string
+                  description: Cidade
+                emailContact:
+                  type: string
+                  description: Email de contato
+                smsContact:
+                  type: string
+                  description: Telefone/SMS de contato
+                state:
+                  type: string
+                  description: Estado (UF)
+                street:
+                  type: string
+                  description: Endereço
+                placeNumber:
+                  type: string
+                  description: Número/Complemento
+                cnpj:
+                  type: string
+                  description: CNPJ da empresa
+            example:
+              brandName: "Nova Empresa MSP"
+              isActive: true
+              brandLogo: "https://exemplo.com/logo.png"
+              domain: "192.168.1.100:3000"
+              setorName: "Infraestrutura"
+              location: "Brasil"
+              city: "Rio de Janeiro"
+              emailContact: "contato@novaempresa.com.br"
+              smsContact: "21999998888"
+              state: "RJ"
+              street: "Av. Rio Branco, 100"
+              placeNumber: "12º andar"
+              cnpj: "12.345.678/0001-99"
+      responses:
+        "201":
+          description: Criado com sucesso
+
+  # ==========================
+  # Uploads Routes
+  # ==========================
+  /api/v1/uploads/{objectName}:
+    get:
+      tags:
+        - Uploads
+      summary: Obtém arquivo do bucket pelo nome do objeto
+      parameters:
+        - name: objectName
+          in: path
+          required: true
+          description: Nome do objeto/arquivo no bucket
+          schema:
+            type: string
+          example: "logo-upix.png"
+      responses:
+        "200":
+          description: Arquivo retornado com sucesso
+        "404":
+          description: Arquivo não encontrado
+
+  /api/v1/upload/file/{objectName}:
+    get:
+      tags:
+        - Uploads
+      summary: Obtém URL pública do arquivo pelo nome do objeto
+      parameters:
+        - name: objectName
+          in: path
+          required: true
+          description: Nome do objeto/arquivo no bucket
+          schema:
+            type: string
+          example: "1695915560000-logo-upix.png"
+      responses:
+        "200":
+          description: URL retornada com sucesso
+          content:
+            application/json:
+              example:
+                url: "http://localhost:3001/api/v1/uploads/1695915560000-logo-upix.png"
+
+  /api/v1/upload/file:
+    post:
+      tags:
+        - Uploads
+      summary: Faz upload de arquivo e retorna URL pública
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Arquivo de imagem (png, jpeg, jpg, gif, svg, webp)
+      responses:
+        "200":
+          description: Upload realizado com sucesso
+          content:
+            application/json:
+              example:
+                objectName: "1695915560000-logo-upix.png"
+                url: "http://localhost:3001/api/v1/uploads/1695915560000-logo-upix.png"
+        "400":
+          description: Nenhum arquivo enviado
+
+  # ==========================
+  # User Routes
+  # ==========================
+  /api/v1/user/login:
+    post:
+      tags:
+        - User
+      summary: Realiza login do usuário
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Email do usuário (alternativo ao username)
+                username:
+                  type: string
+                  description: Nome de usuário (alternativo ao email)
+                password:
+                  type: string
+                  description: Senha do usuário
+              required:
+                - password
+            examples:
+              loginComEmail:
+                summary: Login com email
+                value:
+                  email: "admin@vituax.com"
+                  password: "Admin@123"
+              loginComUsername:
+                summary: Login com username
+                value:
+                  username: "manager"
+                  password: "Manager@123"
+      responses:
+        "200":
+          description: Login realizado com sucesso
+          content:
+            application/json:
+              example:
+                accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                user:
+                  id: "uuid-do-usuario"
+                  username: "admin"
+                  email: "admin@vituax.com"
+                  role: "admin"
+        "401":
+          description: Credenciais inválidas
+
+  /api/v1/user:
+    post:
+      tags:
+        - User
+      summary: Registra novo usuário
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - email
+                - password
+              properties:
+                username:
+                  type: string
+                  description: Nome de usuário único
+                email:
+                  type: string
+                  description: Email único do usuário
+                password:
+                  type: string
+                  description: Senha (mínimo 8 caracteres, com maiúscula, minúscula e número)
+            example:
+              username: "novousuario"
+              email: "novousuario@empresa.com.br"
+              password: "Senha@123"
+      responses:
+        "201":
+          description: Usuário criado com sucesso
+          content:
+            application/json:
+              example:
+                id: "uuid-gerado"
+                username: "novousuario"
+                email: "novousuario@empresa.com.br"
+                role: "member"
+                isActive: true
+        "409":
+          description: Email ou username já existente
+    get:
+      tags:
+        - User
+      summary: Lista todos os usuários
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              example:
+                - id: "uuid-1"
+                  username: "admin"
+                  email: "admin@vituax.com"
+                  role: "admin"
+                  isActive: true
+                - id: "uuid-2"
+                  username: "manager"
+                  email: "manager@vituax.com"
+                  role: "manager"
+                  isActive: true
+                - id: "uuid-3"
+                  username: "member"
+                  email: "member@vituax.com"
+                  role: "member"
+                  isActive: true
+
+  /api/v1/user/{idUser}:
+    get:
+      tags:
+        - User
+      summary: Obtém usuário por ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: idUser
+          in: path
+          required: true
+          description: ID (UUID) do usuário
+          schema:
+            type: string
+          example: "550e8400-e29b-41d4-a716-446655440000"
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              example:
+                id: "550e8400-e29b-41d4-a716-446655440000"
+                username: "admin"
+                email: "admin@vituax.com"
+                role: "admin"
+                isActive: true
+        "404":
+          description: Usuário não encontrado
+    put:
+      tags:
+        - User
+      summary: Atualiza usuário
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: idUser
+          in: path
+          required: true
+          description: ID (UUID) do usuário a ser atualizado
+          schema:
+            type: string
+          example: "550e8400-e29b-41d4-a716-446655440000"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Novo nome de usuário
+                email:
+                  type: string
+                  description: Novo email
+                password:
+                  type: string
+                  description: Nova senha
+                fullName:
+                  type: string
+                  description: Nome completo do usuário
+                userPhoneNumber:
+                  type: string
+                  description: Número de telefone do usuário
+                profileImgUrl:
+                  type: string
+                  description: URL da imagem de perfil
+                role:
+                  type: string
+                  enum: [admin, manager, member]
+                  description: Papel do usuário (apenas admin pode alterar)
+                isActive:
+                  type: boolean
+                  description: Status ativo/inativo
+            example:
+              username: "adminatualizado"
+              email: "admin.novo@vituax.com"
+              fullName: "Admin Atualizado Silva"
+              userPhoneNumber: "11988887777"
+              profileImgUrl: "https://exemplo.com/foto.png"
+      responses:
+        "200":
+          description: Atualizado com sucesso
+        "404":
+          description: Usuário não encontrado
+    delete:
+      tags:
+        - User
+      summary: Remove usuário (soft delete)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: idUser
+          in: path
+          required: true
+          description: ID (UUID) do usuário a ser removido
+          schema:
+            type: string
+          example: "550e8400-e29b-41d4-a716-446655440000"
+      responses:
+        "200":
+          description: Removido com sucesso
+        "404":
+          description: Usuário não encontrado
+
+  # ==========================
+  # VM Routes
+  # ==========================
+  /api/v1/vm:
+    get:
+      tags:
+        - VM
+      summary: Lista todas as VMs
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              example:
+                - idVM: 1
+                  vmName: "Company Test"
+                  vCPU: 2
+                  ram: 4
+                  disk: 154
+                  hasBackup: false
+                  idBrandMaster: 1
+                  status: "RUNNING"
+                  os: "ubuntu2404"
+                - idVM: 5
+                  vmName: "VM 02"
+                  vCPU: 2
+                  ram: 32
+                  disk: 100
+                  hasBackup: true
+                  idBrandMaster: 2
+                  status: "STOPPED"
+                  os: "debian12"
+                - idVM: 7
+                  vmName: "CentoOs10"
+                  vCPU: 3
+                  ram: 16
+                  disk: 1024
+                  hasBackup: true
+                  idBrandMaster: 1
+                  status: "RUNNING"
+                  os: "centos10"
+    post:
+      tags:
+        - VM
+      summary: Cria nova VM
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - vmName
+                - vCPU
+                - ram
+                - disk
+                - os
+              properties:
+                vmName:
+                  type: string
+                  description: Nome da VM
+                vCPU:
+                  type: integer
+                  description: Número de vCPUs
+                  minimum: 1
+                  maximum: 32
+                ram:
+                  type: integer
+                  description: Memória RAM em GB
+                  minimum: 1
+                  maximum: 128
+                disk:
+                  type: integer
+                  description: Tamanho do disco em GB
+                  minimum: 10
+                  maximum: 2048
+                hasBackup:
+                  type: boolean
+                  description: Habilitar backup automático
+                  default: false
+                idBrandMaster:
+                  type: integer
+                  description: ID do brand master (1 para UPIX, 2 para Vituax)
+                status:
+                  type: string
+                  enum: [RUNNING, STOPPED, PENDING]
+                  description: Status inicial da VM
+                  default: STOPPED
+                os:
+                  type: string
+                  description: Sistema operacional
+                  enum:
+                    [
+                      ubuntu2404,
+                      ubuntu2204,
+                      debian12,
+                      debian13,
+                      centos10,
+                      archlinux,
+                      win2019std,
+                      win2022std,
+                    ]
+            example:
+              vmName: "Servidor Web Producao"
+              vCPU: 4
+              ram: 16
+              disk: 256
+              hasBackup: true
+              idBrandMaster: 1
+              status: "STOPPED"
+              os: "ubuntu2404"
+      responses:
+        "201":
+          description: VM criada com sucesso
+          content:
+            application/json:
+              example:
+                idVM: 9
+                vmName: "Servidor Web Producao"
+                vCPU: 4
+                ram: 16
+                disk: 256
+                hasBackup: true
+                idBrandMaster: 1
+                status: "STOPPED"
+                os: "ubuntu2404"
+
+  /api/v1/vm/{idVM}:
+    get:
+      tags:
+        - VM
+      summary: Obtém VM por ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: idVM
+          in: path
+          required: true
+          description: "ID da VM (ex: 1 para Company Test, 5 para VM 02)"
+          schema:
+            type: integer
+          example: 1
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              example:
+                idVM: 1
+                vmName: "Company Test"
+                vCPU: 2
+                ram: 4
+                disk: 154
+                hasBackup: false
+                idBrandMaster: 1
+                status: "RUNNING"
+                os: "ubuntu2404"
+                createdAt: "2025-03-20T18:50:58.000Z"
+                updatedAt: "2025-03-21T13:43:50.000Z"
+        "404":
+          description: VM não encontrada
+    put:
+      tags:
+        - VM
+      summary: Atualiza VM
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: idVM
+          in: path
+          required: true
+          description: ID da VM a ser atualizada
+          schema:
+            type: integer
+          example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                vmName:
+                  type: string
+                  description: Nome da VM
+                vCPU:
+                  type: integer
+                  description: Número de vCPUs
+                ram:
+                  type: integer
+                  description: Memória RAM em GB
+                disk:
+                  type: integer
+                  description: Tamanho do disco em GB
+                hasBackup:
+                  type: boolean
+                  description: Habilitar backup automático
+                status:
+                  type: string
+                  enum: [RUNNING, STOPPED, PENDING]
+                  description: Status da VM
+            example:
+              vmName: "Company Test Atualizado"
+              vCPU: 4
+              ram: 8
+              hasBackup: true
+              status: "RUNNING"
+      responses:
+        "200":
+          description: Atualizado com sucesso
+        "404":
+          description: VM não encontrada
+    delete:
+      tags:
+        - VM
+      summary: Remove VM (soft delete)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: idVM
+          in: path
+          required: true
+          description: ID da VM a ser removida
+          schema:
+            type: integer
+          example: 5
+      responses:
+        "200":
+          description: Removido com sucesso
+        "404":
+          description: VM não encontrada
+
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
+      bearerFormat: JWT
 tags:
   - name: brandMaster
+    description: Gerenciamento de Brand Masters (empresas/organizações)
   - name: VM
+    description: Gerenciamento de Máquinas Virtuais
+  - name: User
+    description: Autenticação e gerenciamento de usuários
+  - name: Uploads
+    description: Upload e download de arquivos

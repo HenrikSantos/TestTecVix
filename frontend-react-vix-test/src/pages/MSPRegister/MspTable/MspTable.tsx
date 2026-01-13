@@ -11,14 +11,23 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useZUserProfile } from "../../../stores/useZUserProfile";
 import { useZMspRegisterPage } from "../../../stores/useZMspRegisterPage";
 import { useBrandMasterResources } from "../../../hooks/useBrandMasterResources";
+import { useUploadFile } from "../../../hooks/useUploadFile";
+import { useAuth } from "../../../hooks/useAuth";
+import { api } from "../../../services/api";
+import { IListAll } from "../../../types/ListAllTypes";
+import { IUserResponse } from "../../../types/userTypes";
 import moment from "moment";
 
-export const MspTable = () => {
+interface IMspTableProps {
+  onEditMsp: () => void;
+}
+
+export const MspTable = ({ onEditMsp }: IMspTableProps) => {
   const { theme, mode } = useZTheme();
   const { t } = useTranslation();
   const {
     setCep,
-    setLocality,
+    setLocation,
     setCountryState,
     setCity,
     setStreet,
@@ -47,11 +56,14 @@ export const MspTable = () => {
     isPocFilter,
     setDiscountRate,
     setMinConsumption,
-    setRetailPercentageDefault,
-    setHasSelfRegister,
+    setAdmName,
+    setAdmEmail,
+    setAdmPhone,
   } = useZMspRegisterPage();
 
   const { listAllBrands } = useBrandMasterResources();
+  const { getFileByObjectName } = useUploadFile();
+  const { getAuth } = useAuth();
 
   const { role } = useZUserProfile();
 
@@ -75,7 +87,7 @@ export const MspTable = () => {
     resetAll();
   };
 
-  const handleEdit = (index: number) => {
+  const handleEdit = async (index: number) => {
     setEnterOnEditing(true);
     startEditing(index);
     setActiveStep(0);
@@ -85,38 +97,56 @@ export const MspTable = () => {
     setPhone(msp?.smsContact || "");
     setContactEmail(msp?.emailContact || "");
     setCep(msp?.cep || "");
-    setLocality(msp?.location || "");
+    setLocation(msp?.location || "");
     setCountryState(msp?.state || "");
     setCity(msp?.city || "");
     setStreet(msp?.street || "");
     setStreetNumber(msp?.placeNumber || "");
     setSector(msp?.setorName || "");
     setMSPDomain(msp?.domain || "");
-    setBrandLogo({
-      brandLogoUrl: msp?.brandLogo,
-      brandObjectName: msp?.brandLogo,
-    });
     setCityCode(msp?.cityCode ? `${msp.cityCode}` : "");
     setDistrict(msp?.district || "");
     setIsPoc(Boolean(msp?.isPoc));
-    setDiscountRate(
-      Number(msp?.discountRate) ? 100 - Number(msp.discountRate) * 100 : 0,
-    );
+    setDiscountRate(Number(msp?.discountRate) || 0);
     setMinConsumption(
       Number(msp?.minConsumption) ? Number(msp.minConsumption) : 0,
     );
-    setHasSelfRegister(msp?.hasSelfRegister);
-    if (msp?.hasSelfRegister) {
-      setRetailPercentageDefault(
-        Math.round(
-          ((Number(msp?.retailPercentageDefault) < 1
-            ? 1
-            : Number(msp?.retailPercentageDefault)) -
-            1) *
-            100,
-        ) || 0,
+
+    // Buscar admin do MSP
+    try {
+      const auth = await getAuth();
+      const usersResponse = await api.get<IListAll<IUserResponse>>({
+        url: "/user",
+        auth,
+        params: {
+          idBrandMaster: index,
+          isActive: "true",
+        },
+      });
+      const adminUser = usersResponse.data?.result?.find(
+        (u) => u.role === "admin",
       );
+      if (adminUser) {
+        setAdmName(adminUser.fullName || adminUser.username || "");
+        setAdmEmail(adminUser.email || "");
+        setAdmPhone(adminUser.userPhoneNumber || "");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar admin do MSP:", error);
     }
+
+    // Resolver URL da logo
+    if (msp?.brandLogo) {
+      const { url } = await getFileByObjectName(msp.brandLogo);
+      setBrandLogo({
+        brandLogoUrl: url || "",
+        brandObjectName: msp.brandLogo,
+      });
+    } else {
+      setBrandLogo({ brandLogoUrl: "", brandObjectName: "" });
+    }
+
+    onEditMsp();
   };
 
   return (
@@ -134,7 +164,7 @@ export const MspTable = () => {
             msp.brandName
               .toLowerCase()
               .includes(mspTableFilter.toLowerCase()) &&
-            (!isPocFilter || msp.isPoc === isPocFilter),
+            (!isPocFilter || Boolean(msp.isPoc)),
         )
         .map((msp, index) => (
           <Fragment key={`${msp.idBrandMaster}-${msp.brandName}`}>
@@ -301,25 +331,27 @@ export const MspTable = () => {
                   "@media (max-width: 600px)": { display: "none" },
                 }}
               >
-                <IconButton
-                  onClick={() =>
-                    isEditing.includes(msp.idBrandMaster)
-                      ? saveEdit()
-                      : handleEdit(msp.idBrandMaster)
-                  }
-                >
-                  {isEditing.includes(msp.idBrandMaster) ? (
-                    <CheckCircleOutlineRoundedIcon
-                      sx={{
-                        color: theme[mode].blueMedium,
-                        width: "24px",
-                        height: "24px",
-                      }}
-                    />
-                  ) : (
-                    <PencilCicleIcon fill={theme[mode].blueMedium} />
-                  )}
-                </IconButton>
+                {(role === "admin" || role === "manager") && (
+                  <IconButton
+                    onClick={() =>
+                      isEditing.includes(msp.idBrandMaster)
+                        ? saveEdit()
+                        : handleEdit(msp.idBrandMaster)
+                    }
+                  >
+                    {isEditing.includes(msp.idBrandMaster) ? (
+                      <CheckCircleOutlineRoundedIcon
+                        sx={{
+                          color: theme[mode].blueMedium,
+                          width: "24px",
+                          height: "24px",
+                        }}
+                      />
+                    ) : (
+                      <PencilCicleIcon fill={theme[mode].blueMedium} />
+                    )}
+                  </IconButton>
+                )}
                 {role === "admin" && (
                   <IconButton
                     onClick={() => {

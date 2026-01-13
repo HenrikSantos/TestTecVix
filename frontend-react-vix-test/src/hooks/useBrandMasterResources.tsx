@@ -9,10 +9,8 @@ import { useZBrandInfo } from "../stores/useZBrandStore";
 import { useUploadFile } from "./useUploadFile";
 import { IBrandMasterBasicInfo } from "../types/BrandMasterTypes";
 
-
 interface IUpdateBrandMaster {
   brandName?: string;
-  idBrandTheme?: number;
   isActive?: boolean;
   brandLogo?: string;
   domain?: string;
@@ -39,12 +37,10 @@ interface IUpdateBrandMaster {
   manual?: string;
   termsOfUse?: string;
   privacyPolicy?: string;
-  retailPercentageDefault?: string | number;
 }
 
 interface IBrandMasterResource {
   brandName: string;
-  idBrandTheme: number;
   isActive: boolean;
   brandLogo: string;
   domain: string;
@@ -64,9 +60,6 @@ interface IBrandMasterResource {
   manual?: string;
   termsOfUse?: string;
   privacyPolicy?: string;
-  hasSelfRegister?: boolean;
-  hasPrepaid?: boolean;
-  retailPercentageDefault?: string | number;
 }
 
 interface ICreateNewBrandMaster {
@@ -76,7 +69,7 @@ interface ICreateNewBrandMaster {
   sector: string;
   contactEmail: string;
   cep: string;
-  locality: string;
+  location: string;
   countryState: string;
   city: string;
   street: string;
@@ -106,7 +99,6 @@ export interface INewMSPResponse {
   contract: string | null;
   emailContact: string | null;
   fieldName: string | null;
-  idBrandTheme: number;
   isActive: boolean;
   location: string | null;
   placeNumber: string | null;
@@ -119,7 +111,6 @@ export interface INewMSPResponse {
   updatedAt: Date | string | null;
   deletedAt: Date | string | null;
   stripeUserId?: string | null;
-  isStripeActive?: boolean | null;
   cityCode: number | null;
   district: string | null;
   isPoc: boolean;
@@ -128,9 +119,6 @@ export interface INewMSPResponse {
   manual?: string | null;
   termsOfUse?: string | null;
   privacyPolicy?: string | null;
-  hasSelfRegister?: boolean;
-  hasPrepaid?: boolean;
-  retailPercentageDefault?: string | number;
 }
 
 export const useBrandMasterResources = () => {
@@ -148,7 +136,6 @@ export const useBrandMasterResources = () => {
 
   const updateBrandMaster = async ({
     brandName,
-    idBrandTheme,
     brandLogo,
     domain,
   }: IUpdateBrandMaster) => {
@@ -160,7 +147,6 @@ export const useBrandMasterResources = () => {
       auth,
       data: {
         brandName,
-        idBrandTheme,
         brandLogo,
         domain,
       },
@@ -215,7 +201,6 @@ export const useBrandMasterResources = () => {
       manual: dataResponse?.manual || null,
       termsOfUse: dataResponse?.termsOfUse || null,
       privacyPolicy: dataResponse?.privacyPolicy || null,
-      hasSelfRegister: dataResponse?.hasSelfRegister || false,
     });
 
     return response.data;
@@ -223,11 +208,6 @@ export const useBrandMasterResources = () => {
 
   const updateDomain = async (domain: string) => {
     if (role !== "admin" && role !== "manager") {
-      toast.error(t("generic.errorOlnlyAdmin"));
-      return;
-    }
-
-    if (role !== "admin" && true) {
       toast.error(t("generic.errorOlnlyAdmin"));
       return;
     }
@@ -270,13 +250,12 @@ export const useBrandMasterResources = () => {
       auth,
       data: {
         brandName: data.companyName,
-        idBrandTheme: 1,
         isActive: true,
         brandLogo: data.brandLogo,
-        domain: undefined,
+        domain: data.mspDomain,
         setorName: data.sector,
         fieldName: undefined,
-        location: data.locality,
+        location: data.location,
         city: data.city,
         emailContact: data.contactEmail,
         smsContact: data.phone,
@@ -310,7 +289,7 @@ export const useBrandMasterResources = () => {
       url: "/brand-master",
       auth,
     });
-    setIsLoading(true);
+    setIsLoading(false);
 
     if (response.error) {
       toast.error(response.message);
@@ -358,6 +337,7 @@ export const useBrandMasterResources = () => {
       return;
     }
     const auth = await getAuth();
+    setIsLoading(true);
     const response = await api.put<INewMSPResponse>({
       url: `/brand-master/${brandMasterId}`,
       auth,
@@ -379,11 +359,13 @@ export const useBrandMasterResources = () => {
         isPoc: Boolean(data?.isPoc),
         discountRate: data?.discountRate,
         minConsumption: data?.minConsumption,
-        retailPercentageDefault: Number(data?.retailPercentageDefault)
-          ? Number(data?.retailPercentageDefault)
-          : undefined,
+        admName: data.admName || undefined,
+        admEmail: data.admEmail || undefined,
+        admPhone: data.admPhone || undefined,
+        admPassword: data.admPassword || undefined,
       },
     });
+    setIsLoading(false);
 
     if (response.error) {
       toast.error(response.message);
@@ -403,7 +385,7 @@ export const useBrandMasterResources = () => {
       url: `/brand-master/${idBrand}`,
       auth,
     });
-    setIsLoading(true);
+    setIsLoading(false);
 
     if (response.error) {
       toast.error(response.message);
@@ -424,24 +406,3 @@ export const useBrandMasterResources = () => {
     getSelf,
   };
 };
-
-/*
-export const brandMasterSchema = z.object({
-  brandName: z.string().nullable().optional(),
-  idBrandTheme: z.number().int().nullable().optional(),
-  isActive: z.boolean().optional().default(false).optional(),
-  brandLogo: z.string().nullable().optional(),
-  domain: z.string().nullable().optional(),
-  setorName: z.string().nullable().optional(),
-  fieldName: z.string().nullable().optional(),
-  location: z.string().nullable().optional(),
-  city: z.string().nullable().optional(),
-  emailContact: z.string().nullable().optional(),
-  smsContact: z.string().nullable().optional(),
-  timezone: z.string().nullable().optional(),
-  state: z.string().nullable().optional(),
-  street: z.string().nullable().optional(),
-  placeNumber: z.string().nullable().optional(),
-  cnpj: z.string().nullable().optional(),
-});
-*/

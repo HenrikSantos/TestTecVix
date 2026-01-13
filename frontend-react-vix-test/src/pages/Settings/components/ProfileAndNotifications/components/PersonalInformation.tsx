@@ -11,11 +11,12 @@ import {
 } from "../../../../../stores/useZFormProfileNotifications";
 import { useEffect } from "react";
 import { PerfilPhotoUpload } from "./PerfilPhotoUpload";
+import { maskPhone } from "../../../../../utils/maskPhone";
 
 export const PersonalInformation = () => {
   const { t } = useTranslation();
   const { theme, mode } = useZTheme();
-  const { username, userEmail, userPhoneNumber } = useZUserProfile();
+  const { username, userEmail, userPhoneNumber, fullName } = useZUserProfile();
   const {
     userEmail: userEmailForm,
     userName,
@@ -156,6 +157,7 @@ export const PersonalInformation = () => {
 
   const validPhoneNumber = () => {
     const phoneRegex = /^\d{10,11}$/; // Regex para validar telefone com 10 ou 11 dígitos
+    const cleanPhone = userPhone.value.replace(/\D/g, "");
 
     if (!userPhone.value) {
       return setFormProfileNotifications({
@@ -166,7 +168,7 @@ export const PersonalInformation = () => {
       });
     }
 
-    if (!phoneRegex.test(userPhone.value) || userPhone.value.length > 20) {
+    if (!phoneRegex.test(cleanPhone) || cleanPhone.length > 20) {
       return setFormProfileNotifications({
         userPhone: {
           ...userPhone,
@@ -200,7 +202,7 @@ export const PersonalInformation = () => {
     setFormProfileNotifications({
       fullNameForm: {
         ...fullNameForm,
-        value: "",
+        value: fullName || "",
         errorMessage: "",
       },
       userName: {
@@ -219,7 +221,7 @@ export const PersonalInformation = () => {
         errorMessage: "",
       },
     });
-  }, []);
+  }, [fullName, username, userEmail, userPhoneNumber]);
 
   return (
     <Stack
@@ -255,6 +257,7 @@ export const PersonalInformation = () => {
       >
         <InputLabelAndFeedback
           label={t("profileAndNotifications.completeName")}
+          placeholder={t("profileAndNotifications.completeName")}
           value={fullNameForm.value}
           onChange={(val) => handleChange("fullNameForm", val)}
           errorMessage={fullNameForm.errorMessage}
@@ -275,6 +278,7 @@ export const PersonalInformation = () => {
         />
         <InputLabelAndFeedback
           label={t("profileAndNotifications.username")}
+          placeholder={t("profileAndNotifications.username")}
           value={userName.value}
           onChange={(val) => handleChange("userName", val)}
           errorMessage={userName.errorMessage}
@@ -295,6 +299,7 @@ export const PersonalInformation = () => {
         />
         <InputLabelAndFeedback
           label={t("profileAndNotifications.email")}
+          placeholder={t("profileAndNotifications.email")}
           value={userEmailForm.value}
           errorMessage={userEmailForm.errorMessage}
           onChange={(val) => handleChange("userEmail", val)}
@@ -319,7 +324,7 @@ export const PersonalInformation = () => {
           value={userPhone.value}
           errorMessage={userPhone.errorMessage}
           onBlur={validPhoneNumber}
-          onChange={(val) => handleChange("userPhone", val)}
+          onChange={(val) => handleChange("userPhone", maskPhone(val))}
           icon={
             <EditCirclePencilIcon
               fill={
@@ -348,6 +353,7 @@ export const PersonalInformation = () => {
         <InputLabelAndFeedback
           type="password"
           label={t("colaboratorRegister.password")}
+          placeholder="••••••••"
           value={password.value}
           onChange={(val) => handleChange("password", val)}
           errorMessage={password.errorMessage}
@@ -355,10 +361,12 @@ export const PersonalInformation = () => {
           sxContainer={sxContainer}
           sxLabel={sxLabel}
           sxSidelabel={sxSideLabel}
+          autoComplete="new-password"
         />
         <InputLabelAndFeedback
           type="password"
           label={t("colaboratorRegister.confirmPassword")}
+          placeholder="••••••••"
           value={confirmPassword.value}
           onChange={(val) => handleChange("confirmPassword", val)}
           errorMessage={confirmPassword.errorMessage}
@@ -367,6 +375,7 @@ export const PersonalInformation = () => {
           sxContainer={sxContainer}
           sxLabel={sxLabel}
           sxSidelabel={sxSideLabel}
+          autoComplete="new-password"
         />
       </Stack>
       <Stack

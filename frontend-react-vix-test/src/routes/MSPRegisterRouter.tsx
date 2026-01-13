@@ -4,7 +4,7 @@ import { MSPRegisterPage } from "../pages/MSPRegister";
 export const MSPRegisterRouter = {
   path: "/msp-register",
   element: (
-    <PrivatePage>
+    <PrivatePage onlyInternal={true}>
       <MSPRegisterPage />
     </PrivatePage>
   ),

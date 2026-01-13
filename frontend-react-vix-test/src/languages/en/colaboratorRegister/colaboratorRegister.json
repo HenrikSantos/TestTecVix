@@ -1,5 +1,5 @@
 {
-  "title": "Register",
+  "title": "Employee Registration",
   "sideTitle": "User Permissions",
   "subtitle": "Assign and adjust user access levels",
   "completeName": "Full Name",
@@ -24,6 +24,7 @@
   "confirm": "Confirm Registration",
   "back": "Back",
   "clear": "Clear",
+  "cancel": "Cancel",
   "save": "Save",
   "tableTitle": "Registered Users",
   "fillFields": "The field above must be filled out.",
@@ -44,5 +45,8 @@
   "ok": "OK",
   "registersManagement": "Registers Management",
   "pinCode": "PinCode",
-  "areYouSure": "Are you sure you want to delete the {{ username }}?"
+  "areYouSure": "Are you sure you want to delete the user {{ username }}?",
+  "createEmployee": "New Employee",
+  "editEmployee": "Edit Employee",
+  "deleteEmployee": "Delete"
 }

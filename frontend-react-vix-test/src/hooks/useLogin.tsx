@@ -3,6 +3,7 @@ import { api } from "../services/api";
 import { toast } from "react-toastify";
 import { useZGlobalVar } from "../stores/useZGlobalVar";
 import { useZUserProfile } from "../stores/useZUserProfile";
+import { useZBrandInfo } from "../stores/useZBrandStore";
 import { useNavigate } from "react-router-dom";
 import { useZResetAllStates } from "../stores/useZResetAllStates";
 
@@ -12,6 +13,7 @@ interface IUserLoginResponse {
     createdAt: string | Date;
     deletedAt: string | Date | null;
     email: string;
+    fullName: string | null;
     idBrandMaster: number | null;
     idUser: number;
     isActive: boolean;
@@ -21,14 +23,18 @@ interface IUserLoginResponse {
     username: string;
     userPhoneNumber: string | null;
   };
+  brandMaster: {
+    emailContact: string | null;
+    smsContact: string | null;
+    timezone: string | null;
+  } | null;
 }
-
 
 export const useLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { setIsOpenModalUserNotActive, setLoginTime } =
-    useZGlobalVar();
+  const { setIsOpenModalUserNotActive, setLoginTime } = useZGlobalVar();
   const { setUser } = useZUserProfile();
+  const { setBrandInfo } = useZBrandInfo();
   const { resetAllStates } = useZResetAllStates();
   const navigate = useNavigate();
 
@@ -70,14 +76,32 @@ export const useLogin = () => {
     setUser({
       idUser: response.data.user.idUser,
       profileImgUrl: response.data.user.profileImgUrl,
+      imageUrl: response.data.user.profileImgUrl || "",
       username: response.data.user.username,
       userEmail: response.data.user.email,
+      fullName: response.data.user.fullName,
       idBrand: response.data.user.idBrandMaster,
       token: response.data.token,
       role: response.data.user.role,
       userPhoneNumber: response.data.user.userPhoneNumber,
     });
+
+    if (response.data.brandMaster) {
+      setBrandInfo({
+        emailContact: response.data.brandMaster.emailContact || "",
+        smsContact: response.data.brandMaster.smsContact || "",
+        timezone: response.data.brandMaster.timezone || "",
+      });
+    } else {
+      setBrandInfo({
+        emailContact: "",
+        smsContact: "",
+        timezone: "",
+      });
+    }
+
     setLoginTime(new Date());
+    navigate("/");
   };
 
   const goLogout = () => {

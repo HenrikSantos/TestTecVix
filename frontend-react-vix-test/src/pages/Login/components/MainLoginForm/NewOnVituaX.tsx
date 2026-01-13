@@ -8,44 +8,40 @@ import { useZBrandInfo } from "../../../../stores/useZBrandStore";
 export const NewOnVituaX = () => {
   const { mode, theme } = useZTheme();
   const { t } = useTranslation();
-  const { brandName, hasSelfRegister } = useZBrandInfo();
+  const { brandName } = useZBrandInfo();
 
   return (
-    <>
-      {hasSelfRegister && (
-        <Stack
-          py={"12px"}
-          sx={{
-            width: "100%",
-            marginTop: "24px",
-            flexDirection: "row",
-            justifyContent: "center",
-          }}
-        >
-          <TextRob18Font2M
-            sx={{
-              display: "flex",
-              gap: "4px",
-              color: theme[mode].dark,
+    <Stack
+      py={"12px"}
+      sx={{
+        width: "100%",
+        marginTop: "24px",
+        flexDirection: "row",
+        justifyContent: "center",
+      }}
+    >
+      <TextRob18Font2M
+        sx={{
+          display: "flex",
+          gap: "4px",
+          color: theme[mode].dark,
+        }}
+      >
+        {t("loginRegister.newOnVituax", { brandName })}
+        <Link to={"/register"}>
+          <span
+            style={{
+              fontFamily: "Roboto",
+              fontWeight: 400,
+              fontSize: "18px",
+              lineHeight: "20px",
+              color: theme[mode].blue,
             }}
           >
-            {t("loginRegister.newOnVituax", { brandName })}
-            <Link to={"/register"}>
-              <span
-                style={{
-                  fontFamily: "Roboto",
-                  fontWeight: 400,
-                  fontSize: "18px",
-                  lineHeight: "20px",
-                  color: theme[mode].blue,
-                }}
-              >
-                {t("loginRegister.newAccount")}
-              </span>
-            </Link>
-          </TextRob18Font2M>
-        </Stack>
-      )}
-    </>
+            {t("loginRegister.newAccount")}
+          </span>
+        </Link>
+      </TextRob18Font2M>
+    </Stack>
   );
 };
