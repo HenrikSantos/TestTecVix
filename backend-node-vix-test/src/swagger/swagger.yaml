@@ -270,6 +270,56 @@ paths:
         "404":
           description: Arquivo não encontrado
 
+  /api/v1/upload/file/{objectName}:
+    get:
+      tags:
+        - Uploads
+      summary: Obtém URL pública do arquivo pelo nome do objeto
+      parameters:
+        - name: objectName
+          in: path
+          required: true
+          description: Nome do objeto/arquivo no bucket
+          schema:
+            type: string
+          example: "1695915560000-logo-upix.png"
+      responses:
+        "200":
+          description: URL retornada com sucesso
+          content:
+            application/json:
+              example:
+                url: "http://localhost:3001/api/v1/uploads/1695915560000-logo-upix.png"
+
+  /api/v1/upload/file:
+    post:
+      tags:
+        - Uploads
+      summary: Faz upload de arquivo e retorna URL pública
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Arquivo de imagem (png, jpeg, jpg, gif, svg, webp)
+      responses:
+        "200":
+          description: Upload realizado com sucesso
+          content:
+            application/json:
+              example:
+                objectName: "1695915560000-logo-upix.png"
+                url: "http://localhost:3001/api/v1/uploads/1695915560000-logo-upix.png"
+        "400":
+          description: Nenhum arquivo enviado
+
   # ==========================
   # User Routes
   # ==========================
