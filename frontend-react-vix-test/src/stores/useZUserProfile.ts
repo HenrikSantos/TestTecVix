@@ -13,6 +13,7 @@ export interface IUserProfile {
   lastLoginDate?: string | Date;
   userEmail: string | null;
   userPhoneNumber: string | null;
+  fullName: string | null;
   token: string | null;
   idBrand: number | null;
   role: TRole | null;
@@ -25,6 +26,7 @@ const INIT_STATE: IUserProfile = {
   username: null,
   userEmail: null,
   userPhoneNumber: null,
+  fullName: null,
   token: null,
   idBrand: null,
   lastLoginDate: "",

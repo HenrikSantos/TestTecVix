@@ -1,4 +1,6 @@
 import { Button, Stack, SxProps } from "@mui/material";
+import { Theme } from "@mui/material/styles";
+import type { ReactNode } from "react";
 import { useZTheme } from "../../stores/useZTheme";
 
 interface IProps {
@@ -6,11 +8,11 @@ interface IProps {
   handleRestore: () => void;
   saveDisabled?: boolean;
   restoreDisabled?: boolean;
-  labelSave?: React.ReactNode;
-  labelRestore?: React.ReactNode;
-  sx?: SxProps;
-  sxButtonSave?: SxProps;
-  sxButtonRestore?: SxProps;
+  labelSave?: ReactNode;
+  labelRestore?: ReactNode;
+  sx?: SxProps<Theme>;
+  sxButtonSave?: SxProps<Theme>;
+  sxButtonRestore?: SxProps<Theme>;
 }
 
 export const CTAsDoubleButtons = ({
