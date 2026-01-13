@@ -11,7 +11,7 @@ describe("JWT Utils", () => {
   };
 
   describe("genToken", () => {
-    it("deve gerar um token JWT valido", () => {
+    it("should generate a valid JWT token", () => {
       const token = genToken(mockPayload);
 
       expect(token).toBeDefined();
@@ -19,14 +19,14 @@ describe("JWT Utils", () => {
       expect(token.split(".")).toHaveLength(3);
     });
 
-    it("deve gerar tokens diferentes para payloads diferentes", () => {
+    it("should generate different tokens for different payloads", () => {
       const token1 = genToken(mockPayload);
       const token2 = genToken({ ...mockPayload, idUser: "user-456" });
 
       expect(token1).not.toBe(token2);
     });
 
-    it("deve gerar token para usuario sem idBrandMaster", () => {
+    it("should generate token for user without idBrandMaster", () => {
       const payloadWithoutBrand: IJwtPayload = {
         ...mockPayload,
         idBrandMaster: null,
@@ -40,7 +40,7 @@ describe("JWT Utils", () => {
   });
 
   describe("verifyToken", () => {
-    it("deve verificar e decodificar um token valido", () => {
+    it("should verify and decode a valid token", () => {
       const token = genToken(mockPayload);
       const decoded = verifyToken(token);
 
@@ -50,37 +50,37 @@ describe("JWT Utils", () => {
       expect(decoded.idBrandMaster).toBe(mockPayload.idBrandMaster);
     });
 
-    it("deve lancar AppError para token invalido", () => {
+    it("should throw AppError for invalid token", () => {
       const invalidToken = "invalid.token.here";
 
       expect(() => verifyToken(invalidToken)).toThrow(AppError);
     });
 
-    it("deve lancar erro com status UNAUTHORIZED para token invalido", () => {
+    it("should throw UNAUTHORIZED for invalid token", () => {
       const invalidToken = "invalid.token.here";
 
       try {
         verifyToken(invalidToken);
-        fail("Deveria ter lancado erro");
+        fail("Expected to throw an error");
       } catch (error) {
         expect(error).toBeInstanceOf(AppError);
         expect((error as AppError).status).toBe(STATUS_CODE.UNAUTHORIZED);
       }
     });
 
-    it("deve lancar erro para token vazio", () => {
+    it("should throw for empty token", () => {
       expect(() => verifyToken("")).toThrow(AppError);
     });
 
-    it("deve lancar erro para token malformado", () => {
+    it("should throw for malformed token", () => {
       const malformedToken = "abc123";
 
       expect(() => verifyToken(malformedToken)).toThrow(AppError);
     });
   });
 
-  describe("integracao genToken e verifyToken", () => {
-    it("deve gerar e verificar token corretamente", () => {
+  describe("genToken and verifyToken integration", () => {
+    it("should generate and verify token correctly", () => {
       const token = genToken(mockPayload);
       const decoded = verifyToken(token);
 
@@ -89,7 +89,7 @@ describe("JWT Utils", () => {
       expect(decoded.role).toBe(mockPayload.role);
     });
 
-    it("deve manter dados do payload apos encode/decode", () => {
+    it("should keep payload data after encode/decode", () => {
       const customPayload: IJwtPayload = {
         idUser: "custom-user-id",
         email: "custom@email.com",
