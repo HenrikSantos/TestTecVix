@@ -1,6 +1,7 @@
 import { sanetizeName } from "../utils/sanetizeName";
 import fs from "fs/promises";
 import path from "path";
+import type { Express } from "express";
 import { IBucketService } from "../types/Interfaces/IBucketService";
 import { API_VERSION } from "../constants/basePathRoutes";
 

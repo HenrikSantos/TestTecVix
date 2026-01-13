@@ -1,7 +1,6 @@
 import { prisma } from "../database/client";
 import { TBrandMaster } from "../types/validations/BrandMaster/createBrandMaster";
 import { TQuery } from "../types/validations/Queries/queryListAll";
-import moment from "moment";
 
 export class BrandMasterModel {
   async getSelf(domain: string) {

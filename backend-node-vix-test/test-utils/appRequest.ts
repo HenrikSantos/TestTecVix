@@ -11,13 +11,24 @@ type RequestOptions = {
 
 type ResponseData = {
   status: number;
-  body: any;
+  body: unknown;
   text: string;
   headers: http.OutgoingHttpHeaders;
 };
 
+type MockSocket = PassThrough & {
+  writable: boolean;
+  readable: boolean;
+  remoteAddress: string;
+  remotePort: number;
+  destroy: () => void;
+  setTimeout: () => MockSocket;
+  cork: () => void;
+  uncork: () => void;
+};
+
 const createSocket = () => {
-  const socket = new PassThrough() as any;
+  const socket = new PassThrough() as MockSocket;
   socket.writable = true;
   socket.readable = true;
   socket.remoteAddress = "127.0.0.1";
@@ -55,22 +66,26 @@ export const appRequest = async ({
     res.assignSocket(resSocket);
 
     const chunks: Buffer[] = [];
-    const originalWrite = res.write.bind(res);
-    const originalEnd = res.end.bind(res);
+    const originalWrite: http.ServerResponse["write"] = res.write.bind(res);
+    const originalEnd: http.ServerResponse["end"] = res.end.bind(res);
 
-    res.write = ((chunk: any, ...args: any[]) => {
+    res.write = ((...args: Parameters<http.ServerResponse["write"]>) => {
+      const [chunk] = args;
       if (chunk) {
-        chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+        const bufferChunk = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
+        chunks.push(bufferChunk);
       }
-      return originalWrite(chunk, ...args);
-    }) as any;
+      return originalWrite(...args);
+    }) as http.ServerResponse["write"];
 
-    res.end = ((chunk: any, ...args: any[]) => {
+    res.end = ((...args: Parameters<http.ServerResponse["end"]>) => {
+      const [chunk] = args;
       if (chunk) {
-        chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+        const bufferChunk = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
+        chunks.push(bufferChunk);
       }
-      return originalEnd(chunk, ...args);
-    }) as any;
+      return originalEnd(...args);
+    }) as http.ServerResponse["end"];
 
     res.on("finish", () => {
       const text = Buffer.concat(chunks).toString("utf8");

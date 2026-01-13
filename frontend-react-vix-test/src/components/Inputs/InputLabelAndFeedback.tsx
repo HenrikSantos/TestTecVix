@@ -2,7 +2,6 @@ import {
   FormControl,
   IconButton,
   InputAdornment,
-  Stack,
   SxProps,
   TextField,
 } from "@mui/material";
